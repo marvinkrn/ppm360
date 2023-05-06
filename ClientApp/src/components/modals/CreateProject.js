@@ -18,83 +18,48 @@ function CreateProject(props) {
                 <ModalBody>
                     <Form>
                         <FormGroup row>
-                            <Label
-                                for="projectName"
-                                sm={2}
-                            >
+                            <Label for="projectName" sm={2}>
                                 Projektname
                             </Label>
                             <Col sm={10}>
-                                <Input
-                                    id="projectName"
-                                    name="name"
-                                    type="text"
-                                />
+                                <Input id="projectName" name="name" type="text" />
                             </Col>
                         </FormGroup>
-                        
+
                         <FormGroup row>
-                            <Label
-                                for="projectType"
-                                sm={2}
-                            >
+                            <Label for="projectType" sm={2}>
                                 Projektart
                             </Label>
                             <Col sm={10}>
-                                <Input
-                                    id="projectType"
-                                    name="select"
-                                    type="select"
-                                >
+                                <Input id="projectType" name="select" type="select">
                                     <option hidden value="">Bitte auswählen</option>
-                                    <option>
-                                        IT-Projekt
-                                    </option>
-                                    <option>
-                                        Innovationsprojekt
-                                    </option>
-                                    <option>
-                                        Erneuerungsprojekt
-                                    </option>
-                                    <option>
-                                        Cooles Projekt
-                                    </option>
-                                    <option>
-                                        Letztes Projekt
-                                    </option>
+                                    <option>IT-Projekt</option>
+                                    <option>Innovationsprojekt</option>
+                                    <option>Erneuerungsprojekt</option>
+                                    <option>Cooles Projekt</option>
+                                    <option>Letztes Projekt</option>
                                 </Input>
                             </Col>
                         </FormGroup>
 
                         <FormGroup row>
-                            <Label
-                                for="projectCost"
-                                sm={2}
-                            >
+                            <Label for="projectCost" sm={2}>
                                 Erwartete Kosten
                             </Label>
                             <Col sm={10}>
-                                <Input
-                                    id="projectCost"
-                                    name="name"
-                                    type="text"
-                                />
+                                <Input id="projectCost" name="name" type="text" />
+                                <FormText>
+                                    Bitte geben Sie den Betrag der erwarteten Gesamtkosten des Projekts <b>in EUR</b> an.
+                                </FormText>
                             </Col>
                         </FormGroup>
 
                         <FormGroup row>
-                            <Label
-                                for="applicationDocument"
-                                sm={2}
-                            >
+                            <Label for="applicationDocument" sm={2}>
                                 Projektantrag
                             </Label>
                             <Col sm={10}>
-                                <Input
-                                    id="applicationDocument"
-                                    name="document"
-                                    type="file"
-                                />
+                                <Input id="applicationDocument" name="document" type="file" />
                                 <FormText>
                                     Bitte laden Sie hier den Projektantrag in einem üblichen Format hoch.
                                 </FormText>
@@ -102,16 +67,9 @@ function CreateProject(props) {
                         </FormGroup>
 
                         <FormGroup row>
-                            <Col
-                                sm={{
-                                    size: 10
-                                }}
-                            >
+                            <Col sm={{ size: 10 }}>
                                 <FormGroup check>
-                                    <Input
-                                        id="checkbox2"
-                                        type="checkbox"
-                                    />
+                                    <Input id="checkbox2" type="checkbox" />
                                     {' '}
                                     <Label check>
                                         Ich bestätige, dass die gemachten Angaben richtig sind (?)
@@ -119,16 +77,8 @@ function CreateProject(props) {
                                 </FormGroup>
                             </Col>
                         </FormGroup>
-                        <FormGroup
-                            check
-                            row
-                        >
-                            <Col
-                                sm={{
-                                    offset: 2,
-                                    size: 10
-                                }}
-                            >
+                        <FormGroup check row>
+                            <Col sm={{ offset: 2, size: 10 }}>
                                 <Button>
                                     Submit
                                 </Button>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import CreateProject from './modals/CreateProject';
 
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 export class Home extends Component {
   static displayName = Home.name;
 
@@ -33,14 +36,14 @@ export class Home extends Component {
 
   static getTotalCosts(projects) {
     const totalCost = projects.reduce((sum, project) => sum + project.budget, 0);
-    return (totalCost);
+    return (totalCost + " EUR");
   }
 
   static getAverageCosts(projects) {
     const totalCost = projects.reduce((sum, project) => sum + project.budget, 0);
     const averageCost = (totalCost / projects.length).toFixed(2);
     const formattedCost = Number(averageCost).toLocaleString("de-DE");
-    return (formattedCost);
+    return (formattedCost + " EUR");
   }
 
   render() {
@@ -49,9 +52,9 @@ export class Home extends Component {
     let averageCosts;
 
     if (this.state.loading) {
-      projectsCount = "Loading...";
-      totalCosts = "Loading...";
-      averageCosts = "Loading...";
+      projectsCount = <Skeleton />;
+      totalCosts = <Skeleton />;
+      averageCosts = <Skeleton />;
     } else {
       projectsCount = Home.getProjectsCount(this.state.projects);
       totalCosts = Home.getTotalCosts(this.state.projects);
@@ -60,19 +63,14 @@ export class Home extends Component {
 
     return (
       <div id="wrapper">
-
-
         <div class="container-fluid">
-
           <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
             <h1>Dashboard</h1>
-
             <div class="d-sm-flex">
               <button className="btn btn-secondary mx-2" onClick={this.refreshData}>
                 <i className="fas fa-sync-alt"></i> Daten aktualisieren
               </button>
-
-              <CreateProject/>
+              <CreateProject />
             </div>
 
           </div>
@@ -100,7 +98,7 @@ export class Home extends Component {
                     <div class="col ms-2">
                       <div class="kpi-card-heading">
                         Kosten (summiert)</div>
-                      <div class="h5 mb-0 fw-bold">{totalCosts} EUR</div>
+                      <div class="h5 mb-0 fw-bold">{totalCosts}</div>
                     </div>
                   </div>
                 </div>
@@ -114,13 +112,13 @@ export class Home extends Component {
                     <div class="col ms-2">
                       <div class="kpi-card-heading">
                         Durchschnittliche Kosten</div>
-                      <div class="h5 mb-0 fw-bold">{averageCosts} EUR</div>
+                      <div class="h5 mb-0 fw-bold">{averageCosts}</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
+            
             <div class="col-xl-3 col-md-6 mb-4 ">
               <div class="card kpi-card py-2">
                 <div class="card-body">
@@ -128,7 +126,7 @@ export class Home extends Component {
                     <div class="col ms-2">
                       <div class="kpi-card-heading">
                         KPI 4</div>
-                      <div class="h5 mb-0 fw-bold">N/A</div>
+                      <div class="h5 mb-0 fw-bold"><Skeleton /></div>
                     </div>
                   </div>
                 </div>

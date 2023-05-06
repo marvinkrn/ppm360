@@ -27,7 +27,7 @@ export class NavMenu extends Component {
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container-fluid light>
 
           <NavbarBrand className="d-flex align-items-center ms-3" tag={Link} to="/">
-            <img style={{ height: '20px' }} src={require('../images/ppm360_logo_dark.png')} />
+            <img style={{ height: '20px' }} alt="PPM360" src={require('../images/ppm360_logo_dark.png')} />
           </NavbarBrand>
 
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
