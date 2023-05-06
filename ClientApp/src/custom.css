@@ -1,0 +1,66 @@
+:root {
+  --primary-500: #28EBCF;
+  --neutral-500: #000;
+  --background-3: rgba(38, 49, 60, 0.8)
+
+  --button-border-radius: 3px;
+  --box-shadow-kpi-card: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+body {
+  font-family: "Open Sans";
+}
+
+a {
+  color: #0366d6;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+code {
+  color: #E01A76;
+}
+
+.kpi-card {
+  border: 1px solid var(--background-3);
+  box-shadow: var(--box-shadow-kpi-card);
+  border-radius: 6px;
+}
+
+.kpi-card-heading {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--button-border-radius);
+  margin: 5px;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: var(--primary-500);
+  color: var(--neutral-500);
+}
+
+.modal-content {
+  border: none;
+  border-radius: 0px;
+  padding: 5px;
+}
+
+.modal-title {
+  font-weight: 600;
+}
