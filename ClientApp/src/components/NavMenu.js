@@ -6,7 +6,7 @@ import './NavMenu.css';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -15,7 +15,7 @@ export class NavMenu extends Component {
     };
   }
 
-  toggleNavbar () {
+  toggleNavbar() {
     this.setState({
       collapsed: !this.state.collapsed
     });
@@ -24,10 +24,10 @@ export class NavMenu extends Component {
   render() {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container-fluid light>
+        <Navbar className="ppm360-navbar navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container-fluid fixed='top' light>
 
           <NavbarBrand className="d-flex align-items-center ms-3" tag={Link} to="/">
-            <img style={{ height: '20px' }} alt="PPM360" src={require('../images/ppm360_logo_dark.png')} />
+            <img style={{ height: '18px' }} alt="PPM360" src={require('../images/ppm360_logo_dark.png')} />
           </NavbarBrand>
 
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
@@ -38,6 +38,9 @@ export class NavMenu extends Component {
               </NavItem>
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/projects">Projektanträge</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
               </NavItem>
             </ul>
           </Collapse>
