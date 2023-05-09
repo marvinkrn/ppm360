@@ -9,7 +9,7 @@ export class Layout extends Component {
     return (
       <div>
         <NavMenu />
-        <Container tag="main">
+        <Container tag="main" className='ppm360-container'>
           {this.props.children}
         </Container>
       </div>

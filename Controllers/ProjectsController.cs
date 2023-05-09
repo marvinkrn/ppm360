@@ -116,13 +116,6 @@ public class ProjectsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/Projects/test
-    [HttpGet("test")]
-    public string Test() {
-        return "Hello World!";
-    }
-       
-
     private bool ProjectExists(int id)
     {
         return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();

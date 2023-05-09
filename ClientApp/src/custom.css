@@ -1,18 +1,35 @@
 :root {
   --primary-500: #28EBCF;
-  --neutral-500: #000;
-  --background-3: rgba(38, 49, 60, 0.8)
+  --primary-700: #24d3ba;
 
-  --button-border-radius: 3px;
+  --secondary-500: #393D40;
+
+  --neutral-500: #000;
+
+  --background-3: rgba(38, 49, 60, 0.8) --button-border-radius: 3px;
   --box-shadow-kpi-card: 0 2px 8px rgba(0, 0, 0, .1);
 }
 
+@font-face {
+  font-family: "OpenSans";
+  src: local("OpenSans"),
+   url("./fonts/OpenSans/OpenSans-Italic-VariableFont_wdth\,wght.ttf") format("truetype");
+  font-weight: 400;
+ }
+
 body {
   font-family: "Open Sans";
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
 }
 
 a {
   color: #0366d6;
+}
+
+.ppm360-container {
+  padding-top: 50px;
 }
 
 h1 {
@@ -53,6 +70,15 @@ code {
 .btn-primary {
   background-color: var(--primary-500);
   color: var(--neutral-500);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-700);
+  color: var(--neutral-500);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-500);
 }
 
 .modal-content {
