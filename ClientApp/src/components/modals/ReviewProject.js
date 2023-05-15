@@ -5,11 +5,10 @@ import axios from 'axios';
 import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'react-select'
-import Moment from 'moment';
 
 function CreateProject(props) {
-
     const [modal, setModal] = useState(false);
+
     const toggle = () => setModal(!modal);
 
     const handleSubmit = (event) => {
@@ -21,7 +20,7 @@ function CreateProject(props) {
             name: data.get('projectName'),
             budget: data.get('projectBudget'),
             affecteddepartments: [data.get('affectedDepartments'), "dep-2"],
-            createdat: Moment(new Date()).format('YYYY-MM-DD'),
+            createdat: data.get('startDate'),
             startdate: data.get('startDate'),
             enddate: data.get('endDate'),
             projectstatus: "Beantragt",

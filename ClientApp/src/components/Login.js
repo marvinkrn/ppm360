@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap'
-
+import './Login.css';
 
 
 export class Login extends Component {
@@ -12,42 +12,42 @@ export class Login extends Component {
 
     render() {
         return (
-            <div id="wrapper">
 
-                <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
+            <div className="login-wrapper">
+
+                <div className="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
                     <h1>Anmelden</h1>
                 </div>
 
-                <div>
-                    <Form>
-                        <FormGroup floating>
-                            <Input
-                                id="username"
-                                name="username"
-                                type="text"
-                            />
-                            <Label for="username">
-                                Username
-                            </Label>
-                        </FormGroup>
-                        {' '}
-                        <FormGroup floating>
-                            <Input
-                                id="userPassword"
-                                name="userPassword"
-                                type="password"
-                            />
-                            <Label for="userPassword">
-                                Passwort
-                            </Label>
-                        </FormGroup>
-                        {' '}
-                        <Button color="primary" type='submit'>
-                            Anmelden
-                        </Button>
-                    </Form>
-                </div>
-
+                <Form className='login-form'>
+                    <FormGroup floating>
+                        <Input
+                            id="username"
+                            name="username"
+                            placeholder="Username"
+                            type="text"
+                        />
+                        <Label for="username">
+                            Username
+                        </Label>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup floating>
+                        <Input
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            type="password"
+                        />
+                        <Label for="password">
+                            Passwort
+                        </Label>
+                    </FormGroup>
+                    {' '}
+                    <Button className="login-button" color="primary" type='submit'>
+                        Anmelden
+                    </Button>
+                </Form>
 
 
 
