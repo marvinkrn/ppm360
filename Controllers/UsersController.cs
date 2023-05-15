@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ppm360.Data;
 using ppm360.Models;
@@ -11,7 +12,7 @@ using ppm360.Models;
 namespace ppm360.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize(Roles ="Applicant,Management,Approver")]
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -25,10 +26,10 @@ namespace ppm360.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-          if (_context.User == null)
-          {
-              return NotFound();
-          }
+            if (_context.User == null)
+            {
+                return NotFound();
+            }
             return await _context.User.ToListAsync();
         }
 
@@ -36,10 +37,10 @@ namespace ppm360.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-          if (_context.User == null)
-          {
-              return NotFound();
-          }
+            if (_context.User == null)
+            {
+                return NotFound();
+            }
             var user = await _context.User.FindAsync(id);
 
             if (user == null)
@@ -86,10 +87,10 @@ namespace ppm360.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-          if (_context.User == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.User'  is null.");
-          }
+            if (_context.User == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.User'  is null.");
+            }
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
@@ -120,5 +121,7 @@ namespace ppm360.Controllers
         {
             return (_context.User?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+       
     }
 }

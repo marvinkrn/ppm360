@@ -35,7 +35,8 @@ export default class Requests extends Component {
 
     async populateProjects() {
         try {
-            const response = await fetch('api/projects');
+            const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
+            const response = await fetch('api/projects', { headers });
             const data = await response.json();
             this.setState({ projects: data, loading: false });
         } catch (error) {
@@ -81,8 +82,8 @@ export default class Requests extends Component {
                     return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
                         <FontAwesomeIcon icon={faCircleXmark} /> {status}
                     </div>;
-                 case 'Abgeschlossen':
-                    return <div className='ppm360-cell'  style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+                case 'Abgeschlossen':
+                    return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
                         <FontAwesomeIcon icon={faCheckCircle} /> {status}
                     </div>;
                 default:
@@ -107,7 +108,7 @@ export default class Requests extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {projects.map(project =>
+                    {projects.filter(project => project.applicantUser === localStorage.getItem("username")).map(project =>
                         <tr key={project.id}>
                             <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
                             <td>{project.name}</td>

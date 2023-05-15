@@ -4,17 +4,18 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 import axios from 'axios';
 import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Select from 'react-select'
 
 function CreateProject(props) {
     const [modal, setModal] = useState(false);
-
     const toggle = () => setModal(!modal);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
+        
+        const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")};
+     
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
@@ -29,7 +30,7 @@ function CreateProject(props) {
             teamsize: 2,
             applicantuser: "user tbd.",
             comments: ["Kommentar 1", "Kommentar 2"],
-        })
+        }, {headers})
             .then(response => {
                 console.log(response);
                 // Reponse verarbeiten, UI updaten, Toast
