@@ -10,5 +10,7 @@ namespace ppm360.Data
             : base(options) { }
 
         public DbSet<Project> Projects { get; set; }
+
+        public DbSet<ppm360.Models.User> User { get; set; } = default!;
     }
 }

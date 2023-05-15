@@ -24,7 +24,7 @@ export class NavMenu extends Component {
   render() {
     return (
       <header>
-        <Navbar className="ppm360-navbar navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container-fluid fixed='top' light>
+        <Navbar className="ppm360-navbar navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" fixed='top' light>
 
           <NavbarBrand className="d-flex align-items-center ms-3" tag={Link} to="/">
             <img style={{ height: '18px' }} alt="PPM360" src={require('../images/ppm360_logo_dark.png')} />
@@ -38,6 +38,12 @@ export class NavMenu extends Component {
               </NavItem>
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/projects">Projektanträge</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/requests">Requests</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/review">Review</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>

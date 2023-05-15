@@ -11,11 +11,12 @@
 }
 
 @font-face {
+  /* change: npm install @fontsource/open-sans*/
   font-family: "OpenSans";
   src: local("OpenSans"),
-   url("./fonts/OpenSans/OpenSans-Italic-VariableFont_wdth\,wght.ttf") format("truetype");
+    url("./fonts/OpenSans/OpenSans-Italic-VariableFont_wdth\,wght.ttf") format("truetype");
   font-weight: 400;
- }
+}
 
 body {
   font-family: "Open Sans";
@@ -28,8 +29,27 @@ a {
   color: #0366d6;
 }
 
+tr {
+  line-height: 40px;
+  cursor: pointer;
+}
+
+.table-hover>tbody>tr:hover>* {
+  --bs-table-accent-bg: #f9f9fa !important;
+}
+
 .ppm360-container {
   padding-top: 50px;
+}
+
+.ppm360-cell {
+  background-color: #fdf5ec;
+  border-radius: 4px;
+  color: #f19f4f;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 6px;
+  width: fit-content;
 }
 
 h1 {

@@ -1,0 +1,23 @@
+.login-wrapper {
+    max-width: 50%;
+    padding-top: 150px;
+    margin: 0 auto;
+}
+
+.login-button {
+    margin-top: 25px !important;
+    width: 100%;
+    height: 50px;
+}
+
+.form-select, .form-control {
+    border-radius: 0px;
+}
+
+
+@media screen and (max-width: 992px) {
+    .login-wrapper {
+        max-width: 90%;
+    }
+
+}

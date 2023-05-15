@@ -4,6 +4,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import CreateProject from './modals/CreateProject';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { Table } from 'reactstrap';
+import Moment from 'moment';
 
 export class ProjectsOverview extends Component {
   static displayName = ProjectsOverview.name;
@@ -24,50 +26,89 @@ export class ProjectsOverview extends Component {
     this.populateProjects();
   }
 
+
   static renderProjectsTable(projects) {
+
+    function getProjectIdWithPrefix(projectId, projectType) {
+      let prefix;
+
+      switch (projectType) {
+        case 'IT-Projekt':
+          prefix = 'SAG-IT';
+          break;
+        case 'Erneuerungsprojekt':
+          prefix = 'SAG-ER';
+          break;
+        case 'Innovationsprojekt':
+          prefix = 'SAG-IN';
+          break;
+        default:
+          prefix = 'SAG-X';
+          break;
+      }
+      return `${prefix}-${projectId}`;
+    }
+
     return (
-      <table className="table table-striped" aria-labelledby="tableLabel">
+
+      < Table hover responsive >
+
         <thead>
           <tr>
-            <th>UPID</th>
+            <th>Projekt-ID</th>
             <th>Projektname</th>
+            <th>Projektart</th>
+            <th>Status</th>
+            <th>Verantwortlicher</th>
+            <th>Start</th>
+            <th>Ende</th>
             <th>Budget</th>
+            <th>Teamgröße</th>
+            <th>Erstellt am</th>
           </tr>
         </thead>
         <tbody>
           {projects.map(project =>
             <tr key={project.id}>
-              <td>SAG-IT-{project.id}</td>
+              <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
               <td>{project.name}</td>
+              <td>{project.projectType}</td>
+              <td>{project.projectStatus}</td>
+              <td>{project.responsible}</td>
+              <td>{Moment(project.startDate).format('DD.MM.YYYY')}</td>
+              <td>{Moment(project.endDate).format('DD.MM.YYYY')}</td>
               <td>{project.budget} EUR</td>
+              <td>{project.teamSize}</td>
+              <td>{Moment(project.created).format('DD.MM.YYYY')}</td>
+
             </tr>
           )}
         </tbody>
-      </table>
+      </Table >
     );
   }
 
   static renderLoadingTable() {
-    const entries = 15;
+    const entries = 10;
     const skeletonEntries = Array.from({ length: entries }).map((_, index) => (
       <tr key={index}>
-        <td><Skeleton /></td>
-        <td><Skeleton /></td>
+        <td><Skeleton width={"50%"}/></td>
+        <td><Skeleton width={"50%"}/></td>
       </tr>
     ));
 
     return (
-      <table className="table table-striped" aria-labelledby="tableLabel">
+      <Table responsive>
         <thead>
           <tr>
-            <th>UPID</th>
-            <th>Projektname</th>
+            <th><Skeleton width={"75%"}/></th>
+            <th><Skeleton width={"75%"}/></th>
           </tr>
         </thead>
         <tbody>
           {skeletonEntries}
         </tbody>
-      </table>
+      </Table>
     );
   }
 
@@ -79,9 +120,9 @@ export class ProjectsOverview extends Component {
     return (
       <div id="wrapper">
 
-        <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
+        <div className="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
           <h1>Projektanträge</h1>
-          <div class="d-sm-flex">
+          <div className="d-sm-flex">
             <button className="btn btn-secondary mx-2" onClick={this.refreshData}>
               <FontAwesomeIcon icon={faRotateRight} /> Daten aktualisieren
             </button>

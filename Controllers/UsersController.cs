@@ -12,55 +12,55 @@ namespace ppm360.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ProjectsController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Projects
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-          if (_context.Projects == null)
+          if (_context.User == null)
           {
               return NotFound();
           }
-            return await _context.Projects.ToListAsync();
+            return await _context.User.ToListAsync();
         }
 
-        // GET: api/Projects/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Project>> GetProject(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-          if (_context.Projects == null)
+          if (_context.User == null)
           {
               return NotFound();
           }
-            var project = await _context.Projects.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
 
-            if (project == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return project;
+            return user;
         }
 
-        // PUT: api/Projects/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProject(int id, Project project)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != project.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(project).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace ppm360.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProjectExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace ppm360.Controllers
             return NoContent();
         }
 
-        // POST: api/Projects
+        // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Project>> PostProject(Project project)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-          if (_context.Projects == null)
+          if (_context.User == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.User'  is null.");
           }
-            _context.Projects.Add(project);
+            _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProject", new { id = project.Id }, project);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Projects/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProject(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Projects == null)
+            if (_context.User == null)
             {
                 return NotFound();
             }
-            var project = await _context.Projects.FindAsync(id);
-            if (project == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Projects.Remove(project);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProjectExists(int id)
+        private bool UserExists(int id)
         {
-            return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.User?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
