@@ -12,9 +12,9 @@
 
 @font-face {
   /* change: npm install @fontsource/open-sans*/
-  font-family: "OpenSans";
-  src: local("OpenSans"),
-    url("./fonts/OpenSans/OpenSans-Italic-VariableFont_wdth\,wght.ttf") format("truetype");
+  font-family: "Open Sans";
+  src: local("Open Sans"),
+    url("./fonts/OpenSans/OpenSans-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
