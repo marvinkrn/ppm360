@@ -74,7 +74,7 @@ export class ProjectsOverview extends Component {
               <td>{project.name}</td>
               <td>{project.projectType}</td>
               <td>{project.projectStatus}</td>
-              <td>{project.responsible}</td>
+              <td>{project.projectManager}</td>
               <td>{Moment(project.startDate).format('DD.MM.YYYY')}</td>
               <td>{Moment(project.endDate).format('DD.MM.YYYY')}</td>
               <td>{project.budget} EUR</td>
@@ -138,7 +138,8 @@ export class ProjectsOverview extends Component {
   }
 
   async populateProjects() {
-    const response = await fetch('api/projects');
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")};
+      const response = await fetch('api/projects', { headers });
     const data = await response.json();
     this.setState({ projects: data, loading: false });
   }

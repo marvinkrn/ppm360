@@ -21,6 +21,7 @@ namespace ppm360.Migrations
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "hstore");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ppm360.Models.Project", b =>
@@ -31,10 +32,6 @@ namespace ppm360.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<List<string>>("AffectedDepartments")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.Property<string>("ApplicantUser")
                         .IsRequired()
                         .HasColumnType("text");
@@ -42,15 +39,19 @@ namespace ppm360.Migrations
                     b.Property<double>("Budget")
                         .HasColumnType("double precision");
 
-                    b.Property<List<string>>("Comments")
+                    b.Property<Dictionary<string, string>>("Comments")
                         .IsRequired()
-                        .HasColumnType("text[]");
+                        .HasColumnType("hstore");
 
                     b.Property<DateOnly>("CreatedAt")
                         .HasColumnType("date");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("InvolvedBusinessUnits")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,8 +72,9 @@ namespace ppm360.Migrations
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("TeamSize")
-                        .HasColumnType("integer");
+                    b.Property<string>("TeamSize")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -87,7 +89,7 @@ namespace ppm360.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
 

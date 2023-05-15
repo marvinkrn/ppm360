@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using ppm360.Data;
 using ppm360.Models;
 
 namespace ppm360.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize(Roles ="Applicant,Management,Approver")]
     public class ProjectsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

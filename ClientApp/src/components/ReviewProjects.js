@@ -42,7 +42,8 @@ export default class ReviewProjects extends Component {
 
     async populateProjects() {
         try {
-            const response = await fetch('api/projects');
+            const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
+            const response = await fetch('api/projects', { headers });
             const data = await response.json();
             this.setState({ projects: data, loading: false });
         } catch (error) {

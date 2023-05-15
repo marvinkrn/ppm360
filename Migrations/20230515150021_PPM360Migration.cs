@@ -13,6 +13,9 @@ namespace ppm360.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:hstore", ",,");
+
             migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
@@ -20,17 +23,17 @@ namespace ppm360.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    ApplicantUser = table.Column<string>(type: "text", nullable: false),
-                    Comments = table.Column<List<string>>(type: "text[]", nullable: false),
                     ProjectType = table.Column<string>(type: "text", nullable: false),
                     ProjectManager = table.Column<string>(type: "text", nullable: false),
+                    ProjectStatus = table.Column<string>(type: "text", nullable: false),
                     Budget = table.Column<double>(type: "double precision", nullable: false),
-                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    TeamSize = table.Column<string>(type: "text", nullable: false),
+                    InvolvedBusinessUnits = table.Column<string>(type: "text", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    ProjectStatus = table.Column<string>(type: "text", nullable: false),
-                    TeamSize = table.Column<int>(type: "integer", nullable: false),
-                    AffectedDepartments = table.Column<List<string>>(type: "text[]", nullable: false)
+                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    ApplicantUser = table.Column<string>(type: "text", nullable: false),
+                    Comments = table.Column<Dictionary<string, string>>(type: "hstore", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +47,7 @@ namespace ppm360.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

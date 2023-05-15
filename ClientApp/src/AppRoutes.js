@@ -1,8 +1,9 @@
 import { ProjectsOverview } from "./components/ProjectsOverview";
-import { Home } from "./components/Home";
 import { Login } from "./components/Login";
 import Request from "./components/Requests";
 import ReviewProjects from "./components/ReviewProjects";
+import { Dashboard } from "./components/Dashboard";
+import Home from "./components/Home";
 
 
 const AppRoutes = [
@@ -13,6 +14,10 @@ const AppRoutes = [
   {
     path: '/login',
     element: <Login />
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
   },
   {
     path: '/projects',

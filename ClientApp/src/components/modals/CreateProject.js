@@ -4,7 +4,6 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, La
 import axios from 'axios';
 import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Select from 'react-select'
 import Moment from 'moment';
 
 function CreateProject(props) {
@@ -16,27 +15,31 @@ function CreateProject(props) {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
+        const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
-            budget: data.get('projectBudget'),
-            affecteddepartments: [data.get('affectedDepartments'), "dep-2"],
-            createdat: Moment(new Date()).format('YYYY-MM-DD'),
-            startdate: data.get('startDate'),
-            enddate: data.get('endDate'),
-            projectstatus: "Beantragt",
             projecttype: data.get('projectType'),
             projectmanager: data.get('projectManager'),
-            teamsize: 2,
-            applicantuser: "user tbd.",
-            comments: ["Kommentar 1", "Kommentar 2"],
-        })
+            projectstatus: "Beantragt",
+            budget: data.get('projectBudget'),
+            teamsize: data.get('teamSize'),
+            involvedbusinessunits: data.get('involvedBusinessUnits'),
+            startdate: data.get('startDate'),
+            enddate: data.get('endDate'),
+            createdat: Moment(new Date()).format('YYYY-MM-DD'),
+            applicantuser: localStorage["username"],
+            comments: { "user1": "Kommentar 1", "user2": "Kommentar 2" },
+        }, { headers }
+        )
             .then(response => {
-                console.log(response);
+                const data = response.json();
+                console.log(data);
                 // Reponse verarbeiten, UI updaten, Toast
             })
             .catch(error => {
-                console.log(error);
+                const data = JSON.stringify(error);
+                console.log(data);
                 // Fehler anzeigen?
             });
 
@@ -80,19 +83,33 @@ function CreateProject(props) {
                         </FormGroup>
 
                         <FormGroup row>
-                            <Label for="affectedDepartments" sm={2}>
-                                Betroffene Bereiche
+                            <Label for="teamSize" sm={2}>
+                                Teamgröße
                             </Label>
                             <Col sm={10}>
-                                <Select id="affectedDepartments" name="affectedDepartments"
-                                    closeMenuOnSelect={false}
-                                    isMulti
-                                    options={[
-                                        { value: 'cd-it', label: 'CD IT' },
-                                        { value: 'cpr', label: 'CD Procurement' },
-                                        { value: 'cd-mse', label: 'CD Marketing' }
-                                    ]}
-                                />
+                                <Input id="teamSize" name="teamSize" type="select">
+                                    <option hidden value="">Bitte auswählen (genaue Zahlen tbd.)</option>
+                                    <option>S | 5-10</option>
+                                    <option>M | 10-25</option>
+                                    <option>L | 25-50</option>
+                                    <option>XL | 50+</option>
+                                </Input>
+
+                            </Col>
+                        </FormGroup>
+
+                        <FormGroup row>
+                            <Label for="involvedBusinessUnits" sm={2}>
+                                Beteiligte Geschäftsbereiche
+                            </Label>
+                            <Col sm={10}>
+                                <Input id="involvedBusinessUnits" name="involvedBusinessUnits" type="select">
+                                    <option hidden value="">Bitte auswählen (genaue Zahlen tbd.)</option>
+                                    <option>S | 1-3</option>
+                                    <option>M | 3-6</option>
+                                    <option>L | 7-15</option>
+                                    <option>XL | 15+</option>
+                                </Input>
 
                             </Col>
                         </FormGroup>
