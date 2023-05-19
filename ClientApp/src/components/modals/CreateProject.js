@@ -87,13 +87,9 @@ function CreateProject(props) {
                                 Teamgröße
                             </Label>
                             <Col sm={10}>
-                                <Input id="teamSize" name="teamSize" type="select">
-                                    <option hidden value="">Bitte auswählen (genaue Zahlen tbd.)</option>
-                                    <option>S | 5-10</option>
-                                    <option>M | 10-25</option>
-                                    <option>L | 25-50</option>
-                                    <option>XL | 50+</option>
-                                </Input>
+                                <Input id="teamSize" name="teamSize" type="number" min="1"/>
+                                    
+                               
 
                             </Col>
                         </FormGroup>

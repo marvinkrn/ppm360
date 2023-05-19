@@ -6,9 +6,29 @@
 
   --neutral-500: #000;
 
+  --background: #fff;
+  --font-color: #000;
+
   --background-3: rgba(38, 49, 60, 0.8) --button-border-radius: 3px;
   --box-shadow-kpi-card: 0 2px 8px rgba(0, 0, 0, .1);
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-500: #28EBCF;
+    --primary-700: #24d3ba;
+  
+    --secondary-500: #393D40;
+  
+    --neutral-500: #fff;
+    
+    --background: #141414;
+    --font-color: #fff;
+    --background-3: rgba(38, 49, 60, 0.8) --button-border-radius: 3px;
+    --box-shadow-kpi-card: 0 2px 8px rgba(0, 0, 0, .1);
+  }
+}
+
 
 @font-face {
   /* change: npm install @fontsource/open-sans*/
@@ -23,6 +43,8 @@ body {
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
+  color: var(--font-color);
+  background-color: var(--background);
 }
 
 a {
@@ -109,4 +131,8 @@ code {
 
 .modal-title {
   font-weight: 600;
+}
+
+.card {
+  border-radius: 0px;
 }

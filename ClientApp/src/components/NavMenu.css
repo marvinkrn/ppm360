@@ -19,7 +19,7 @@ html {
 }
 
 .ppm360-navbar {
-  background-color: #fff;
+  background-color: var(--background);
   height: 60px;
 }
 
