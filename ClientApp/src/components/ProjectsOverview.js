@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import CreateProject from './modals/CreateProject';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { Table } from 'reactstrap';
 import Moment from 'moment';
 
@@ -49,6 +49,31 @@ export class ProjectsOverview extends Component {
       return `${prefix}-${projectId}`;
     }
 
+    function getProjectStatus(status) {
+      switch (status) {
+          case 'Beantragt':
+              return <div className='ppm360-cell' style={{ backgroundColor: "#fef5e7", color: "#f39c12" }}>
+                  <FontAwesomeIcon icon={faFileInvoice} /> {status}
+              </div>;
+          case 'Genehmigt':
+              return <div className='ppm360-cell' style={{ backgroundColor: "#e8f6ef", color: "#27ae60" }}>
+                  <FontAwesomeIcon icon={faCheckCircle} /> {status}
+              </div>;
+          case 'Abgelehnt':
+              return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
+                  <FontAwesomeIcon icon={faCircleXmark} /> {status}
+              </div>;
+          case 'Abgeschlossen':
+              return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+                  <FontAwesomeIcon icon={faCheckCircle} /> {status}
+              </div>;
+          default:
+              return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+                  <FontAwesomeIcon icon={faCircleQuestion} /> {"Unbekannt: " + status}
+              </div>;
+      }
+  }
+
     return (
 
       < Table hover responsive >
@@ -73,7 +98,7 @@ export class ProjectsOverview extends Component {
               <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
               <td>{project.name}</td>
               <td>{project.projectType}</td>
-              <td>{project.projectStatus}</td>
+              <td>{getProjectStatus(project.projectStatus)}</td>
               <td>{project.projectManager}</td>
               <td>{Moment(project.startDate).format('DD.MM.YYYY')}</td>
               <td>{Moment(project.endDate).format('DD.MM.YYYY')}</td>
