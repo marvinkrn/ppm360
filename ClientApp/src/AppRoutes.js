@@ -5,6 +5,8 @@ import ReviewProjects from "./components/ReviewProjects";
 import { Dashboard } from "./components/Dashboard";
 import Home from "./components/Home";
 import ProjectsCreate from "./components/modals/ProjectsCreate";
+import ProjectsModify from "./components/ProjectDetails";
+import ProjectDetails from "./components/ProjectDetails";
 
 
 const AppRoutes = [
@@ -21,12 +23,16 @@ const AppRoutes = [
     element: <Dashboard />
   },
   {
-    path: '/projects',
+    path: '/projectsoverview',
     element: <ProjectsOverview />
   },
   {
     path: '/projects/create',
     element: <ProjectsCreate />
+  },
+  {
+    path: '/projects/:id',
+    element: <ProjectDetails />
   },
   {
     path: '/requests',

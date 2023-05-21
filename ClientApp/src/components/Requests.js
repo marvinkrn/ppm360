@@ -4,10 +4,9 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import CreateProject from './modals/CreateProject';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice, faInfoCircle, faRotateRight } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from "react-chartjs-2";
 import { Table } from 'reactstrap';
 import Moment from 'moment';
 
@@ -16,6 +15,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default class Requests extends Component {
     static displayName = Requests.name;
+
 
     constructor(props) {
         super(props);
@@ -47,6 +47,8 @@ export default class Requests extends Component {
 
 
     static renderProjectsTable(projects) {
+
+        const filteredProjects = projects.filter(project => project.applicantUser.toLowerCase() === localStorage.getItem("username"));
 
         function getProjectIdWithPrefix(projectId, projectType) {
             let prefix;
@@ -105,18 +107,29 @@ export default class Requests extends Component {
                         <th>Projektname</th>
                         <th>Status</th>
                         <th>Erstellt am</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {projects.filter(project => project.applicantUser === localStorage.getItem("username")).map(project =>
-                        <tr key={project.id}>
-                            <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
-                            <td>{project.name}</td>
-                            <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
-                            <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>
+
+                    {filteredProjects.length > 0 ? (
+                        filteredProjects.map(project => (
+                            <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType) }}>
+                                <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
+                                <td>{project.name}</td>
+                                <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
+                                <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>
+                                <td><FontAwesomeIcon icon={faChevronRight} /></td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="4" className="text-center"><FontAwesomeIcon icon={faFileCircleXmark} style={{ marginRight: "5px" }} /> Sie haben noch keine Projekte beantragt.</td>
                         </tr>
                     )}
+
                 </tbody>
+
             </Table>
         );
     }

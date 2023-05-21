@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ppm360.Data;
 using ppm360.Models;
 
-using Microsoft.IdentityModel.Tokens;   
-using System;   
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
-using System.IdentityModel.Tokens.Jwt;   
-using System.Security.Claims; 
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ppm360.Controllers
 {
@@ -29,12 +29,11 @@ namespace ppm360.Controllers
             _configuration = configuration;
         }
 
-  
         [HttpPost("register")]
         public async Task<ActionResult<IEnumerable<User>>> Register(UserDto request)
         {
-
-            if(UserExists(request.Username)) {
+            if (UserExists(request.Username))
+            {
                 return BadRequest("User already exists.");
             }
 
@@ -61,20 +60,22 @@ namespace ppm360.Controllers
         {
             if (!UserExists(request.Username))
             {
-                return BadRequest("Invalid username or password. (1)");
+                return BadRequest(
+                    new { success = false, errorMessage = "Invalid username or password. (1)" }
+                );
             }
 
             if (!BCrypt.Net.BCrypt.Verify(request.Password, GetUser(request.Username).PasswordHash))
             {
-                return BadRequest("Invalid username or password. (2)");
+                return BadRequest(
+                    new { success = false, errorMessage = "Invalid username or password. (2)" }
+                );
             }
 
             string token = CreateToken(GetUser(request.Username));
 
             return Ok(new { success = true, token });
         }
-
-        
 
         private User GetUser(string username)
         {
@@ -86,19 +87,23 @@ namespace ppm360.Controllers
             return (_context.User?.Any(e => e.Username == username)).GetValueOrDefault();
         }
 
-        private string CreateToken(User user) {
-            List<Claim> claims = new List<Claim> {
+        private string CreateToken(User user)
+        {
+            List<Claim> claims = new List<Claim>
+            {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!)
+            );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(3),
                 signingCredentials: creds
             );
 

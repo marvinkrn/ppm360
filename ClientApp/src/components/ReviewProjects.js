@@ -34,8 +34,6 @@ export default class ReviewProjects extends Component {
         this.populateProjects();
     }
 
-
-
     handleRowClick(project) {
         this.setState({ selectedProject: project });
     }
@@ -59,8 +57,6 @@ export default class ReviewProjects extends Component {
                 <ModalHeader toggle={() => this.setState({ selectedProject: null })}>Projektdetails</ModalHeader>
                 <ModalBody>
                     {selectedProject && (
-
-
 
                         <Form>
                             <FormGroup row>

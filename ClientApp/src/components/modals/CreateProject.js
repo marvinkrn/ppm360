@@ -87,9 +87,9 @@ function CreateProject(props) {
                                 Teamgröße
                             </Label>
                             <Col sm={10}>
-                                <Input id="teamSize" name="teamSize" type="number" min="1"/>
-                                    
-                               
+                                <Input id="teamSize" name="teamSize" type="number" min="1" />
+
+
 
                             </Col>
                         </FormGroup>
