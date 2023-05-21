@@ -1,12 +1,10 @@
-import { ProjectsOverview } from "./components/ProjectsOverview";
 import { Login } from "./components/Login";
-import Request from "./components/Requests";
-import ReviewProjects from "./components/ReviewProjects";
 import { Dashboard } from "./components/Dashboard";
 import Home from "./components/Home";
-import ProjectsCreate from "./components/modals/ProjectsCreate";
-import ProjectsModify from "./components/ProjectDetails";
+import CreateProject from "./components/CreateProject";
 import ProjectDetails from "./components/ProjectDetails";
+import ApproveProjects from "./components/ApproveProjects";
+import MyProjects from "./components/MyProjects";
 
 
 const AppRoutes = [
@@ -19,28 +17,24 @@ const AppRoutes = [
     element: <Login />
   },
   {
-    path: '/dashboard',
-    element: <Dashboard />
-  },
-  {
-    path: '/projectsoverview',
-    element: <ProjectsOverview />
-  },
-  {
-    path: '/projects/create',
-    element: <ProjectsCreate />
+    path: '/projects',
+    element: <MyProjects />
   },
   {
     path: '/projects/:id',
     element: <ProjectDetails />
   },
   {
-    path: '/requests',
-    element: <Request />
+    path: '/projects/create',
+    element: <CreateProject />
   },
   {
-    path: '/review',
-    element: <ReviewProjects />
+    path: '/approve',
+    element: <ApproveProjects />
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
   },
 ];
 

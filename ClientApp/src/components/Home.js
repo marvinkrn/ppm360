@@ -13,7 +13,7 @@ const Home = () => {
     if (username === "" || username === null) {
       navigate("/login")
     } else {
-      navigate("/requests");
+      navigate("/projects");
     }
   })
 

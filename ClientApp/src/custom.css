@@ -147,3 +147,9 @@ code {
   background-color: var(--kpi-card-background);
   border-radius: 6px !important;
 }
+
+.approveButtons {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+}

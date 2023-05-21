@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Col, Input, FormText, Row, Card, CardTitle, CardText } from 'reactstrap';
 import axios from 'axios';
-import { faFileCirclePlus, faRotateRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'moment';
 
 function ProjectsCreate(props) {

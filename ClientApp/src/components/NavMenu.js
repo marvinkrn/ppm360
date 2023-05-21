@@ -88,7 +88,7 @@ export class NavMenu extends Component {
                   <>
                     <NavItem>
 
-                      <NavLink tag={Link} className="navbar-item" to="/requests"><FontAwesomeIcon className='navbar-item-icon' icon={faFile} />Meine Projektanträge</NavLink>
+                      <NavLink tag={Link} className="navbar-item" to="/projects"><FontAwesomeIcon className='navbar-item-icon' icon={faFile} />Meine Projektanträge</NavLink>
                     </NavItem>
                   </>
 
@@ -97,7 +97,7 @@ export class NavMenu extends Component {
                 {userRole === 'Approver' && (
                   <>
                     <NavItem>
-                      <NavLink tag={Link} className="navbar-item" to="/review"><FontAwesomeIcon className='navbar-item-icon' icon={faFileCircleCheck} />Projektanträge genehmigen</NavLink>
+                      <NavLink tag={Link} className="navbar-item" to="/approve"><FontAwesomeIcon className='navbar-item-icon' icon={faFileCircleCheck} />Projektanträge genehmigen</NavLink>
                     </NavItem>
                   </>
 
@@ -105,7 +105,7 @@ export class NavMenu extends Component {
 
                 {userRole === 'Management' && (
                   <NavItem>
-                    <NavLink tag={Link} className="navbar-item" to="/dashboard"><FontAwesomeIcon className='navbar-item-icon' icon={faGaugeHigh} />KPI-Dashboard</NavLink>
+                    <NavLink tag={Link} className="navbar-item" to="/dashboard"><FontAwesomeIcon className='navbar-item-icon' icon={faGaugeHigh} />Management Dashboard</NavLink>
                   </NavItem>
                 )}
 

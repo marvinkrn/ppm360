@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import CreateProject from './modals/CreateProject';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileInvoice, faInfoCircle, faRotateRight } from '@fortawesome/free-solid-svg-icons'
@@ -14,14 +13,13 @@ import Moment from 'moment';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default class ReviewProjects extends Component {
-    static displayName = ReviewProjects.name;
+export default class ApproveProjects extends Component {
+    static displayName = ApproveProjects.name;
 
     constructor(props) {
         super(props);
         this.state = { projects: [], loading: true, selectedProject: null };
         this.refreshData = this.refreshData.bind(this);
-        this.handleRowClick = this.handleRowClick.bind(this);
     }
 
     componentDidMount() {
@@ -34,9 +32,6 @@ export default class ReviewProjects extends Component {
         this.populateProjects();
     }
 
-    handleRowClick(project) {
-        this.setState({ selectedProject: project });
-    }
 
     async populateProjects() {
         try {
@@ -49,92 +44,7 @@ export default class ReviewProjects extends Component {
         }
     }
 
-    renderModal() {
-        const { selectedProject } = this.state;
-
-        return (
-            <Modal isOpen={selectedProject !== null} toggle={() => this.setState({ selectedProject: null })} centered size='lg'>
-                <ModalHeader toggle={() => this.setState({ selectedProject: null })}>Projektdetails</ModalHeader>
-                <ModalBody>
-                    {selectedProject && (
-
-                        <Form>
-                            <FormGroup row>
-                                <Label sm={2}>
-                                    Projektname
-                                </Label>
-                                <Col sm={10}>
-                                    <Input value={selectedProject.name} readOnly />
-                                </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                                <Label for="projectType" sm={2}>
-                                    Projektart
-                                </Label>
-                                <Col sm={10}>
-                                    <Input value={selectedProject.projectType} readOnly />
-                                </Col>
-                            </FormGroup>
-
-
-
-                            <FormGroup row>
-                                <Label for="projectManager" sm={2}>
-                                    Projekt&shy;verantwortlicher
-                                </Label>
-                                <Col sm={10}>
-                                    <Input value={selectedProject.projectManager} readOnly />
-                                </Col>
-                            </FormGroup>
-
-
-                            <FormGroup row>
-                                <Label for="projectBudget" sm={2}>
-                                    Budget
-                                </Label>
-                                <Col sm={10}>
-                                    <Input value={selectedProject.budget} readOnly />
-                                </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                                <Label for="startDate" sm={2}>
-                                    Projektstart
-                                </Label>
-
-                                <Col sm={10}>
-                                    <Input value={Moment(selectedProject.startDate).format('DD.MM.YYYY')} readOnly />
-                                </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                                <Label for="endDate" sm={2}>
-                                    Projektende
-                                </Label>
-
-                                <Col sm={10}>
-                                    <Input value={Moment(selectedProject.endDate).format('DD.MM.YYYY')} readOnly />
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                    )}
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={() => this.setState({ selectedProject: null })}>
-                        Projektantrag ablehnen
-                    </Button>
-                    <Button color="primary" type='submit'>
-                        Projektantrag genehmigen
-                    </Button>{' '}
-                </ModalFooter>
-            </Modal>
-        );
-    }
-
-
-
-    static renderProjectsTable(projects, handleRowClick) {
+    static renderProjectsTable(projects) {
 
         function getProjectIdWithPrefix(projectId, projectType) {
             let prefix;
@@ -195,7 +105,7 @@ export default class ReviewProjects extends Component {
                 </thead>
                 <tbody>
                     {projects.filter(project => project.projectStatus === "Beantragt").map(project =>
-                        <tr key={project.id} onClick={() => handleRowClick(project)}>
+                        <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType) }}>
                             <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
                             <td>{project.name}</td>
                             <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
@@ -235,8 +145,8 @@ export default class ReviewProjects extends Component {
 
     render() {
         let contents = this.state.loading
-            ? ReviewProjects.renderLoadingTable()
-            : ReviewProjects.renderProjectsTable(this.state.projects, this.handleRowClick.bind(this));
+            ? ApproveProjects.renderLoadingTable()
+            : ApproveProjects.renderProjectsTable(this.state.projects);
         return (
             <div>
 
@@ -252,13 +162,8 @@ export default class ReviewProjects extends Component {
                 </div>
 
                 {contents}
-                {this.renderModal()}
-
 
             </div>
-
-
-
         );
     }
 }

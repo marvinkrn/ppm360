@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import CreateProject from './modals/CreateProject';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { Table } from 'reactstrap';
@@ -147,13 +146,6 @@ export class ProjectsOverview extends Component {
 
         <div className="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
           <h1>Projektanträge</h1>
-          <div className="d-sm-flex">
-            <button className="btn btn-secondary mx-2" onClick={this.refreshData}>
-              <FontAwesomeIcon icon={faRotateRight} /> Daten aktualisieren
-            </button>
-            <CreateProject />
-          </div>
-
         </div>
 
         {contents}

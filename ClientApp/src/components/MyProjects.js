@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import CreateProject from './modals/CreateProject';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons'
-
+import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileCirclePlus, faFileCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Table } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import Moment from 'moment';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default class Requests extends Component {
-    static displayName = Requests.name;
-
+export default class MyProjects extends Component {
+    static displayName = MyProjects.name;
 
     constructor(props) {
         super(props);
@@ -161,8 +157,8 @@ export default class Requests extends Component {
 
     render() {
         let contents = this.state.loading
-            ? Requests.renderLoadingTable()
-            : Requests.renderProjectsTable(this.state.projects);
+            ? MyProjects.renderLoadingTable()
+            : MyProjects.renderProjectsTable(this.state.projects);
         return (
             <div>
 
@@ -173,7 +169,9 @@ export default class Requests extends Component {
                         <button className="btn btn-secondary mx-2" onClick={this.refreshData}>
                             <FontAwesomeIcon icon={faRotateRight} /> Daten aktualisieren
                         </button>
-                        <CreateProject />
+                        <Button color="primary" onClick={() => { window.location.href = "/projects/create" }}>
+                            <FontAwesomeIcon icon={faFileCirclePlus} /> Projekt beantragen
+                        </Button>
                     </div>
 
                 </div>
