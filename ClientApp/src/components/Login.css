@@ -10,10 +10,28 @@
     height: 50px;
 }
 
-.form-select, .form-control {
+.form-select,
+.form-control {
     border-radius: 0px;
 }
 
+.form-floating>label {
+    color: #000;
+}
+
+.errorMessage {
+    background-color: #fce6e9;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.errorMessage-icon {
+    color: #ea0823;
+    font-size: 20px;
+    margin-right: 10px;
+}
 
 @media screen and (max-width: 992px) {
     .login-wrapper {

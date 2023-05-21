@@ -8,6 +8,8 @@ import { faRotateRight } from '@fortawesome/free-solid-svg-icons'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
+import FigureCard from './misc/FigureCard';
+import { Row } from 'reactstrap';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -16,7 +18,7 @@ export const statusDoughnutData = {
   datasets: [
     {
       label: ' Anzahl',
-      data: [1,2,3],
+      data: [1, 2, 3],
       backgroundColor: [
         '#B6C2CC',
         '#7D868C',
@@ -55,7 +57,7 @@ export class Dashboard extends Component {
 
   async populateProjects() {
     try {
-      const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")};
+      const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
       const response = await fetch('api/projects', { headers });
       const data = await response.json();
       this.setState({ projects: data, loading: false });
@@ -114,99 +116,21 @@ export class Dashboard extends Component {
 
         </div>
 
-        <div className="row">
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading">Eingereichte Projektanträge</div>
-                <div className="h5 mb-0 fw-bold">{projectsCount}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading">Kosten (summiert)</div>
-                <div className="h5 mb-0 fw-bold">{totalCosts}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading">Durchschnittliche Kosten</div>
-                <div className="h5 mb-0 fw-bold">{averageCosts}</div>
-              </div>
-            </div>
-          </div>
-
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading"><Skeleton /></div>
-                <div className="h5 mb-0 fw-bold"><Skeleton width={"50%"} /></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading"><Skeleton /></div>
-                <div className="h5 mb-0 fw-bold"><Skeleton width={"50%"} /></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading"><Skeleton /></div>
-                <div className="h5 mb-0 fw-bold"><Skeleton width={"50%"} /></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading"><Skeleton /></div>
-                <div className="h5 mb-0 fw-bold"><Skeleton width={"50%"} /></div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-3 col-md-6 mb-4">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading"><Skeleton /></div>
-                <div className="h5 mb-0 fw-bold"><Skeleton width={"50%"} /></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xl-3">
-            <div className="card kpi-card p-2">
-              <div className="card-body">
-                <div className="kpi-card-heading">Anzahl Projekte nach Status</div>
-                {/*<Skeleton height={200} /> */}
-                <div style={{ width: "75%", margin: "0 auto" }}>
-                  <Doughnut data={statusDoughnutData} options={statusDoughnutOptions} />
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <Row>
+          <FigureCard heading={"Eingereichte Projektanträge"} content={projectsCount} />
+          <FigureCard heading={"Kosten (summiert)"} content={totalCosts} />
+          <FigureCard heading={"Durchschnittliche Kosten"} content={averageCosts} />
+          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+          <FigureCard heading={"Anzahl Projekte nach Status"} content={<div style={{ width: "75%", margin: "0 auto" }}>
+            <Doughnut data={statusDoughnutData} options={statusDoughnutOptions} />
+          </div>} />
+        </Row>
 
       </div>
-
-
-
     );
   }
 }

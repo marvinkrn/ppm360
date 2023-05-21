@@ -7,28 +7,37 @@
   --neutral-500: #000;
 
   --background: #fff;
+  --navbar-background: #fff;
   --font-color: #000;
+  --kpi-card-background: #fff;
 
-  --background-3: rgba(38, 49, 60, 0.8) --button-border-radius: 3px;
+  --background-3: rgba(38, 49, 60, .08);
+  --button-border-radius: 3px;
   --box-shadow-kpi-card: 0 2px 8px rgba(0, 0, 0, .1);
+  --nav-link-hover: #d0d0d1;
 }
 
+/**
 @media (prefers-color-scheme: dark) {
   :root {
     --primary-500: #28EBCF;
     --primary-700: #24d3ba;
-  
+
     --secondary-500: #393D40;
-  
+
     --neutral-500: #fff;
-    
-    --background: #141414;
+    --kpi-card-background: #2e2e2e;
+
+    --navbar-background: #101112;
+    --background: #16171a;
     --font-color: #fff;
-    --background-3: rgba(38, 49, 60, 0.8) --button-border-radius: 3px;
+    --background-3: rgba(38, 49, 60, 0.8);
+    --button-border-radius: 3px;
     --box-shadow-kpi-card: 0 2px 8px rgba(0, 0, 0, .1);
+    --nav-link-hover: #d0d0d1;
   }
 }
-
+**/
 
 @font-face {
   /* change: npm install @fontsource/open-sans*/
@@ -56,6 +65,10 @@ tr {
   cursor: pointer;
 }
 
+.table {
+  color: var(--font-color);
+}
+
 .table-hover>tbody>tr:hover>* {
   --bs-table-accent-bg: #f9f9fa !important;
 }
@@ -74,6 +87,7 @@ tr {
   width: fit-content;
 }
 
+
 h1 {
   font-size: 2rem;
 }
@@ -88,12 +102,6 @@ h1 {
 
 code {
   color: #E01A76;
-}
-
-.kpi-card {
-  border: 1px solid var(--background-3);
-  box-shadow: var(--box-shadow-kpi-card);
-  border-radius: 6px;
 }
 
 .kpi-card-heading {
@@ -111,7 +119,7 @@ code {
 
 .btn-primary {
   background-color: var(--primary-500);
-  color: var(--neutral-500);
+  color: #000;
 }
 
 .btn-primary:hover {
@@ -134,5 +142,8 @@ code {
 }
 
 .card {
-  border-radius: 0px;
+  border: 1px solid var(--background-3);
+  box-shadow: var(--box-shadow-kpi-card);
+  background-color: var(--kpi-card-background);
+  border-radius: 6px !important;
 }

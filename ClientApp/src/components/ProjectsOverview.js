@@ -51,32 +51,32 @@ export class ProjectsOverview extends Component {
 
     function getProjectStatus(status) {
       switch (status) {
-          case 'Beantragt':
-              return <div className='ppm360-cell' style={{ backgroundColor: "#fef5e7", color: "#f39c12" }}>
-                  <FontAwesomeIcon icon={faFileInvoice} /> {status}
-              </div>;
-          case 'Genehmigt':
-              return <div className='ppm360-cell' style={{ backgroundColor: "#e8f6ef", color: "#27ae60" }}>
-                  <FontAwesomeIcon icon={faCheckCircle} /> {status}
-              </div>;
-          case 'Abgelehnt':
-              return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
-                  <FontAwesomeIcon icon={faCircleXmark} /> {status}
-              </div>;
-          case 'Abgeschlossen':
-              return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
-                  <FontAwesomeIcon icon={faCheckCircle} /> {status}
-              </div>;
-          default:
-              return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
-                  <FontAwesomeIcon icon={faCircleQuestion} /> {"Unbekannt: " + status}
-              </div>;
+        case 'Beantragt':
+          return <div className='ppm360-cell' style={{ backgroundColor: "#fef5e7", color: "#f39c12" }}>
+            <FontAwesomeIcon icon={faFileInvoice} /> {status}
+          </div>;
+        case 'Genehmigt':
+          return <div className='ppm360-cell' style={{ backgroundColor: "#e8f6ef", color: "#27ae60" }}>
+            <FontAwesomeIcon icon={faCheckCircle} /> {status}
+          </div>;
+        case 'Abgelehnt':
+          return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
+            <FontAwesomeIcon icon={faCircleXmark} /> {status}
+          </div>;
+        case 'Abgeschlossen':
+          return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+            <FontAwesomeIcon icon={faCheckCircle} /> {status}
+          </div>;
+        default:
+          return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+            <FontAwesomeIcon icon={faCircleQuestion} /> {"Unbekannt: " + status}
+          </div>;
       }
-  }
+    }
 
     return (
 
-      < Table hover responsive >
+      <Table hover responsive >
 
         <thead>
           <tr>
@@ -104,7 +104,7 @@ export class ProjectsOverview extends Component {
               <td>{Moment(project.endDate).format('DD.MM.YYYY')}</td>
               <td>{project.budget} EUR</td>
               <td>{project.teamSize}</td>
-              <td>{Moment(project.created).format('DD.MM.YYYY')}</td>
+              <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>
 
             </tr>
           )}
@@ -117,8 +117,8 @@ export class ProjectsOverview extends Component {
     const entries = 10;
     const skeletonEntries = Array.from({ length: entries }).map((_, index) => (
       <tr key={index}>
-        <td><Skeleton width={"50%"}/></td>
-        <td><Skeleton width={"50%"}/></td>
+        <td><Skeleton width={"50%"} /></td>
+        <td><Skeleton width={"50%"} /></td>
       </tr>
     ));
 
@@ -126,8 +126,8 @@ export class ProjectsOverview extends Component {
       <Table responsive>
         <thead>
           <tr>
-            <th><Skeleton width={"75%"}/></th>
-            <th><Skeleton width={"75%"}/></th>
+            <th><Skeleton width={"75%"} /></th>
+            <th><Skeleton width={"75%"} /></th>
           </tr>
         </thead>
         <tbody>
@@ -163,8 +163,8 @@ export class ProjectsOverview extends Component {
   }
 
   async populateProjects() {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")};
-      const response = await fetch('api/projects', { headers });
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
+    const response = await fetch('api/projects', { headers });
     const data = await response.json();
     this.setState({ projects: data, loading: false });
   }
