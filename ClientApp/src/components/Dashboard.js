@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import CreateProject from './modals/CreateProject';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRotateRight } from '@fortawesome/free-solid-svg-icons'
-
+import { faFileCirclePlus, faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
 import FigureCard from './misc/FigureCard';
-import { Row } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
+import { ProjectsOverview } from './ProjectsOverview';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -111,7 +109,9 @@ export class Dashboard extends Component {
             <button className="btn btn-secondary mx-2" onClick={this.refreshData}>
               <FontAwesomeIcon icon={faRotateRight} /> Daten aktualisieren
             </button>
-            <CreateProject />
+            <Button color="primary" onClick={() => { window.location.href = "/projects/create" }}>
+              <FontAwesomeIcon icon={faFileCirclePlus} /> Projekt beantragen
+            </Button>
           </div>
 
         </div>
@@ -129,6 +129,8 @@ export class Dashboard extends Component {
             <Doughnut data={statusDoughnutData} options={statusDoughnutOptions} />
           </div>} />
         </Row>
+
+        <ProjectsOverview/>
 
       </div>
     );

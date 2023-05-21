@@ -28,27 +28,24 @@ function ProjectDetails(props) {
         axios.get(`/api/projects/${projectId}`, { headers })
             .then(response => {
                 const data = response.data;
-                if (data.applicantUser === localStorage.getItem("username")) {
+
+                const token = localStorage.getItem('token');
+                let userRole = '';
+                const decoded = jwt_decode(token);
+                userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+                if (userRole === "Approver" && data.projectStatus === "Beantragt") {
+                    setApproverView(true);
+                    setProjectData(data);
+                } else if (data.applicantUser === localStorage.getItem("username")) {
                     setProjectData(data);
                     if (data.projectStatus === "Abgelehnt") {
                         setModifiable(true);
                     }
                 } else {
-                    const token = localStorage.getItem('token');
-                    let userRole = '';
-
-                    if (token) {
-                        const decoded = jwt_decode(token);
-                        userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-
-                        if (userRole === "Approver" && data.projectStatus === "Beantragt") {
-                            setApproverView(true);
-                            setProjectData(data);
-                        } else {
-                            setError("Keine Rechte :(");
-                        }
-                    }
+                    setError("Keine Rechte :(")
                 }
+
             })
             .catch(error => {
                 setError(error.message);
@@ -163,6 +160,17 @@ function ProjectDetails(props) {
                 </CardTitle>
                 <CardText>
                     {getProjectStatus(projectData.projectStatus)}
+                    {approverView && (<>
+                        <div className='approveButtons'>
+                            <Button color="secondary" >
+                                Projektantrag ablehnen
+                            </Button>
+                            <Button color="primary" form='createProject' type='submit'>
+                                Projektantrag genehmigen
+                            </Button>
+                        </div>
+
+                    </>)}
                 </CardText>
             </Card>
 
