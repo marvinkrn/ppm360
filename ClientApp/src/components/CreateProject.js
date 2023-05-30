@@ -20,6 +20,7 @@ function ProjectsCreate(props) {
             budget: data.get('projectBudget'),
             teamsize: data.get('teamSize'),
             involvedbusinessunits: data.get('involvedBusinessUnits'),
+            executiveUnit: data.get('executiveUnit'),
             startdate: data.get('startDate'),
             enddate: data.get('endDate'),
             createdat: Moment(new Date()).format('YYYY-MM-DD'),
@@ -114,6 +115,15 @@ function ProjectsCreate(props) {
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="projectManager" name="projectManager" type="text" />
+                                    </Col>
+                                </FormGroup>
+
+                                <FormGroup row>
+                                    <Label for="executiveUnit" sm={3}>
+                                        Ausführende Abteilung
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input id="executiveUnit" name="executiveUnit" type="text" />
                                     </Col>
                                 </FormGroup>
 

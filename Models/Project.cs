@@ -8,6 +8,7 @@ public class Project
     public required string Name { get; set; }
     public string ProjectType { get; set; }
     public string ProjectManager { get; set; }
+    public string ExecutiveUnit { get; set; }
     public string ProjectStatus { get; set; }
     public double Budget { get; set; }
     //public double InternalCost { get; set; }
