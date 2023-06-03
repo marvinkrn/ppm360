@@ -180,7 +180,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="responsibleLocation" sm={3}>
-                                        Betroffener Standort
+                                        Verantwortlicher Standort
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="responsibleLocation" name="responsibleLocation" type="select">
@@ -222,7 +222,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label for="executiveUnit" sm={3}>
+                                    <Label for="projectDescription" sm={3}>
                                         Projektkurzbeschreibung
                                     </Label>
                                     <Col sm={9}>

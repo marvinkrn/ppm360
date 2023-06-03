@@ -250,7 +250,7 @@ function ProjectDetails(props) {
                                         Auslastung des Projektmanagers (%)
                                     </Label>
                                     <Col sm={9}>
-                                        <Input readOnly={!modifiable} id="pmWorkload" name="pmWorkload" type="number"  min="1" defaultValue={projectData.pmWorkload}/>
+                                        <Input readOnly={!modifiable} id="pmWorkload" name="pmWorkload" defaultValue={projectData.pmWorkload}/>
                                     </Col>
                                 </FormGroup>
 
@@ -260,6 +260,24 @@ function ProjectDetails(props) {
                                     </Label>
                                     <Col sm={9}>
                                         <Input readOnly={!modifiable} id="executiveUnit" name="executiveUnit" defaultValue={projectData.executiveUnit} />
+                                    </Col>
+                                </FormGroup>
+
+                                <FormGroup row>
+                                    <Label for="affectedLocation" sm={3}>
+                                        Betroffener Standord
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="affectedLocation" name="affectedLocation" defaultValue={projectData.affectedLocation} />
+                                    </Col>
+                                </FormGroup>
+
+                                <FormGroup row>
+                                    <Label for="responsibleLocation" sm={3}>
+                                        Verantwortlicher Standort
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="responsibleLocation" name="responsibleLocation" defaultValue={projectData.responsibleLocation} />
                                     </Col>
                                 </FormGroup>
 
@@ -283,6 +301,15 @@ function ProjectDetails(props) {
                                     </Col>
                                 </FormGroup>
 
+                                <FormGroup row>
+                                    <Label for="projectDescription" sm={3}>
+                                        Verantwortlicher Standort
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="projectDescription" name="projectDescription" defaultValue={projectData.projectDescription} />
+                                    </Col>
+                                </FormGroup>
+
                             </CardText>
                         </Card>
                     </Col>
@@ -298,9 +325,6 @@ function ProjectDetails(props) {
                                     </Label>
                                     <Col sm={9}>
                                         <Input readOnly={!modifiable} id="budget" name="budget" type="text" defaultValue={projectData.budget} />
-                                        <FormText>
-                                            Bitte geben Sie den Betrag des Projektbudgets <b>in EUR</b> an.
-                                        </FormText>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -325,6 +349,236 @@ function ProjectDetails(props) {
                                     </Label>
                                     <Col sm={9}>
                                         <Input readOnly={!modifiable} id="investments" name="investments" type="text" defaultValue={projectData.investments}/>
+                                    </Col>
+                                </FormGroup>
+                            </CardText>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                <Col sm="6">
+                        <Card body>
+                            <CardTitle tag="h5">
+                                <b>Strategie</b>
+                            </CardTitle>
+                            <CardText>
+                                <FormGroup row>
+                                        <Label for="digitalisation" sm={3}>
+                                            Digitalisierung
+                                        </Label>
+                                        <Col sm={9}>
+                                            <Input readOnly={!modifiable} id="digitalisation" name="digitalisation" defaultValue={projectData.digitalisation}/>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Label for="customerSatisfaction" sm={3}>
+                                            Kundenzufriedenheit
+                                        </Label>
+                                        <Col sm={9}>
+                                            <Input readOnly={!modifiable} id="customerSatisfaction" name="customerSatisfaction" defaultValue={projectData.customerSatisfaction} />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Label for="everydayBenefit" sm={3}>
+                                            Everyday Benefit
+                                        </Label>
+                                        <Col sm={9}>
+                                            <Input readOnly={!modifiable} id="everydayBenefit" name="everydayBenefit" defaultValue={projectData.everydayBenefit} />
+                                        </Col>
+                                    </FormGroup>
+                            </CardText>
+                        </Card>
+                    </Col>
+                    <Col sm="6">
+                        <Card body>
+                            <CardTitle tag="h5">
+                                <b>Komplexität</b>
+                            </CardTitle>
+                            <CardText>
+                                <FormGroup row>
+                                    <Label for="projectRisk" sm={3}>
+                                        Projektrisiko-Kennzahl
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="projectRisk" name="projectRisk" type="number" defaultValue={projectData.projectRisk} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="externalStakeholders" sm={3}>
+                                        Externe Stakeholder
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="externalStakeholders" name="externalStakeholders" type="number" defaultValue={projectData.externalStakeholders} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="bufferDays" sm={3}>
+                                        Puffertage
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="bufferDays" name="bufferDays" type="number" defaultValue={projectData.bufferDays} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                        <Label for="experience" sm={3}>
+                                            Erfahrungen
+                                        </Label>
+                                        <Col sm={9}>
+                                            <Input readOnly={!modifiable} id="experience" name="experience" defaultValue={projectData.experience} />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Label for="solutionScopeProcess" sm={3}>
+                                            Prozess bekannt?
+                                        </Label>
+                                        <Col>
+                                            <ButtonGroup>
+                                                <Button disabled={!modifiable} id="solutionScopeProcess" name="solutionScopeProcess" type="number" value="1">
+                                                    Bekannt
+                                                </Button>
+                                                <Button disabled={!modifiable} id="solutionScopeProcess" name="solutionScopeProcess" type="number" value="7">
+                                                    Unbekannt
+                                                </Button>
+                                            </ButtonGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Label for="solutionScopeExtend" sm={3}>
+                                            Funktionsumfang
+                                        </Label>
+                                        <Col>
+                                            <ButtonGroup>
+                                                <Button disabled={!modifiable} id="solutionScopeExtend" name="solutionScopeExtend" type="number" value="3">
+                                                    Gross
+                                                </Button>
+                                                <Button disabled={!modifiable} id="solutionScopeExtend" name="solutionScopeExtend" type="number" value="0">
+                                                    Klein
+                                                </Button>
+                                            </ButtonGroup>
+                                        </Col>
+                                    </FormGroup>
+                                <FormGroup row>
+                                    <Label for="supportExpense" sm={3}>
+                                        Supportaufwand in Stunden pro Jahr
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="supportExpense" name="supportExpense" type="number" defaultValue={projectData.supportExpense} />
+                                    </Col>
+                                </FormGroup>
+                            </CardText>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                <Col sm="6">
+                        <Card body>
+                            <CardTitle tag="h5">
+                                <b>Projektleistungen</b>
+                            </CardTitle>
+                            <CardText>
+                                <FormGroup row>
+                                    <Label for="turnoverIncrease1" sm={3}>
+                                    Erwartete Umsatzsteigerung Jahr 1
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="turnoverIncrease1" name="turnoverIncrease1" type="number" defaultValue={projectData.turnoverIncrease1}/>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="turnoverIncrease2" sm={3}>
+                                    Erwartete Umsatzsteigerung Jahr 2
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="turnoverIncrease2" name="turnoverIncrease2" type="number" defaultValue={projectData.turnoverIncrease2} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="turnoverIncrease3" sm={3}>
+                                    Erwartete Umsatzsteigerung Jahr 3
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="turnoverIncrease3" name="turnoverIncrease3" type="number" defaultValue={projectData.turnoverIncrease3} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="turnoverIncrease4" sm={3}>
+                                    Erwartete Umsatzsteigerung Jahr 4
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="turnoverIncrease4" name="turnoverIncrease4" type="number" defaultValue={projectData.turnoverIncrease4} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="turnoverIncrease5" sm={3}>
+                                    Erwartete Umsatzsteigerung Jahr 5
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="turnoverIncrease5" name="turnoverIncrease5" type="number" defaultValue={projectData.turnoverIncrease5} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="costSavings1" sm={3}>
+                                    Erwartete Kostensenkung Jahr 1
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="costSavings1" name="costSavings1" type="number" defaultValue={projectData.costSavings1} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="costSavings2" sm={3}>
+                                    Erwartete Kostensenkung Jahr 2
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="costSavings2" name="costSavings2" type="number" defaultValue={projectData.costSavings2} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="costSavings3" sm={3}>
+                                    Erwartete Kostensenkung Jahr 3
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="costSavings3" name="costSavings3" type="number" defaultValue={projectData.costSavings3} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="costSavings4" sm={3}>
+                                    Erwartete Kostensenkung Jahr 4
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="costSavings4" name="costSavings4" type="number" defaultValue={projectData.costSavings4} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="costSavings5" sm={3}>
+                                    Erwartete Kostensenkung Jahr 5
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="costSavings5" name="costSavings5" type="number" defaultValue={projectData.costSavings5} />
+                                    </Col>
+                                </FormGroup>
+                            </CardText>
+                        </Card>
+                    </Col>
+                    <Col sm="6">
+                        <Card body>
+                            <CardTitle tag="h5">
+                                <b>Finanzkennzahlen</b>
+                            </CardTitle>
+                            <CardText>
+                                <FormGroup row>
+                                    <Label for="capitalValue" sm={3}>
+                                    Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="capitalValue" name="capitalValue" type="number" defaultValue={projectData.capitalValue}/>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="costReduction" sm={3}>
+                                    Kostenreduktion in Euro
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="costReduction" name="costReduction" type="number" defaultValue={projectData.costReduction}/>
                                     </Col>
                                 </FormGroup>
                             </CardText>
