@@ -49,6 +49,19 @@ namespace ppm360.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("ExecutiveUnit")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("ExternalCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("InternalCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Investments")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("InvolvedBusinessUnits")
                         .IsRequired()
                         .HasColumnType("text");

@@ -165,7 +165,7 @@ function ProjectDetails(props) {
                             <Button color="secondary" >
                                 Projektantrag ablehnen
                             </Button>
-                            <Button color="primary" form='createProject' type='submit'>
+                            <Button color="primary">
                                 Projektantrag genehmigen
                             </Button>
                         </div>
@@ -197,6 +197,15 @@ function ProjectDetails(props) {
                                     </Label>
                                     <Col sm={9}>
                                         <Input readOnly={!modifiable} id="projectName" name="projectName" defaultValue={projectData.name} />
+                                    </Col>
+                                </FormGroup>
+
+                                <FormGroup row>
+                                    <Label for="applicantuser" sm={3}>
+                                        Antragsteller
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="applicantuser" name="applicantuser" defaultValue={projectData.applicantuser} />
                                     </Col>
                                 </FormGroup>
 
@@ -237,6 +246,24 @@ function ProjectDetails(props) {
                                 </FormGroup>
 
                                 <FormGroup row>
+                                    <Label for="pmWorkload" sm={3}>
+                                        Auslastung des Projektmanagers (%)
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="pmWorkload" name="pmWorkload" type="number"  min="1" defaultValue={projectData.pmWorkload}/>
+                                    </Col>
+                                </FormGroup>
+
+                                <FormGroup row>
+                                    <Label for="executiveUnit" sm={3}>
+                                        Ausführende Abteilung
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input readOnly={!modifiable} id="executiveUnit" name="executiveUnit" defaultValue={projectData.executiveUnit} />
+                                    </Col>
+                                </FormGroup>
+
+                                <FormGroup row>
                                     <Label sm={3}>
                                         Projektstart
                                     </Label>
@@ -266,11 +293,11 @@ function ProjectDetails(props) {
                             </CardTitle>
                             <CardText>
                                 <FormGroup row>
-                                    <Label for="projectBudget" sm={3}>
+                                    <Label for="budget" sm={3}>
                                         Budget
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="projectBudget" name="projectBudget" type="text" />
+                                        <Input readOnly={!modifiable} id="budget" name="budget" type="text" defaultValue={projectData.budget} />
                                         <FormText>
                                             Bitte geben Sie den Betrag des Projektbudgets <b>in EUR</b> an.
                                         </FormText>
@@ -281,7 +308,7 @@ function ProjectDetails(props) {
                                         Interne Kosten
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="internalCost" name="internalCost" type="text" />
+                                        <Input readOnly={!modifiable} id="internalCost" name="internalCost" type="text" defaultValue={projectData.internalCost} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -289,15 +316,15 @@ function ProjectDetails(props) {
                                         Externe Kosten
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="externalCost" name="externalCost" type="text" />
+                                        <Input readOnly={!modifiable} id="externalCost" name="externalCost" type="text" defaultValue={projectData.externalCost}/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label for="investionCost" sm={3}>
+                                    <Label for="investments" sm={3}>
                                         Investitionen
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="investionCost" name="investionCost" type="text" />
+                                        <Input readOnly={!modifiable} id="investments" name="investments" type="text" defaultValue={projectData.investments}/>
                                     </Col>
                                 </FormGroup>
                             </CardText>

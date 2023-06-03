@@ -13,7 +13,7 @@ using ppm360.Data;
 namespace ppm360.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230515150021_PPM360Migration")]
+    [Migration("20230530194511_PPM360Migration")]
     partial class PPM360Migration
     {
         /// <inheritdoc />
@@ -51,6 +51,19 @@ namespace ppm360.Migrations
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("ExecutiveUnit")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("ExternalCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("InternalCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Investments")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("InvolvedBusinessUnits")
                         .IsRequired()
