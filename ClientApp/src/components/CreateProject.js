@@ -11,6 +11,7 @@ function ProjectsCreate(props) {
         const form = event.target;
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
+        console.log(data.get('solutionScopeExtend'));
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
@@ -39,7 +40,6 @@ function ProjectsCreate(props) {
             externalStakeholders: data.get('externalStakeholders'),
             bufferDays: data.get('bufferDays'),
             experience: data.get('experience'),
-            solutionScopeProcess: data.get('solutionScopeProcess'),
             solutionScopeExtend: data.get('solutionScopeExtend'),
             supportExpense: data.get('supportExpense'),
             turnoverIncrease1: data.get('turnoverIncrease1'),
@@ -53,7 +53,7 @@ function ProjectsCreate(props) {
             costSavings4: data.get('costSavings4'),
             costSavings5: data.get('costSavings5'),
             capitalValue: data.get('capitalValue'),
-            projectCost: internalCost + externalCost + investments,
+            projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
             costReduction: data.get('capitalValue'),
             comments: { "user1": "Kommentar 1", "user2": "Kommentar 2" },
         }, { headers }
@@ -375,36 +375,65 @@ function ProjectsCreate(props) {
                                             </Input>
                                         </Col>
                                     </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="solutionScopeProcess" sm={3}>
-                                            Prozess bekannt?
-                                        </Label>
-                                        <Col>
-                                            <ButtonGroup>
-                                                <Button id="solutionScopeProcess" name="solutionScopeProcess" type="number" value="1">
-                                                    Bekannt
-                                                </Button>
-                                                <Button id="solutionScopeProcess" name="solutionScopeProcess" type="number" value="7">
-                                                    Unbekannt
-                                                </Button>
-                                            </ButtonGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="solutionScopeExtend" sm={3}>
-                                            Funktionsumfang
-                                        </Label>
-                                        <Col>
-                                            <ButtonGroup>
-                                                <Button id="solutionScopeExtend" name="solutionScopeExtend" type="number" value="3">
-                                                    Gross
-                                                </Button>
-                                                <Button id="solutionScopeExtend" name="solutionScopeExtend" type="number" value="0">
-                                                    Klein
-                                                </Button>
-                                            </ButtonGroup>
-                                        </Col>
-                                    </FormGroup>
+                                <FormGroup tag="fieldset">
+                                <legend>
+                                Lösungsumfang
+                                </legend>
+                                <FormGroup check>
+                                <Input
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="1"
+                                />
+                                {' '}
+                                <Label check>
+                                    Prozess bekannt, kleiner Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                <Input
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="3"
+                                />
+                                {' '}
+                                <Label check>
+                                Prozess bekannt, großer Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                                <FormGroup
+                                check
+                                disabled
+                                >
+                                <Input
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="7"
+                                />
+                                {' '}
+                                <Label check>
+                                Prozess unbekannt, kleiner Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                                <FormGroup
+                                check
+                                disabled
+                                >
+                                <Input
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="10"
+                                />
+                                {' '}
+                                <Label check>
+                                Prozess unbekannt, großer Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                            </FormGroup>
                                 <FormGroup row>
                                     <Label for="supportExpense" sm={3}>
                                         Supportaufwand in Stunden pro Jahr

@@ -20,32 +20,33 @@ public class Project
     public DateOnly EndDate { get; set; }
     public DateOnly CreatedAt { get; set; }
     public string ApplicantUser { get; set; }
-    public int pmWorkload { get; set; }
-    public String digitalisation { get; set; }
-    public String projectDescription { get; set; }
-    public String affectedLocation { get; set; }
-    public String responsibleLocation { get; set; }
-    public String customerSatisfaction { get; set; }
-    public String everydayBenefit { get; set; }
-    public int projectRisk { get; set; }
-    public int externalStakeholders { get; set; }
-    public int bufferDays { get; set; }
-    public String experience { get; set; }
-    public int solutionScopeProcess { get; set; }
-    public int solutionScopeExtend { get; set; }
-    public int supportExpense { get; set; }
-    public double turnoverIncrease1 { get; set; }
-    public double turnoverIncrease2 { get; set; }
-    public double turnoverIncrease3 { get; set; }
-    public double turnoverIncrease4 { get; set; }
-    public double turnoverIncrease5 { get; set; }
-    public double costSavings1 { get; set; }
-    public double costSavings2 { get; set; }
-    public double costSavings3 { get; set; }
-    public double costSavings4 { get; set; }
-    public double costSavings5 { get; set; }
-    public double projectCost { get; set; }
-    public double costReduction { get; set; }
+    public int PmWorkload { get; set; }
+    public String Digitalisation { get; set; }
+    public String ProjectDescription { get; set; }
+    public String AffectedLocation { get; set; }
+    public String ResponsibleLocation { get; set; }
+    public String CustomerSatisfaction { get; set; }
+    public String EverydayBenefit { get; set; }
+    public int ProjectRisk { get; set; }
+    public int ExternalStakeholders { get; set; }
+    public int BufferDays { get; set; }
+    public String Experience { get; set; }
+    public int SolutionScopeProcess { get; set; }
+    public int SolutionScopeExtend { get; set; }
+    public int SupportExpense { get; set; }
+    public double TurnoverIncrease1 { get; set; }
+    public double TurnoverIncrease2 { get; set; }
+    public double TurnoverIncrease3 { get; set; }
+    public double TurnoverIncrease4 { get; set; }
+    public double TurnoverIncrease5 { get; set; }
+    public double CostSavings1 { get; set; }
+    public double CostSavings2 { get; set; }
+    public double CostSavings3 { get; set; }
+    public double CostSavings4 { get; set; }
+    public double CostSavings5 { get; set; }
+    public double CapitalValue { get; set; }
+    public double ProjectCost { get; set; }
+    public double CostReduction { get; set; }
 
     public Dictionary<string, string> Comments { get; set; } // Dictionary username, comment
 }

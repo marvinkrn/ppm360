@@ -13,7 +13,7 @@ using ppm360.Data;
 namespace ppm360.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530194511_PPM360Migration")]
+    [Migration("20230604113616_PPM360Migration")]
     partial class PPM360Migration
     {
         /// <inheritdoc />
@@ -35,6 +35,10 @@ namespace ppm360.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AffectedLocation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ApplicantUser")
                         .IsRequired()
                         .HasColumnType("text");
@@ -42,22 +46,65 @@ namespace ppm360.Migrations
                     b.Property<double>("Budget")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("BufferDays")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("CapitalValue")
+                        .HasColumnType("double precision");
+
                     b.Property<Dictionary<string, string>>("Comments")
                         .IsRequired()
                         .HasColumnType("hstore");
 
+                    b.Property<double>("CostReduction")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CostSavings1")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CostSavings2")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CostSavings3")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CostSavings4")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("CostSavings5")
+                        .HasColumnType("double precision");
+
                     b.Property<DateOnly>("CreatedAt")
                         .HasColumnType("date");
 
+                    b.Property<string>("CustomerSatisfaction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Digitalisation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("EverydayBenefit")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ExecutiveUnit")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Experience")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<double>("ExternalCost")
                         .HasColumnType("double precision");
+
+                    b.Property<int>("ExternalStakeholders")
+                        .HasColumnType("integer");
 
                     b.Property<double>("InternalCost")
                         .HasColumnType("double precision");
@@ -73,9 +120,22 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("PmWorkload")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("ProjectCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("ProjectDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ProjectManager")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("ProjectRisk")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ProjectStatus")
                         .IsRequired()
@@ -85,12 +145,40 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ResponsibleLocation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SolutionScopeExtend")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SolutionScopeProcess")
+                        .HasColumnType("integer");
+
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
+
+                    b.Property<int>("SupportExpense")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TeamSize")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<double>("TurnoverIncrease1")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TurnoverIncrease2")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TurnoverIncrease3")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TurnoverIncrease4")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TurnoverIncrease5")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 

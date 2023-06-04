@@ -205,7 +205,7 @@ function ProjectDetails(props) {
                                         Antragsteller
                                     </Label>
                                     <Col sm={9}>
-                                        <Input readOnly={!modifiable} id="applicantuser" name="applicantuser" defaultValue={projectData.applicantuser} />
+                                        <Input readOnly={!modifiable} id="applicantuser" name="applicantuser" defaultValue={projectData.applicantUser} />
                                     </Col>
                                 </FormGroup>
 
@@ -427,36 +427,73 @@ function ProjectDetails(props) {
                                             <Input readOnly={!modifiable} id="experience" name="experience" defaultValue={projectData.experience} />
                                         </Col>
                                     </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="solutionScopeProcess" sm={3}>
-                                            Prozess bekannt?
-                                        </Label>
-                                        <Col>
-                                            <ButtonGroup>
-                                                <Button disabled={!modifiable} id="solutionScopeProcess" name="solutionScopeProcess" type="number" value="1">
-                                                    Bekannt
-                                                </Button>
-                                                <Button disabled={!modifiable} id="solutionScopeProcess" name="solutionScopeProcess" type="number" value="7">
-                                                    Unbekannt
-                                                </Button>
-                                            </ButtonGroup>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="solutionScopeExtend" sm={3}>
-                                            Funktionsumfang
-                                        </Label>
-                                        <Col>
-                                            <ButtonGroup>
-                                                <Button disabled={!modifiable} id="solutionScopeExtend" name="solutionScopeExtend" type="number" value="3">
-                                                    Gross
-                                                </Button>
-                                                <Button disabled={!modifiable} id="solutionScopeExtend" name="solutionScopeExtend" type="number" value="0">
-                                                    Klein
-                                                </Button>
-                                            </ButtonGroup>
-                                        </Col>
-                                    </FormGroup>
+                                    <FormGroup tag="fieldset">
+                                <legend>
+                                Lösungsumfang
+                                </legend>
+                                <FormGroup check>
+                                <Input
+                                    disabled = {!modifiable}
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="1"
+                                    checked = {projectData.solutionScopeExtend == "1"? true:false}
+                                />
+                                {' '}
+                                <Label check>
+                                    Prozess bekannt, kleiner Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                <Input
+                                    disabled = {!modifiable}
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="3"
+                                    checked = {projectData.solutionScopeExtend == "3"? true:false}
+                                />
+                                {' '}
+                                <Label check>
+                                Prozess bekannt, großer Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                                <FormGroup
+                                check
+                                disabled
+                                >
+                                <Input
+                                    disabled = {!modifiable}
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="7"
+                                    checked = {projectData.solutionScopeExtend == "7"? true:false}
+                                />
+                                {' '}
+                                <Label check>
+                                Prozess unbekannt, kleiner Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                                <FormGroup
+                                check
+                                disabled
+                                >
+                                <Input
+                                    disabled = {!modifiable}
+                                    type="radio"
+                                    id="solutionScopeExtend" 
+                                    name="solutionScopeExtend"
+                                    value="10"
+                                    checked = {projectData.solutionScopeExtend == "10"? true:false}
+                                />
+                                {' '}
+                                <Label check>
+                                Prozess unbekannt, großer Funktionsumfang
+                                </Label>
+                                </FormGroup>
+                            </FormGroup>
                                 <FormGroup row>
                                     <Label for="supportExpense" sm={3}>
                                         Supportaufwand in Stunden pro Jahr
