@@ -6,12 +6,40 @@ import Moment from 'moment';
 
 function ProjectsCreate(props) {
 
+    const validate = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        if (elementData === '') {
+          inputElement.style.borderColor = 'red';
+        } else {
+          inputElement.style.borderColor = '';
+        }
+      };
+
+      const validateR = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        if (elementData === '') {
+          inputElement.style.color = 'red';
+          console.log(elementID + "is Empty")
+        } else {
+          inputElement.style.color = '';
+        }
+      };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
-        console.log(data.get('solutionScopeExtend'));
+        const fields = ['projectName', 'projectType', 'projectManager', 'pmWorkload', 'budget', 'internalCost', 'externalCost', 'investments', 'teamSize',
+        'involvedBusinessUnits', 'executiveUnit', 'startDate', 'endDate', 'projectDescription', 'affectedLocation', 'responsibleLocation', 'digitalisation',
+        'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'solutionScopeExtend', 'supportExpense',
+        'turnoverIncrease1', 'turnoverIncrease2', 'turnoverIncrease3', 'turnoverIncrease4', 'turnoverIncrease5', 'costSavings1', 'costSavings2', 'costSavings3', 
+        'costSavings4', 'costSavings5', 'capitalValue', 'costReduction'];
+
+        fields.forEach(field => {
+            validate(field, data.get(field));
+        });
+        validateR('solutionScope', data.get('solutionScopeExtend'))
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
@@ -31,8 +59,8 @@ function ProjectsCreate(props) {
             createdat: Moment(new Date()).format('YYYY-MM-DD'),
             applicantuser: localStorage["username"],
             projectDescription: data.get('projectDescription'),
-            affectedLocation:  data.get('affectedLocation'),
-            responsibleLocation:  data.get('responsibleLocation'),
+            affectedLocation: data.get('affectedLocation'),
+            responsibleLocation: data.get('responsibleLocation'),
             digitalisation: data.get('digitalisation'),
             customerSatisfaction: data.get('customerSatisfaction'),
             everydayBenefit: data.get('everydayBenefit'),
@@ -54,7 +82,7 @@ function ProjectsCreate(props) {
             costSavings5: data.get('costSavings5'),
             capitalValue: data.get('capitalValue'),
             projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
-            costReduction: data.get('capitalValue'),
+            costReduction: data.get('costReduction'),
             comments: { "user1": "Kommentar 1", "user2": "Kommentar 2" },
         }, { headers }
         )
@@ -150,7 +178,7 @@ function ProjectsCreate(props) {
                                         Auslastung des Projektmanagers (%)
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="pmWorkload" name="pmWorkload" type="number"  min="1" />
+                                        <Input id="pmWorkload" name="pmWorkload" type="number" min="1" />
                                     </Col>
                                 </FormGroup>
 
@@ -280,51 +308,51 @@ function ProjectsCreate(props) {
                     </Col>
                 </Row>
                 <Row>
-                <Col sm="6">
+                    <Col sm="6">
                         <Card body>
                             <CardTitle tag="h5">
                                 <b>Strategie</b>
                             </CardTitle>
                             <CardText>
                                 <FormGroup row>
-                                        <Label for="digitalisation" sm={3}>
-                                            Digitalisierung
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="digitalisation" name="digitalisation" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Niedrig</option>
-                                                <option>Mittel</option>
-                                                <option>Hoch</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="customerSatisfaction" sm={3}>
-                                            Kundenzufriedenheit
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="customerSatisfaction" name="customerSatisfaction" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Niedrig</option>
-                                                <option>Mittel</option>
-                                                <option>Hoch</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="everydayBenefit" sm={3}>
-                                            Everyday Benefit
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="everydayBenefit" name="everydayBenefit" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Niedrig</option>
-                                                <option>Mittel</option>
-                                                <option>Hoch</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
+                                    <Label for="digitalisation" sm={3}>
+                                        Digitalisierung
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input id="digitalisation" name="digitalisation" type="select">
+                                            <option hidden value="">Bitte auswählen</option>
+                                            <option>Niedrig</option>
+                                            <option>Mittel</option>
+                                            <option>Hoch</option>
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="customerSatisfaction" sm={3}>
+                                        Kundenzufriedenheit
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input id="customerSatisfaction" name="customerSatisfaction" type="select">
+                                            <option hidden value="">Bitte auswählen</option>
+                                            <option>Niedrig</option>
+                                            <option>Mittel</option>
+                                            <option>Hoch</option>
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label for="everydayBenefit" sm={3}>
+                                        Everyday Benefit
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input id="everydayBenefit" name="everydayBenefit" type="select">
+                                            <option hidden value="">Bitte auswählen</option>
+                                            <option>Niedrig</option>
+                                            <option>Mittel</option>
+                                            <option>Hoch</option>
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
                             </CardText>
                         </Card>
                     </Col>
@@ -339,7 +367,7 @@ function ProjectsCreate(props) {
                                         Projektrisiko-Kennzahl
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="projectRisk" name="projectRisk" type="number"  min="0" />
+                                        <Input id="projectRisk" name="projectRisk" type="number" min="0" />
                                         <FormText>
                                             Bitte geben Sie die Risikokennzahl nach Supernove-Standard an.
                                         </FormText>
@@ -362,78 +390,78 @@ function ProjectsCreate(props) {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                        <Label for="experience" sm={3}>
-                                            Erfahrungen
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="experience" name="experience" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Sehr gut</option>
-                                                <option>Gut</option>
-                                                <option>Zufriedenstellend</option>
-                                                <option>Schlecht</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
+                                    <Label for="experience" sm={3}>
+                                        Erfahrungen
+                                    </Label>
+                                    <Col sm={9}>
+                                        <Input id="experience" name="experience" type="select">
+                                            <option hidden value="">Bitte auswählen</option>
+                                            <option>Sehr gut</option>
+                                            <option>Gut</option>
+                                            <option>Zufriedenstellend</option>
+                                            <option>Schlecht</option>
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
                                 <FormGroup tag="fieldset">
-                                <legend>
-                                Lösungsumfang
-                                </legend>
-                                <FormGroup check>
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="1"
-                                />
-                                {' '}
-                                <Label check>
-                                    Prozess bekannt, kleiner Funktionsumfang
-                                </Label>
+                                    <legend id="solutionScope">
+                                        Lösungsumfang
+                                    </legend>
+                                    <FormGroup check>
+                                        <Input
+                                            type="radio"
+                                            id="solutionScopeExtend"
+                                            name="solutionScopeExtend"
+                                            value="1"
+                                        />
+                                        {' '}
+                                        <Label check>
+                                            Prozess bekannt, kleiner Funktionsumfang
+                                        </Label>
+                                    </FormGroup>
+                                    <FormGroup check>
+                                        <Input
+                                            type="radio"
+                                            id="solutionScopeExtend"
+                                            name="solutionScopeExtend"
+                                            value="3"
+                                        />
+                                        {' '}
+                                        <Label check>
+                                            Prozess bekannt, großer Funktionsumfang
+                                        </Label>
+                                    </FormGroup>
+                                    <FormGroup
+                                        check
+                                        disabled
+                                    >
+                                        <Input
+                                            type="radio"
+                                            id="solutionScopeExtend"
+                                            name="solutionScopeExtend"
+                                            value="7"
+                                        />
+                                        {' '}
+                                        <Label check>
+                                            Prozess unbekannt, kleiner Funktionsumfang
+                                        </Label>
+                                    </FormGroup>
+                                    <FormGroup
+                                        check
+                                        disabled
+                                    >
+                                        <Input
+                                            type="radio"
+                                            id="solutionScopeExtend"
+                                            name="solutionScopeExtend"
+                                            value="10"
+                                        />
+                                        {' '}
+                                        <Label check>
+                                            Prozess unbekannt, großer Funktionsumfang
+                                        </Label>
+                                    </FormGroup>
                                 </FormGroup>
-                                <FormGroup check>
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="3"
-                                />
-                                {' '}
-                                <Label check>
-                                Prozess bekannt, großer Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                                <FormGroup
-                                check
-                                disabled
-                                >
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="7"
-                                />
-                                {' '}
-                                <Label check>
-                                Prozess unbekannt, kleiner Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                                <FormGroup
-                                check
-                                disabled
-                                >
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="10"
-                                />
-                                {' '}
-                                <Label check>
-                                Prozess unbekannt, großer Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                            </FormGroup>
                                 <FormGroup row>
                                     <Label for="supportExpense" sm={3}>
                                         Supportaufwand in Stunden pro Jahr
@@ -447,7 +475,7 @@ function ProjectsCreate(props) {
                     </Col>
                 </Row>
                 <Row>
-                <Col sm="6">
+                    <Col sm="6">
                         <Card body>
                             <CardTitle tag="h5">
                                 <b>Projektleistungen</b>
@@ -455,7 +483,7 @@ function ProjectsCreate(props) {
                             <CardText>
                                 <FormGroup row>
                                     <Label for="turnoverIncrease1" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 1
+                                        Erwartete Umsatzsteigerung Jahr 1
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="turnoverIncrease1" name="turnoverIncrease1" type="number" />
@@ -463,7 +491,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="turnoverIncrease2" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 2
+                                        Erwartete Umsatzsteigerung Jahr 2
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="turnoverIncrease2" name="turnoverIncrease2" type="number" />
@@ -471,7 +499,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="turnoverIncrease3" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 3
+                                        Erwartete Umsatzsteigerung Jahr 3
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="turnoverIncrease3" name="turnoverIncrease3" type="number" />
@@ -479,7 +507,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="turnoverIncrease4" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 4
+                                        Erwartete Umsatzsteigerung Jahr 4
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="turnoverIncrease4" name="turnoverIncrease4" type="number" />
@@ -487,7 +515,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="turnoverIncrease5" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 5
+                                        Erwartete Umsatzsteigerung Jahr 5
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="turnoverIncrease5" name="turnoverIncrease5" type="number" />
@@ -495,7 +523,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="costSavings1" sm={3}>
-                                    Erwartete Kostensenkung Jahr 1
+                                        Erwartete Kostensenkung Jahr 1
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="costSavings1" name="costSavings1" type="number" />
@@ -503,7 +531,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="costSavings2" sm={3}>
-                                    Erwartete Kostensenkung Jahr 2
+                                        Erwartete Kostensenkung Jahr 2
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="costSavings2" name="costSavings2" type="number" />
@@ -511,7 +539,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="costSavings3" sm={3}>
-                                    Erwartete Kostensenkung Jahr 3
+                                        Erwartete Kostensenkung Jahr 3
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="costSavings3" name="costSavings3" type="number" />
@@ -519,7 +547,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="costSavings4" sm={3}>
-                                    Erwartete Kostensenkung Jahr 4
+                                        Erwartete Kostensenkung Jahr 4
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="costSavings4" name="costSavings4" type="number" />
@@ -527,7 +555,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="costSavings5" sm={3}>
-                                    Erwartete Kostensenkung Jahr 5
+                                        Erwartete Kostensenkung Jahr 5
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="costSavings5" name="costSavings5" type="number" />
@@ -544,7 +572,7 @@ function ProjectsCreate(props) {
                             <CardText>
                                 <FormGroup row>
                                     <Label for="capitalValue" sm={3}>
-                                    Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung
+                                        Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="capitalValue" name="capitalValue" type="number" />
@@ -552,7 +580,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="costReduction" sm={3}>
-                                    Kostenreduktion in Euro
+                                        Kostenreduktion in Euro
                                     </Label>
                                     <Col sm={9}>
                                         <Input id="costReduction" name="costReduction" type="number" />
@@ -564,7 +592,7 @@ function ProjectsCreate(props) {
                 </Row>
             </Form>
 
-            <Button color="secondary">
+            <Button color="secondary" onClick={() => { window.location.href = "/projects/myprojects" }}>
                 Abbrechen
             </Button>
             <Button color="primary" form='createProject' type='submit'>
