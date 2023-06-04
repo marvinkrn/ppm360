@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import MyProjects from './MyProjects';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -9,16 +10,14 @@ const Home = () => {
   useEffect(() => {
     let username = localStorage.getItem("username");
 
-
     if (username === "" || username === null) {
       navigate("/login")
-    } else {
-      navigate("/projects");
     }
+
   })
 
   return (
-    <div>Home</div>
+    <MyProjects />
   )
 }
 

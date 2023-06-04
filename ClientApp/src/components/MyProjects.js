@@ -4,8 +4,9 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileCirclePlus, faFileCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Button, Table } from 'reactstrap';
+import { Button, Table, Toast, ToastHeader, ToastBody } from 'reactstrap';
 import Moment from 'moment';
+import { getProjectIdWithPrefix, myFunction } from './misc/helper';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -33,10 +34,15 @@ export default class MyProjects extends Component {
         try {
             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
             const response = await fetch('api/projects', { headers });
+            const statusCode = response.status;
+
+
+
             const data = await response.json();
             this.setState({ projects: data, loading: false });
         } catch (error) {
-            // Error handling
+            console.log("Fehler" + error);
+
         }
     }
 
@@ -46,25 +52,7 @@ export default class MyProjects extends Component {
 
         const filteredProjects = projects.filter(project => project.applicantUser.toLowerCase() === localStorage.getItem("username"));
 
-        function getProjectIdWithPrefix(projectId, projectType) {
-            let prefix;
 
-            switch (projectType) {
-                case 'IT-Projekt':
-                    prefix = 'SAG-IT';
-                    break;
-                case 'Erneuerungsprojekt':
-                    prefix = 'SAG-ER';
-                    break;
-                case 'Innovationsprojekt':
-                    prefix = 'SAG-IN';
-                    break;
-                default:
-                    prefix = 'SAG-X';
-                    break;
-            }
-            return `${prefix}-${projectId}`;
-        }
 
         function getProjectStatus(status) {
             switch (status) {
@@ -93,8 +81,6 @@ export default class MyProjects extends Component {
 
         return (
 
-
-
             <Table hover responsive>
 
                 <thead>
@@ -110,8 +96,8 @@ export default class MyProjects extends Component {
 
                     {filteredProjects.length > 0 ? (
                         filteredProjects.map(project => (
-                            <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType) }}>
-                                <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
+                            <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType, project.responsibleLocation) }}>
+                                <td>{getProjectIdWithPrefix(project.id, project.projectType, project.responsibleLocation)}</td>
                                 <td>{project.name}</td>
                                 <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
                                 <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>

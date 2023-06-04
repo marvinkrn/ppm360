@@ -12,7 +12,10 @@ export class Login extends Component {
         super(props);
 
         this.state = {
-            errorMessage: ''
+            errorMessage: '',
+            isUsernameInvalid: false,
+            isPasswordInvalid: false,
+            isLoading: false
         };
     }
 
@@ -36,6 +39,8 @@ export class Login extends Component {
             this.setState({ isPasswordInvalid: true });
             return;
         }
+
+        this.setState({ isLoading: true });
 
         const loginData = {
             username: username,
@@ -63,11 +68,14 @@ export class Login extends Component {
             .catch((error) => {
                 // Handle any errors that occurred during the request
                 console.error(error);
+            })
+            .finally(() => {
+                this.setState({ isLoading: false });
             });
     };
 
     render() {
-        const { errorMessage, isUsernameInvalid, isPasswordInvalid } = this.state;
+        const { errorMessage, isUsernameInvalid, isPasswordInvalid, isLoading } = this.state;
 
         return (
             <div className="login-wrapper">
@@ -112,10 +120,21 @@ export class Login extends Component {
                         {isPasswordInvalid && <FormFeedback>Bitte geben Sie ein Passwort ein.</FormFeedback>}
                     </FormGroup>
                     {' '}
-                    <Button className="login-button" color="primary" type='submit'>
+                    <Button className="login-button" color="primary" type="submit" disabled={isLoading}>
                         Anmelden
                     </Button>
                 </Form>
+
+                <div className='supernova-ag-logo'>
+                    <picture>
+
+                        <img style={{ height: '18px', display: 'flex', alignContent: 'center' }}
+                            src={require('../images/supernova_logo_dark.png')}
+                            alt="Supernova AG"
+                        />
+                    </picture>
+                </div>
+
             </div>
         );
     }

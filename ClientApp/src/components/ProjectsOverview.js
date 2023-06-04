@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { Table } from 'reactstrap';
 import Moment from 'moment';
+import { getProjectIdWithPrefix } from './misc/helper';
 
 export class ProjectsOverview extends Component {
   static displayName = ProjectsOverview.name;
@@ -25,28 +26,7 @@ export class ProjectsOverview extends Component {
     this.populateProjects();
   }
 
-
   static renderProjectsTable(projects) {
-
-    function getProjectIdWithPrefix(projectId, projectType) {
-      let prefix;
-
-      switch (projectType) {
-        case 'IT-Projekt':
-          prefix = 'SAG-IT';
-          break;
-        case 'Erneuerungsprojekt':
-          prefix = 'SAG-ER';
-          break;
-        case 'Innovationsprojekt':
-          prefix = 'SAG-IN';
-          break;
-        default:
-          prefix = 'SAG-X';
-          break;
-      }
-      return `${prefix}-${projectId}`;
-    }
 
     function getProjectStatus(status) {
       switch (status) {
@@ -76,7 +56,6 @@ export class ProjectsOverview extends Component {
     return (
 
       <Table hover responsive >
-
         <thead>
           <tr>
             <th>Projekt-ID</th>
@@ -94,7 +73,7 @@ export class ProjectsOverview extends Component {
         <tbody>
           {projects.map(project =>
             <tr key={project.id}>
-              <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
+              <td>{getProjectIdWithPrefix(project.id, project.projectType, project.responsibleLocation)}</td>
               <td>{project.name}</td>
               <td>{project.projectType}</td>
               <td>{getProjectStatus(project.projectStatus)}</td>
@@ -109,6 +88,7 @@ export class ProjectsOverview extends Component {
           )}
         </tbody>
       </Table >
+
     );
   }
 

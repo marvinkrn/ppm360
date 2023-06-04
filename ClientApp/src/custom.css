@@ -75,6 +75,7 @@ tr {
 
 .ppm360-container {
   padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .ppm360-cell {
@@ -122,10 +123,12 @@ code {
   color: #000;
 }
 
-.btn-primary:hover {
-  background-color: var(--primary-700);
-  color: var(--neutral-500);
+.btn-primary:hover .btn-primary:focus {
+  background-color: var(--primary-700) !important;
+  color: var(--neutral-500) !important;
 }
+
+
 
 .btn-secondary {
   background-color: var(--secondary-500);
@@ -146,10 +149,22 @@ code {
   box-shadow: var(--box-shadow-kpi-card);
   background-color: var(--kpi-card-background);
   border-radius: 6px !important;
+  margin-bottom: 20px;
 }
 
 .approveButtons {
   display: flex;
   justify-content: flex-start;
   margin-top: 20px;
+}
+
+h5 {
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+h6 {
+  font-weight: bold;
+  padding-top: 20px;
+  margin-bottom: 10px;
 }
