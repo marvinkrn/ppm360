@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ppm360.Data;
@@ -12,9 +13,11 @@ using ppm360.Data;
 namespace ppm360.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230604153031_PPM360Migration")]
+    partial class PPM360Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +72,6 @@ namespace ppm360.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<double>("CostSavingsY5")
-
                         .HasColumnType("double precision");
 
                     b.Property<DateOnly>("CreatedAt")
@@ -118,9 +120,7 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-
                     b.Property<int>("ProductManagerWorkload")
-
                         .HasColumnType("integer");
 
                     b.Property<double>("ProjectCost")
@@ -149,7 +149,6 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-
                     b.Property<string>("SolutionScopeFunctional")
                         .IsRequired()
                         .HasColumnType("text");
@@ -158,19 +157,15 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-
                     b.Property<int>("SupportEffort")
-
                         .HasColumnType("integer");
 
                     b.Property<string>("TeamSize")
                         .IsRequired()
                         .HasColumnType("text");
-
 
                     b.Property<double>("TurnoverIncreaseY1")
                         .HasColumnType("double precision");
@@ -185,7 +180,6 @@ namespace ppm360.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<double>("TurnoverIncreaseY5")
-
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Col, Input, FormText, Row, Card, CardTitle, CardText } from 'reactstrap';
 import axios from 'axios';
 import Moment from 'moment';
+import { CreateProjectsEntry } from './misc/CreateProjectEntry';
 
 function ProjectsCreate(props) {
 
@@ -15,24 +16,25 @@ function ProjectsCreate(props) {
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
-            projecttype: data.get('projectType'),
-            projectmanager: data.get('projectManager'),
-            pmWorkload: data.get('pmWorkload'),
-            projectstatus: "Beantragt",
+            projectType: data.get('projectType'),
+            projectManager: data.get('projectManager'),
+            productManagerWorkload: data.get('productManagerWorkload'),
+            projectStatus: "Beantragt",
             budget: data.get('budget'),
             internalCost: data.get('internalCost'),
             externalCost: data.get('externalCost'),
             investments: data.get('investments'),
-            teamsize: data.get('teamSize'),
-            involvedbusinessunits: data.get('involvedBusinessUnits'),
+            teamSize: data.get('teamSize'),
+            involvedBusinessUnits: data.get('involvedBusinessUnits'),
             executiveUnit: data.get('executiveUnit'),
-            startdate: data.get('startDate'),
-            enddate: data.get('endDate'),
-            createdat: Moment(new Date()).format('YYYY-MM-DD'),
-            applicantuser: localStorage["username"],
+            startDate: data.get('startDate'),
+            endDate: data.get('endDate'),
+            createdAt: Moment(new Date()).format('YYYY-MM-DD'),
+            applicantUser: localStorage["username"],
             projectDescription: data.get('projectDescription'),
-            affectedLocation:  data.get('affectedLocation'),
-            responsibleLocation:  data.get('responsibleLocation'),
+            affectedLocation: data.get('affectedLocation'),
+            responsibleLocation: data.get('responsibleLocation'),
+
             digitalisation: data.get('digitalisation'),
             customerSatisfaction: data.get('customerSatisfaction'),
             everydayBenefit: data.get('everydayBenefit'),
@@ -40,22 +42,24 @@ function ProjectsCreate(props) {
             externalStakeholders: data.get('externalStakeholders'),
             bufferDays: data.get('bufferDays'),
             experience: data.get('experience'),
-            solutionScopeExtend: data.get('solutionScopeExtend'),
-            supportExpense: data.get('supportExpense'),
-            turnoverIncrease1: data.get('turnoverIncrease1'),
-            turnoverIncrease2: data.get('turnoverIncrease2'),
-            turnoverIncrease3: data.get('turnoverIncrease3'),
-            turnoverIncrease4: data.get('turnoverIncrease4'),
-            turnoverIncrease5: data.get('turnoverIncrease5'),
-            costSavings1: data.get('costSavings1'),
-            costSavings2: data.get('costSavings2'),
-            costSavings3: data.get('costSavings3'),
-            costSavings4: data.get('costSavings4'),
-            costSavings5: data.get('costSavings5'),
+            solutionScopeProcess: data.get('solutionScopeProcess'),
+            solutionScopeFunctional: data.get('solutionScopeFunctional'),
+            supportEffort: data.get('supportEffort'),
+            turnoverIncreaseY1: data.get('turnoverIncreaseY1'),
+            turnoverIncreaseY2: data.get('turnoverIncreaseY2'),
+            turnoverIncreaseY3: data.get('turnoverIncreaseY3'),
+            turnoverIncreaseY4: data.get('turnoverIncreaseY4'),
+            turnoverIncreaseY5: data.get('turnoverIncreaseY5'),
+            costSavingsY1: data.get('costSavingsY1'),
+            costSavingsY2: data.get('costSavingsY2'),
+            costSavingsY3: data.get('costSavingsY3'),
+            costSavingsY4: data.get('costSavingsY4'),
+            costSavingsY5: data.get('costSavingsY5'),
             capitalValue: data.get('capitalValue'),
             projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
             costReduction: data.get('capitalValue'),
-            comments: { "user1": "Kommentar 1", "user2": "Kommentar 2" },
+            comments: {},
+
         }, { headers }
         )
             .then(response => {
@@ -80,486 +84,171 @@ function ProjectsCreate(props) {
             <Form id="createProject" onSubmit={handleSubmit}>
                 <Row>
                     <Col sm="6">
+
                         <Card body>
-                            <CardTitle tag="h5">
-                                <b>Stammdaten</b>
-                            </CardTitle>
+                            <CardTitle tag="h5">Stammdaten</CardTitle>
                             <CardText>
-
-                                <FormGroup row>
-                                    <Label for="projectName" sm={3}>
-                                        Projektname
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="projectName" name="projectName" type="text" />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="projectType" sm={3}>
-                                        Projektart
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="projectType" name="projectType" type="select">
-                                            <option hidden value="">Bitte auswählen</option>
-                                            <option>IT-Projekt</option>
-                                            <option>Innovationsprojekt</option>
-                                            <option>Erneuerungsprojekt</option>
-                                            <option>Cooles Projekt</option>
-                                            <option>Letztes Projekt</option>
-                                        </Input>
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="teamSize" sm={3}>
-                                        Teamgröße
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="teamSize" name="teamSize" type="number" min="1" />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="involvedBusinessUnits" sm={3}>
-                                        Beteiligte Geschäftsbereiche
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="involvedBusinessUnits" name="involvedBusinessUnits" type="select">
-                                            <option hidden value="">Bitte auswählen (genaue Zahlen tbd.)</option>
-                                            <option>S | 1-3</option>
-                                            <option>M | 3-6</option>
-                                            <option>L | 7-15</option>
-                                            <option>XL | 15+</option>
-                                        </Input>
-
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="projectManager" sm={3}>
-                                        Projektverantwortlicher
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="projectManager" name="projectManager" type="text" />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="pmWorkload" sm={3}>
-                                        Auslastung des Projektmanagers (%)
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="pmWorkload" name="pmWorkload" type="number"  min="1" />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="executiveUnit" sm={3}>
-                                        Ausführende Abteilung
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="executiveUnit" name="executiveUnit" type="text" />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="affectedLocation" sm={3}>
-                                        Betroffener Standort
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="affectedLocation" name="affectedLocation" type="select">
-                                            <option hidden value="">Bitte auswählen</option>
-                                            <option>Freiburg</option>
-                                            <option>Loerrach</option>
-                                            <option>Mallorca</option>
-                                            <option>Berlin</option>
-                                        </Input>
-
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="responsibleLocation" sm={3}>
-                                        Verantwortlicher Standort
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="responsibleLocation" name="responsibleLocation" type="select">
-                                            <option hidden value="">Bitte auswählen</option>
-                                            <option>Freiburg</option>
-                                            <option>Loerrach</option>
-                                            <option>Mallorca</option>
-                                            <option>Berlin</option>
-                                        </Input>
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="startDate" sm={3}>
-                                        Projektstart
-                                    </Label>
-
-                                    <Col sm={9}>
-                                        <Input
-                                            id="startDate"
-                                            name="startDate"
-                                            type="date"
-                                        />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="endDate" sm={3}>
-                                        Projektende
-                                    </Label>
-
-                                    <Col sm={9}>
-                                        <Input
-                                            id="endDate"
-                                            name="endDate"
-                                            type="date"
-                                        />
-                                    </Col>
-                                </FormGroup>
-
-                                <FormGroup row>
-                                    <Label for="projectDescription" sm={3}>
-                                        Projektkurzbeschreibung
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="projectDescription" name="projectDescription" type="text" />
-                                    </Col>
-                                </FormGroup>
-
-
+                                <CreateProjectsEntry id="projectName" name="Projektname" type="text" />
+                                <CreateProjectsEntry id="projectType" name="Projektart" type="select" options={["Investitionsprojekt", "Organisationsprojekt", "F&E-Projekt", "IT-Projekt"]} />
+                                <CreateProjectsEntry id="teamSize" name="Teamgröße" type="number" min="1" />
+                                <CreateProjectsEntry id="involvedBusinessUnits" name="Beteiligte Geschäftsbereiche" type="number" min="1" />
+                                <CreateProjectsEntry id="projectManager" name="Projektmanager" type="text" />
+                                <CreateProjectsEntry id="productManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} />
+                                <CreateProjectsEntry id="executiveUnit" name="Ausführende Abteilung" type="text" />
+                                <CreateProjectsEntry id="affectedLocation" name="Betroffener Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} />
+                                <CreateProjectsEntry id="responsibleLocation" name="Verantwortlicher Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} />
+                                <CreateProjectsEntry id="startDate" name="Projektstart" type="date" />
+                                <CreateProjectsEntry id="endDate" name="Projektende" type="date" />
+                                <CreateProjectsEntry id="projectDescription" name="Projektkurzbeschreibung" type="textarea" />
                             </CardText>
                         </Card>
+
+
+                        <Card body>
+                            <CardTitle tag="h5">Kosten</CardTitle>
+                            <CardText>
+                                <CreateProjectsEntry id="budget" name="Budget" type="text" formText={"Bitte geben Sie den Betrag des Projektbudgets in EUR an."} />
+                                <CreateProjectsEntry id="internalCost" name="Interne Kosten" type="text" />
+                                <CreateProjectsEntry id="externalCost" name="Externe Kosten" type="text" />
+                                <CreateProjectsEntry id="investments" name="Investitionen" type="text" />
+                            </CardText>
+                        </Card>
+
+                        <Card body>
+                            <CardTitle tag="h5">Strategie</CardTitle>
+                            <CardText>
+                                <CreateProjectsEntry id="digitalisation" name="Digitalisierung" type="select" options={["Niedrig", "Mittel", "Hoch"]} />
+                                <CreateProjectsEntry id="customerSatisfaction" name="Kundenzufriedenheit" type="select" options={["Niedrig", "Mittel", "Hoch"]} />
+                                <CreateProjectsEntry id="everydayBenefit" name="Everyday Benefit" type="select" options={["Niedrig", "Mittel", "Hoch"]} />
+                            </CardText>
+                        </Card>
+
                     </Col>
                     <Col sm="6">
+
                         <Card body>
-                            <CardTitle tag="h5">
-                                <b>Kosten</b>
-                            </CardTitle>
+                            <CardTitle tag="h5">Komplexität</CardTitle>
                             <CardText>
+                                <CreateProjectsEntry id="projectRisk" name="Projektrisiko-Kennzahl" type="number" min="0" formText={"Bitte geben Sie die Risikokennzahl nach Supernova-Standard an."} />
+                                <CreateProjectsEntry id="externalStakeholders" name="Externe Stakeholder" type="number" min="0" />
+                                <CreateProjectsEntry id="bufferDays" name="Puffertage" type="number" min="0" />
+                                <CreateProjectsEntry id="experience" name="Erfahrungen" type="select" options={["Sehr gut", "Gut", "Zufriedenstellend", "Schlecht"]} />
+
+
                                 <FormGroup row>
-                                    <Label for="budget" sm={3}>
-                                        Budget
+                                    <h6>Lösungsumfang</h6>
+                                    <Label for="solutionScopeProcess" sm={3}>
+                                        Prozess
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="budget" name="budget" type="text" />
-                                        <FormText>
-                                            Bitte geben Sie den Betrag des Projektbudgets <b>in EUR</b> an.
-                                        </FormText>
+                                        <FormGroup check>
+                                            <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Bekannt" />
+                                            <Label check>
+                                                Bekannt
+                                            </Label>
+                                        </FormGroup>
+                                        <FormGroup check>
+                                            <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Unbekannt" />
+                                            <Label check>
+                                                Unbekannt
+                                            </Label>
+                                        </FormGroup>
                                     </Col>
+
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label for="internalCost" sm={3}>
-                                        Interne Kosten
+
+                                    <Label for="solutionScopeFunctional" sm={3}>
+                                        Funktionsumfang
+
                                     </Label>
                                     <Col sm={9}>
-                                        <Input id="internalCost" name="internalCost" type="text" />
+                                        <FormGroup check>
+                                            <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Klein" />
+                                            <Label check>
+                                                Klein
+                                            </Label>
+                                        </FormGroup>
+                                        <FormGroup check>
+                                            <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Groß" />
+                                            <Label check>
+                                                Groß
+                                            </Label>
+                                        </FormGroup>
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>
-                                    <Label for="externalCost" sm={3}>
-                                        Externe Kosten
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="externalCost" name="externalCost" type="text" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="investments" sm={3}>
-                                        Investitionen
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="investments" name="investments" type="text" />
-                                    </Col>
-                                </FormGroup>
+
+                                <CreateProjectsEntry id="supportEffort" name="Supportaufwand" type="number" min="0" formText={"Bitte geben Sie den Supportaufwand in Stunden pro Jahr an."} />
+
+
                             </CardText>
                         </Card>
-                    </Col>
-                </Row>
-                <Row>
-                <Col sm="6">
+
                         <Card body>
-                            <CardTitle tag="h5">
-                                <b>Strategie</b>
-                            </CardTitle>
+                            <CardTitle tag="h5">Projektleistungen</CardTitle>
                             <CardText>
-                                <FormGroup row>
-                                        <Label for="digitalisation" sm={3}>
-                                            Digitalisierung
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="digitalisation" name="digitalisation" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Niedrig</option>
-                                                <option>Mittel</option>
-                                                <option>Hoch</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="customerSatisfaction" sm={3}>
-                                            Kundenzufriedenheit
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="customerSatisfaction" name="customerSatisfaction" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Niedrig</option>
-                                                <option>Mittel</option>
-                                                <option>Hoch</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label for="everydayBenefit" sm={3}>
-                                            Everyday Benefit
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="everydayBenefit" name="everydayBenefit" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Niedrig</option>
-                                                <option>Mittel</option>
-                                                <option>Hoch</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
+
+                                <Row>
+                                    <h6>Erwartete Umsatzsteigerung</h6>
+                                    <Col>
+                                        <Input type="number" id="turnoverIncreaseY1" name='turnoverIncreaseY1' />
+                                        Jahr 1
+
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="turnoverIncreaseY2" name='turnoverIncreaseY2' />
+                                        Jahr 2
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="turnoverIncreaseY3" name='turnoverIncreaseY3' />
+                                        Jahr 3
+                                    </Col>
+
+                                    <Col>
+                                        <Input type="number" id="turnoverIncreaseY4" name='turnoverIncreaseY4' />
+                                        Jahr 4
+
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="turnoverIncreaseY5" name='turnoverIncreaseY5' />
+                                        Jahr 5
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <h6>Erwartete Kostensenkung</h6>
+                                    <Col>
+                                        <Input type="number" id="costSavingsY1" name='costSavingsY1' />
+                                        Jahr 1
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="costSavingsY2" name='costSavingsY2' />
+                                        Jahr 2
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="costSavingsY3" name='costSavingsY3' />
+                                        Jahr 3
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="costSavingsY4" name='costSavingsY4' />
+                                        Jahr 4
+                                    </Col>
+                                    <Col>
+                                        <Input type="number" id="costSavingsY5" name='costSavingsY5' />
+                                        Jahr 5
+                                    </Col>
+                                </Row>
                             </CardText>
                         </Card>
-                    </Col>
-                    <Col sm="6">
+
                         <Card body>
-                            <CardTitle tag="h5">
-                                <b>Komplexität</b>
-                            </CardTitle>
+                            <CardTitle tag="h5">Finanzkennzahlen</CardTitle>
                             <CardText>
-                                <FormGroup row>
-                                    <Label for="projectRisk" sm={3}>
-                                        Projektrisiko-Kennzahl
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="projectRisk" name="projectRisk" type="number"  min="0" />
-                                        <FormText>
-                                            Bitte geben Sie die Risikokennzahl nach Supernove-Standard an.
-                                        </FormText>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="externalStakeholders" sm={3}>
-                                        Externe Stakeholder
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="externalStakeholders" name="externalStakeholders" type="number" min="0" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="bufferDays" sm={3}>
-                                        Puffertage
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="bufferDays" name="bufferDays" type="number" min="0" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                        <Label for="experience" sm={3}>
-                                            Erfahrungen
-                                        </Label>
-                                        <Col sm={9}>
-                                            <Input id="experience" name="experience" type="select">
-                                                <option hidden value="">Bitte auswählen</option>
-                                                <option>Sehr gut</option>
-                                                <option>Gut</option>
-                                                <option>Zufriedenstellend</option>
-                                                <option>Schlecht</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-                                <FormGroup tag="fieldset">
-                                <legend>
-                                Lösungsumfang
-                                </legend>
-                                <FormGroup check>
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="1"
-                                />
-                                {' '}
-                                <Label check>
-                                    Prozess bekannt, kleiner Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                                <FormGroup check>
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="3"
-                                />
-                                {' '}
-                                <Label check>
-                                Prozess bekannt, großer Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                                <FormGroup
-                                check
-                                disabled
-                                >
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="7"
-                                />
-                                {' '}
-                                <Label check>
-                                Prozess unbekannt, kleiner Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                                <FormGroup
-                                check
-                                disabled
-                                >
-                                <Input
-                                    type="radio"
-                                    id="solutionScopeExtend" 
-                                    name="solutionScopeExtend"
-                                    value="10"
-                                />
-                                {' '}
-                                <Label check>
-                                Prozess unbekannt, großer Funktionsumfang
-                                </Label>
-                                </FormGroup>
-                            </FormGroup>
-                                <FormGroup row>
-                                    <Label for="supportExpense" sm={3}>
-                                        Supportaufwand in Stunden pro Jahr
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="supportExpense" name="supportExpense" type="number" min="0" />
-                                    </Col>
-                                </FormGroup>
+                                <CreateProjectsEntry id="capitalValue" name="Kapitalwert (NVP)" type="number" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} />
+                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" />
                             </CardText>
                         </Card>
-                    </Col>
-                </Row>
-                <Row>
-                <Col sm="6">
-                        <Card body>
-                            <CardTitle tag="h5">
-                                <b>Projektleistungen</b>
-                            </CardTitle>
-                            <CardText>
-                                <FormGroup row>
-                                    <Label for="turnoverIncrease1" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 1
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="turnoverIncrease1" name="turnoverIncrease1" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="turnoverIncrease2" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 2
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="turnoverIncrease2" name="turnoverIncrease2" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="turnoverIncrease3" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 3
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="turnoverIncrease3" name="turnoverIncrease3" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="turnoverIncrease4" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 4
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="turnoverIncrease4" name="turnoverIncrease4" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="turnoverIncrease5" sm={3}>
-                                    Erwartete Umsatzsteigerung Jahr 5
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="turnoverIncrease5" name="turnoverIncrease5" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="costSavings1" sm={3}>
-                                    Erwartete Kostensenkung Jahr 1
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="costSavings1" name="costSavings1" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="costSavings2" sm={3}>
-                                    Erwartete Kostensenkung Jahr 2
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="costSavings2" name="costSavings2" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="costSavings3" sm={3}>
-                                    Erwartete Kostensenkung Jahr 3
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="costSavings3" name="costSavings3" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="costSavings4" sm={3}>
-                                    Erwartete Kostensenkung Jahr 4
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="costSavings4" name="costSavings4" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="costSavings5" sm={3}>
-                                    Erwartete Kostensenkung Jahr 5
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="costSavings5" name="costSavings5" type="number" />
-                                    </Col>
-                                </FormGroup>
-                            </CardText>
-                        </Card>
-                    </Col>
-                    <Col sm="6">
-                        <Card body>
-                            <CardTitle tag="h5">
-                                <b>Finanzkennzahlen</b>
-                            </CardTitle>
-                            <CardText>
-                                <FormGroup row>
-                                    <Label for="capitalValue" sm={3}>
-                                    Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="capitalValue" name="capitalValue" type="number" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label for="costReduction" sm={3}>
-                                    Kostenreduktion in Euro
-                                    </Label>
-                                    <Col sm={9}>
-                                        <Input id="costReduction" name="costReduction" type="number" />
-                                    </Col>
-                                </FormGroup>
-                            </CardText>
-                        </Card>
+
                     </Col>
                 </Row>
             </Form>

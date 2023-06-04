@@ -10,6 +10,12 @@
     height: 50px;
 }
 
+.login-button:disabled {
+    pointer-events: none;
+    background-color: #8AF2E7;
+    opacity: var(--bs-btn-disabled-opacity);
+}
+
 .form-select,
 .form-control {
     border-radius: 0px;
@@ -31,6 +37,17 @@
     color: #ea0823;
     font-size: 20px;
     margin-right: 10px;
+}
+
+.supernova-ag-logo {
+    display: flex;
+    justify-content: center;
+
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
 }
 
 @media screen and (max-width: 992px) {
