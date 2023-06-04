@@ -12,6 +12,7 @@ function ProjectsCreate(props) {
         const form = event.target;
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
+        console.log(data.get('solutionScopeExtend'));
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
@@ -33,6 +34,7 @@ function ProjectsCreate(props) {
             projectDescription: data.get('projectDescription'),
             affectedLocation: data.get('affectedLocation'),
             responsibleLocation: data.get('responsibleLocation'),
+
             digitalisation: data.get('digitalisation'),
             customerSatisfaction: data.get('customerSatisfaction'),
             everydayBenefit: data.get('everydayBenefit'),
@@ -57,6 +59,7 @@ function ProjectsCreate(props) {
             projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
             costReduction: data.get('capitalValue'),
             comments: {},
+
         }, { headers }
         )
             .then(response => {
@@ -100,6 +103,7 @@ function ProjectsCreate(props) {
                             </CardText>
                         </Card>
 
+
                         <Card body>
                             <CardTitle tag="h5">Kosten</CardTitle>
                             <CardText>
@@ -130,6 +134,7 @@ function ProjectsCreate(props) {
                                 <CreateProjectsEntry id="bufferDays" name="Puffertage" type="number" min="0" />
                                 <CreateProjectsEntry id="experience" name="Erfahrungen" type="select" options={["Sehr gut", "Gut", "Zufriedenstellend", "Schlecht"]} />
 
+
                                 <FormGroup row>
                                     <h6>Lösungsumfang</h6>
                                     <Label for="solutionScopeProcess" sm={3}>
@@ -152,8 +157,10 @@ function ProjectsCreate(props) {
 
                                 </FormGroup>
                                 <FormGroup row>
+
                                     <Label for="solutionScopeFunctional" sm={3}>
                                         Funktionsumfang
+
                                     </Label>
                                     <Col sm={9}>
                                         <FormGroup check>
@@ -173,17 +180,20 @@ function ProjectsCreate(props) {
 
                                 <CreateProjectsEntry id="supportEffort" name="Supportaufwand" type="number" min="0" formText={"Bitte geben Sie den Supportaufwand in Stunden pro Jahr an."} />
 
+
                             </CardText>
                         </Card>
 
                         <Card body>
                             <CardTitle tag="h5">Projektleistungen</CardTitle>
                             <CardText>
+
                                 <Row>
                                     <h6>Erwartete Umsatzsteigerung</h6>
                                     <Col>
                                         <Input type="number" id="turnoverIncreaseY1" name='turnoverIncreaseY1' />
                                         Jahr 1
+
                                     </Col>
                                     <Col>
                                         <Input type="number" id="turnoverIncreaseY2" name='turnoverIncreaseY2' />
@@ -193,9 +203,11 @@ function ProjectsCreate(props) {
                                         <Input type="number" id="turnoverIncreaseY3" name='turnoverIncreaseY3' />
                                         Jahr 3
                                     </Col>
+
                                     <Col>
                                         <Input type="number" id="turnoverIncreaseY4" name='turnoverIncreaseY4' />
                                         Jahr 4
+
                                     </Col>
                                     <Col>
                                         <Input type="number" id="turnoverIncreaseY5" name='turnoverIncreaseY5' />
@@ -251,6 +263,5 @@ function ProjectsCreate(props) {
         </div>
     );
 }
-
 
 export default ProjectsCreate;

@@ -387,8 +387,10 @@ function ProjectDetails(props) {
                             <Button color="secondary" onClick={toggle}>
                                 Abbrechen
                             </Button>
+
                             <Button color="primary" type="submit" form="denyProject" onClick={handleDeny}>
                                 Ablehnen
+
                             </Button>
 
                         </ModalFooter>
@@ -600,10 +602,12 @@ function ProjectDetails(props) {
 
 
                     </>)}
+
                 </form>
 
             </div>
         );
+
 
 
 

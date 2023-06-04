@@ -21,7 +21,9 @@ public class Project
     public DateOnly EndDate { get; set; }
     public DateOnly CreatedAt { get; set; }
     public string ApplicantUser { get; set; }
+
     public int ProductManagerWorkload { get; set; }
+
     public String Digitalisation { get; set; }
     public String ProjectDescription { get; set; }
     public String AffectedLocation { get; set; }
@@ -32,6 +34,7 @@ public class Project
     public int ExternalStakeholders { get; set; }
     public int BufferDays { get; set; }
     public String Experience { get; set; }
+
     public String SolutionScopeProcess { get; set; }
     public String SolutionScopeFunctional { get; set; }
     public int SupportEffort { get; set; }
@@ -48,5 +51,6 @@ public class Project
     public double CapitalValue { get; set; }
     public double ProjectCost { get; set; }
     public double CostReduction { get; set; }
+
     public Dictionary<string, string> Comments { get; set; } // Dictionary username, comment
 }
