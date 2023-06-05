@@ -1,7 +1,10 @@
+import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 export function getProjectIdWithPrefix(projectId, projectType, location) {
     let prefix = '';
-    
-    // Mögliche Standorte: Freiburg, Lörrach, Hamburg, Berlin, München
+
+    // Mögliche Standorte: Freiburg, Lörrach, Mallorca, Berlin, München
     switch (location) {
         case 'Freiburg':
             prefix += 'SFR';
@@ -42,4 +45,30 @@ export function getProjectIdWithPrefix(projectId, projectType, location) {
             break;
     }
     return `${prefix}-${projectId}`;
+}
+
+
+export function getProjectStatus(status) {
+    switch (status) {
+        case 'Beantragt':
+            return <div className='ppm360-cell' style={{ backgroundColor: "#fef5e7", color: "#f39c12" }}>
+                <FontAwesomeIcon icon={faFileInvoice} /> {status}
+            </div>;
+        case 'Genehmigt':
+            return <div className='ppm360-cell' style={{ backgroundColor: "#e8f6ef", color: "#27ae60" }}>
+                <FontAwesomeIcon icon={faCheckCircle} /> {status}
+            </div>;
+        case 'Abgelehnt':
+            return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
+                <FontAwesomeIcon icon={faCircleXmark} /> {status}
+            </div>;
+        case 'Abgeschlossen':
+            return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+                <FontAwesomeIcon icon={faCheckCircle} /> {status}
+            </div>;
+        default:
+            return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
+                <FontAwesomeIcon icon={faCircleQuestion} /> {"Unbekannt: " + status}
+            </div>;
+    }
 }

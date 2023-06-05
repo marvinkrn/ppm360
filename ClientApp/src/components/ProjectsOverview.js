@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
 import { Table } from 'reactstrap';
 import Moment from 'moment';
 import { getProjectIdWithPrefix } from './misc/helper';

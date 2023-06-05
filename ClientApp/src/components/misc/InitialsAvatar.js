@@ -1,19 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './InitialsAvatar.css';
 
+export function getInitials(name) {
+    const [firstName, lastName] = name.split(' ');
+
+    if (firstName && lastName)
+        return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+
+    return `${firstName.charAt(0)}${firstName.charAt(1)}`.toUpperCase();
+}
+
 const InitialsAvatar = ({ name }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
     // Get the initials out of the given name
-    function getInitials(name) {
-        const [firstName, lastName] = name.split(' ');
 
-        if (firstName && lastName)
-            return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
-
-        return `${firstName.charAt(0)}${firstName.charAt(1)}`.toUpperCase();
-    }
 
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);

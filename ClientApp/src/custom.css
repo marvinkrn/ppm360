@@ -168,3 +168,48 @@ h6 {
   padding-top: 20px;
   margin-bottom: 10px;
 }
+
+.comments-wrapper {
+  padding: 10px;
+}
+
+.comments-heading {
+  margin-top: 40px;
+}
+
+.comments-content {
+  margin-bottom: 0px;
+  width: 100%;
+  background-color: #f5f6f7;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+}
+
+.comments-avatar {
+  width: 36px;
+  height: 36px;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  background-color: var(--secondary-500);
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 15px;
+}
+
+.comments-avatar>div {
+  color: #FFFFFF;
+  height: 100%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: inherit;
+  font-weight: inherit;
+}
+
+.comments-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
