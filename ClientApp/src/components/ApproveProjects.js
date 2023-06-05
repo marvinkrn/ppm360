@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileInvoice, faInfoCircle, faRotateRight } from '@fortawesome/free-solid-svg-icons'
-
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from "react-chartjs-2";
-import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
+import { faChevronRight, faFileCircleXmark, faRotateRight } from '@fortawesome/free-solid-svg-icons'
+import { Table } from 'reactstrap';
+import jwt_decode from 'jwt-decode';
 import Moment from 'moment';
-
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import Unauthorized from './misc/Unauthorized';
+import { getProjectIdWithPrefix, getProjectStatus } from './misc/helper';
 
 export default class ApproveProjects extends Component {
     static displayName = ApproveProjects.name;
@@ -32,7 +28,6 @@ export default class ApproveProjects extends Component {
         this.populateProjects();
     }
 
-
     async populateProjects() {
         try {
             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
@@ -46,51 +41,7 @@ export default class ApproveProjects extends Component {
 
     static renderProjectsTable(projects) {
 
-        function getProjectIdWithPrefix(projectId, projectType) {
-            let prefix;
-
-            switch (projectType) {
-                case 'IT-Projekt':
-                    prefix = 'SAG-IT';
-                    break;
-                case 'Erneuerungsprojekt':
-                    prefix = 'SAG-ER';
-                    break;
-                case 'Innovationsprojekt':
-                    prefix = 'SAG-IN';
-                    break;
-                default:
-                    prefix = 'SAG-X';
-                    break;
-            }
-            return `${prefix}-${projectId}`;
-        }
-
-        function getProjectStatus(status) {
-            switch (status) {
-                case 'Beantragt':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#fef5e7", color: "#f39c12" }}>
-                        <FontAwesomeIcon icon={faFileInvoice} /> {status}
-                    </div>;
-                case 'Genehmigt':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#e8f6ef", color: "#27ae60" }}>
-                        <FontAwesomeIcon icon={faCheckCircle} /> {status}
-                    </div>;
-                case 'Abgelehnt':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
-                        <FontAwesomeIcon icon={faCircleXmark} /> {status}
-                    </div>;
-                case 'Abgeschlossen':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
-                        <FontAwesomeIcon icon={faCheckCircle} /> {status}
-                    </div>;
-                default:
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
-                        <FontAwesomeIcon icon={faCircleQuestion} /> {"Unbekannt: " + status}
-                    </div>;
-            }
-        }
-
+        const filteredProjects = projects.filter(project => project.projectStatus === "Beantragt");
 
         return (
             <Table hover responsive>
@@ -104,13 +55,19 @@ export default class ApproveProjects extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {projects.filter(project => project.projectStatus === "Beantragt").map(project =>
-                        <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType) }}>
-                            <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
-                            <td>{project.name}</td>
-                            <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
-                            <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>
-                            <td><FontAwesomeIcon icon={faChevronRight} /></td>
+                    {filteredProjects.length > 0 ? (
+                        filteredProjects.map(project => (
+                            <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType) }}>
+                                <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
+                                <td>{project.name}</td>
+                                <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
+                                <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>
+                                <td><FontAwesomeIcon icon={faChevronRight} /></td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="5" className="text-center"><FontAwesomeIcon icon={faFileCircleXmark} style={{ marginRight: "5px" }} /> Es sind keine offenen Projektanträge vorhanden.</td>
                         </tr>
                     )}
                 </tbody>
@@ -147,6 +104,11 @@ export default class ApproveProjects extends Component {
         let contents = this.state.loading
             ? ApproveProjects.renderLoadingTable()
             : ApproveProjects.renderProjectsTable(this.state.projects);
+
+        const decoded = jwt_decode(localStorage.getItem('token'));
+        let userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+        if (userRole !== "Approver") return (<Unauthorized />);
+
         return (
             <div>
 

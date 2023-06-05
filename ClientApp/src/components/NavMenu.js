@@ -5,7 +5,7 @@ import './NavMenu.css';
 import InitialsAvatar from './misc/InitialsAvatar';
 import jwt_decode from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile, faFileCircleCheck, faGauge, faGaugeHigh, faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faFileCircleCheck, faGaugeHigh } from '@fortawesome/free-solid-svg-icons';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;

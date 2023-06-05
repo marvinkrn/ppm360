@@ -4,9 +4,9 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faChevronRight, faCircleQuestion, faCircleXmark, faFileCirclePlus, faFileCircleXmark, faFileInvoice, faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Button, Table, Toast, ToastHeader, ToastBody } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import Moment from 'moment';
-import { getProjectIdWithPrefix, myFunction } from './misc/helper';
+import { getProjectIdWithPrefix, getProjectStatus } from './misc/helper';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -35,9 +35,6 @@ export default class MyProjects extends Component {
             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
             const response = await fetch('api/projects', { headers });
             const statusCode = response.status;
-
-
-
             const data = await response.json();
             this.setState({ projects: data, loading: false });
         } catch (error) {
@@ -52,35 +49,7 @@ export default class MyProjects extends Component {
 
         const filteredProjects = projects.filter(project => project.applicantUser.toLowerCase() === localStorage.getItem("username"));
 
-
-
-        function getProjectStatus(status) {
-            switch (status) {
-                case 'Beantragt':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#fef5e7", color: "#f39c12" }}>
-                        <FontAwesomeIcon icon={faFileInvoice} /> {status}
-                    </div>;
-                case 'Genehmigt':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#e8f6ef", color: "#27ae60" }}>
-                        <FontAwesomeIcon icon={faCheckCircle} /> {status}
-                    </div>;
-                case 'Abgelehnt':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#f9ebea", color: "#e74c3c" }}>
-                        <FontAwesomeIcon icon={faCircleXmark} /> {status}
-                    </div>;
-                case 'Abgeschlossen':
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
-                        <FontAwesomeIcon icon={faCheckCircle} /> {status}
-                    </div>;
-                default:
-                    return <div className='ppm360-cell' style={{ backgroundColor: "#f3f5f5", color: "#737e93" }}>
-                        <FontAwesomeIcon icon={faCircleQuestion} /> {"Unbekannt: " + status}
-                    </div>;
-            }
-        }
-
         return (
-
             <Table hover responsive>
 
                 <thead>
@@ -106,7 +75,7 @@ export default class MyProjects extends Component {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="4" className="text-center"><FontAwesomeIcon icon={faFileCircleXmark} style={{ marginRight: "5px" }} /> Sie haben noch keine Projekte beantragt.</td>
+                            <td colSpan="5" className="text-center"><FontAwesomeIcon icon={faFileCircleXmark} style={{ marginRight: "5px" }} /> Sie haben noch keine Projekte beantragt.</td>
                         </tr>
                     )}
 
@@ -164,10 +133,7 @@ export default class MyProjects extends Component {
 
                 {contents}
 
-
             </div>
-
-
 
         );
     }

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Col, Input, FormText, Row, Card, CardTitle, CardText } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Col, Input, Row, Card, CardTitle, CardText } from 'reactstrap';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Moment from 'moment';
@@ -8,12 +8,12 @@ import FigureCard from './misc/FigureCard';
 import Skeleton from 'react-loading-skeleton';
 import jwt_decode from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faCircleQuestion, faCircleXmark, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleQuestion, faCircleXmark, faClock, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
 import { ProjectDetailsEntry } from './misc/ProjectDetailsEntry';
 import { useNavigate } from 'react-router-dom';
 import { getProjectIdWithPrefix } from './misc/helper';
-import { evaluateProjectDuration } from './misc/evaluations';
-import { CreateProjectsEntry } from './misc/CreateProjectEntry';
+import { getInitials } from './misc/InitialsAvatar';
+import { evaluateBufferDays, evaluateComplexity, evaluateCosts, evaluateCustomerSatisfaction, evaluateDigitalisation, evaluateEverydayBenefit, evaluateFinancialFigures, evaluateProject, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateProjectToString, evaluateStrategy } from './misc/evaluations';
 
 function ProjectDetails(props) {
     const navigate = useNavigate();
@@ -33,18 +33,6 @@ function ProjectDetails(props) {
     const [denyMessage, setDenyMessage] = useState('');
 
     const formRef = useRef(null);
-
-    const handleDenyModalSubmit = (event) => {
-        event.preventDefault();
-        setModal(false);
-
-        setSubmitType('deny'); // Set the submitType to 'modify'
-
-        // Perform the 'deny' action with the denyMessage value
-        // Add your code here to handle the 'deny' action with the denyMessage value
-    }
-
-
 
     const ProjectStatus = ({ status }) => {
         let backgroundColor, color, icon, message;
@@ -133,6 +121,12 @@ function ProjectDetails(props) {
     // Handler for the 'deny' button click
     const handleDeny = (event) => {
         event.preventDefault();
+
+        const form = event.target;
+        const data = new FormData(form);
+
+        setDenyMessage(data.get("comment"));
+
         setModal(false);
         setSubmitType('deny');
         setTimeout(handleDenySubmit, 100);
@@ -150,195 +144,91 @@ function ProjectDetails(props) {
 
         const projectId = id.split('-').pop();
 
+        var comments = projectData.comments;
+
+        if (denyMessage != '') {
+            var commentEntry = {
+                "User": localStorage.getItem("username"),
+                "Comment": denyMessage,
+                "Timestamp": Moment(new Date()).format('DD.MM.YYYY HH:mm'),
+            }
+
+            comments.push(commentEntry);
+        }
+
+        var projectStatus = "";
+
         switch (data.get('submitType')) {
             case 'approve':
-                axios.put(`/api/projects/${projectId}`, {
-                    id: projectId,
-                    name: data.get('projectName'),
-                    projectType: data.get('projectType'),
-                    projectManager: data.get('projectManager'),
-                    productManagerWorkload: data.get('productManagerWorkload'),
-                    projectStatus: "Genehmigt",
-                    budget: data.get('budget'),
-                    internalCost: data.get('internalCost'),
-                    externalCost: data.get('externalCost'),
-                    investments: data.get('investments'),
-                    teamSize: data.get('teamSize'),
-                    involvedBusinessUnits: data.get('involvedBusinessUnits'),
-                    executiveUnit: data.get('executiveUnit'),
-                    startDate: data.get('startDate'),
-                    endDate: data.get('endDate'),
-                    createdAt: projectData.createdAt,
-                    applicantUser: projectData.applicantUser,
-                    projectDescription: data.get('projectDescription'),
-                    affectedLocation: data.get('affectedLocation'),
-                    responsibleLocation: data.get('responsibleLocation'),
-                    digitalisation: data.get('digitalisation'),
-                    customerSatisfaction: data.get('customerSatisfaction'),
-                    everydayBenefit: data.get('everydayBenefit'),
-                    projectRisk: data.get('projectRisk'),
-                    externalStakeholders: data.get('externalStakeholders'),
-                    bufferDays: data.get('bufferDays'),
-                    experience: data.get('experience'),
-                    solutionScopeProcess: data.get('solutionScopeProcess'),
-                    solutionScopeFunctional: data.get('solutionScopeFunctional'),
-                    supportEffort: data.get('supportEffort'),
-                    turnoverIncreaseY1: data.get('turnoverIncreaseY1'),
-                    turnoverIncreaseY2: data.get('turnoverIncreaseY2'),
-                    turnoverIncreaseY3: data.get('turnoverIncreaseY3'),
-                    turnoverIncreaseY4: data.get('turnoverIncreaseY4'),
-                    turnoverIncreaseY5: data.get('turnoverIncreaseY5'),
-                    costSavingsY1: data.get('costSavingsY1'),
-                    costSavingsY2: data.get('costSavingsY2'),
-                    costSavingsY3: data.get('costSavingsY3'),
-                    costSavingsY4: data.get('costSavingsY4'),
-                    costSavingsY5: data.get('costSavingsY5'),
-                    capitalValue: data.get('capitalValue'),
-                    projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
-                    costReduction: data.get('capitalValue'),
-                    comments: {},
-                }, { headers })
-                    .then(response => {
-                        // Handle the success response
-                        console.log('Project updated successfully');
-                        navigate("/projects");
-                        // You can display a success message or perform any other necessary actions
-                    })
-                    .catch(error => {
-                        // Handle the error response
-                        console.error('Failed to update project:', error);
-                        // You can display an error message or perform any other necessary actions
-                    });
-
+                projectStatus = "Genehmigt"
                 break;
             case 'modify':
-                axios.put(`/api/projects/${projectId}`, {
-                    id: projectId,
-                    name: data.get('projectName'),
-                    projectType: data.get('projectType'),
-                    projectManager: data.get('projectManager'),
-                    productManagerWorkload: data.get('productManagerWorkload'),
-                    projectStatus: "Beantragt",
-                    budget: data.get('budget'),
-                    internalCost: data.get('internalCost'),
-                    externalCost: data.get('externalCost'),
-                    investments: data.get('investments'),
-                    teamSize: data.get('teamSize'),
-                    involvedBusinessUnits: data.get('involvedBusinessUnits'),
-                    executiveUnit: data.get('executiveUnit'),
-                    startDate: data.get('startDate'),
-                    endDate: data.get('endDate'),
-                    createdAt: projectData.createdAt,
-                    applicantUser: projectData.applicantUser,
-                    projectDescription: data.get('projectDescription'),
-                    affectedLocation: data.get('affectedLocation'),
-                    responsibleLocation: data.get('responsibleLocation'),
-                    digitalisation: data.get('digitalisation'),
-                    customerSatisfaction: data.get('customerSatisfaction'),
-                    everydayBenefit: data.get('everydayBenefit'),
-                    projectRisk: data.get('projectRisk'),
-                    externalStakeholders: data.get('externalStakeholders'),
-                    bufferDays: data.get('bufferDays'),
-                    experience: data.get('experience'),
-                    solutionScopeProcess: data.get('solutionScopeProcess'),
-                    solutionScopeFunctional: data.get('solutionScopeFunctional'),
-                    supportEffort: data.get('supportEffort'),
-                    turnoverIncreaseY1: data.get('turnoverIncreaseY1'),
-                    turnoverIncreaseY2: data.get('turnoverIncreaseY2'),
-                    turnoverIncreaseY3: data.get('turnoverIncreaseY3'),
-                    turnoverIncreaseY4: data.get('turnoverIncreaseY4'),
-                    turnoverIncreaseY5: data.get('turnoverIncreaseY5'),
-                    costSavingsY1: data.get('costSavingsY1'),
-                    costSavingsY2: data.get('costSavingsY2'),
-                    costSavingsY3: data.get('costSavingsY3'),
-                    costSavingsY4: data.get('costSavingsY4'),
-                    costSavingsY5: data.get('costSavingsY5'),
-                    capitalValue: data.get('capitalValue'),
-                    projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
-                    costReduction: data.get('capitalValue'),
-                    comments: {},
-                }, { headers })
-                    .then(response => {
-                        // Handle the success response
-                        console.log('Project updated successfully');
-                        navigate("/projects");
-                        // You can display a success message or perform any other necessary actions
-                    })
-                    .catch(error => {
-                        // Handle the error response
-                        console.error('Failed to update project:', error);
-                        // You can display an error message or perform any other necessary actions
-                    });
+                projectStatus = "Beantragt"
                 break;
             case 'deny':
-                axios.put(`/api/projects/${projectId}`, {
-                    id: projectId,
-                    name: data.get('projectName'),
-                    projectType: data.get('projectType'),
-                    projectManager: data.get('projectManager'),
-                    productManagerWorkload: data.get('productManagerWorkload'),
-                    projectStatus: "Abgelehnt",
-                    budget: data.get('budget'),
-                    internalCost: data.get('internalCost'),
-                    externalCost: data.get('externalCost'),
-                    investments: data.get('investments'),
-                    teamSize: data.get('teamSize'),
-                    involvedBusinessUnits: data.get('involvedBusinessUnits'),
-                    executiveUnit: data.get('executiveUnit'),
-                    startDate: data.get('startDate'),
-                    endDate: data.get('endDate'),
-                    createdAt: projectData.createdAt,
-                    applicantUser: projectData.applicantUser,
-                    projectDescription: data.get('projectDescription'),
-                    affectedLocation: data.get('affectedLocation'),
-                    responsibleLocation: data.get('responsibleLocation'),
-                    digitalisation: data.get('digitalisation'),
-                    customerSatisfaction: data.get('customerSatisfaction'),
-                    everydayBenefit: data.get('everydayBenefit'),
-                    projectRisk: data.get('projectRisk'),
-                    externalStakeholders: data.get('externalStakeholders'),
-                    bufferDays: data.get('bufferDays'),
-                    experience: data.get('experience'),
-                    solutionScopeProcess: data.get('solutionScopeProcess'),
-                    solutionScopeFunctional: data.get('solutionScopeFunctional'),
-                    supportEffort: data.get('supportEffort'),
-                    turnoverIncreaseY1: data.get('turnoverIncreaseY1'),
-                    turnoverIncreaseY2: data.get('turnoverIncreaseY2'),
-                    turnoverIncreaseY3: data.get('turnoverIncreaseY3'),
-                    turnoverIncreaseY4: data.get('turnoverIncreaseY4'),
-                    turnoverIncreaseY5: data.get('turnoverIncreaseY5'),
-                    costSavingsY1: data.get('costSavingsY1'),
-                    costSavingsY2: data.get('costSavingsY2'),
-                    costSavingsY3: data.get('costSavingsY3'),
-                    costSavingsY4: data.get('costSavingsY4'),
-                    costSavingsY5: data.get('costSavingsY5'),
-                    capitalValue: data.get('capitalValue'),
-                    projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
-                    costReduction: data.get('capitalValue'),
-                    comments: {},
-                }, { headers })
-                    .then(response => {
-                        // Handle the success response
-                        console.log('Project updated successfully');
-                        navigate("/projects");
-                        // You can display a success message or perform any other necessary actions
-                    })
-                    .catch(error => {
-                        // Handle the error response
-                        console.error('Failed to update project:', error);
-                        // You can display an error message or perform any other necessary actions
-                    });
-
-                break;
-            default:
-
+                projectStatus = "Abgelehnt"
                 break;
         }
 
+        axios.put(`/api/projects/${projectId}`, {
+            id: projectId,
+            name: data.get('projectName'),
+            projectType: data.get('projectType'),
+            projectManager: data.get('projectManager'),
+            productManagerWorkload: data.get('productManagerWorkload'),
+            projectStatus: projectStatus,
+            budget: data.get('budget'),
+            internalCost: data.get('internalCost'),
+            externalCost: data.get('externalCost'),
+            investments: data.get('investments'),
+            teamSize: data.get('teamSize'),
+            involvedBusinessUnits: data.get('involvedBusinessUnits'),
+            executiveUnit: data.get('executiveUnit'),
+            startDate: data.get('startDate'),
+            endDate: data.get('endDate'),
+            createdAt: projectData.createdAt,
+            applicantUser: projectData.applicantUser,
+            projectDescription: data.get('projectDescription'),
+            affectedLocation: data.get('affectedLocation'),
+            responsibleLocation: data.get('responsibleLocation'),
+            digitalisation: data.get('digitalisation'),
+            customerSatisfaction: data.get('customerSatisfaction'),
+            everydayBenefit: data.get('everydayBenefit'),
+            projectRisk: data.get('projectRisk'),
+            externalStakeholders: data.get('externalStakeholders'),
+            bufferDays: data.get('bufferDays'),
+            experience: data.get('experience'),
+            solutionScopeProcess: data.get('solutionScopeProcess'),
+            solutionScopeFunctional: data.get('solutionScopeFunctional'),
+            supportEffort: data.get('supportEffort'),
+            turnoverIncreaseY1: data.get('turnoverIncreaseY1'),
+            turnoverIncreaseY2: data.get('turnoverIncreaseY2'),
+            turnoverIncreaseY3: data.get('turnoverIncreaseY3'),
+            turnoverIncreaseY4: data.get('turnoverIncreaseY4'),
+            turnoverIncreaseY5: data.get('turnoverIncreaseY5'),
+            costSavingsY1: data.get('costSavingsY1'),
+            costSavingsY2: data.get('costSavingsY2'),
+            costSavingsY3: data.get('costSavingsY3'),
+            costSavingsY4: data.get('costSavingsY4'),
+            costSavingsY5: data.get('costSavingsY5'),
+            capitalValue: data.get('capitalValue'),
+            projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
+            costReduction: data.get('capitalValue'),
+            comments: comments,
+        }, { headers })
+            .then(response => {
+                // Handle the success response
+                console.log('Project updated successfully');
+                navigate("/projects");
+                // You can display a success message or perform any other necessary actions
+            })
+            .catch(error => {
+                // Handle the error response
+                console.error('Failed to update project:', error);
+                // You can display an error message or perform any other necessary actions
+            });
 
     };
-
-
 
     if (error) {
         return (
@@ -379,18 +269,17 @@ function ProjectDetails(props) {
                         <ModalHeader toggle={toggle}>Projektantrag ablehnen</ModalHeader>
                         <ModalBody>
                             Bitte geben Sie eine Begründung für die Ablehnung an.
-                            <Form id="denyProject" onSubmit={handleSubmit}>
+                            <form id="denyProject" onSubmit={handleDeny}>
                                 <Input type="textarea" id="comment" name="comment" />
-                            </Form>
+                            </form>
                         </ModalBody>
                         <ModalFooter>
                             <Button color="secondary" onClick={toggle}>
                                 Abbrechen
                             </Button>
 
-                            <Button color="primary" type="submit" form="denyProject" onClick={handleDeny}>
+                            <Button color="primary" type="submit" form="denyProject">
                                 Ablehnen
-
                             </Button>
 
                         </ModalFooter>
@@ -418,14 +307,49 @@ function ProjectDetails(props) {
                             </div>
 
                         </>)}
+                        {modifiable && (
+                            <>
+                                <h5 className='comments-heading'>Anmerkungen</h5>
+                                <div className="comments-wrapper">
+                                    {projectData.comments.map((comment, index) => (
+                                        <div key={index}>
+                                            <div className='d-flex justify-content-between mb-4'>
+                                                <div className="comments-avatar-wrapper">
+                                                    <div role="img" className="comments-avatar">
+                                                        <div className="avatar-content">
+                                                            {getInitials(comment.User)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="card comments-content">
+                                                    <div className="card-header d-flex justify-content-between">
+                                                        <p className="fw-bold mb-0">{comment.User}</p>
+                                                        <p className="small mb-0"><FontAwesomeIcon icon={faClock} /> {comment.Timestamp}</p>
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <p className="mb-0">
+                                                            {comment.Comment}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </CardText>
                 </Card>
 
                 {approverView && (<Row>
-                    <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-                    <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-                    <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-                    <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+                    <FigureCard heading="Gesamtbewertung" content={evaluateProjectToString(evaluateProject(projectData))} />
+                    <FigureCard heading="Projektumfang" content={evaluateProjectScope(projectData)} />
+                    <FigureCard heading="Kosten" content={evaluateCosts(projectData)} />
+                    <FigureCard heading="Strategie" content={evaluateStrategy(projectData)} />
+                    <FigureCard heading="Projektrisiko" content={evaluateProjectRisk(projectData)} />
+                    <FigureCard heading="Komplexität" content={evaluateComplexity(projectData)} />
+                    <FigureCard heading="Projektleistungen" content={evaluateProjectPerformance(projectData)} />
+                    <FigureCard heading="Finanzkennzahlen" content={evaluateFinancialFigures(projectData)} />
                 </Row>)}
 
                 <form ref={formRef} id="modifyProject" onSubmit={handleSubmit}>
@@ -491,13 +415,13 @@ function ProjectDetails(props) {
                                         <Col sm={9}>
                                             <FormGroup check>
 
-                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Bekannt" checked={projectData.solutionScopeProcess == "Bekannt" ? true : false} modifiable={!modifiable} />
+                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Bekannt" checked={projectData.solutionScopeProcess == "Bekannt" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Bekannt
                                                 </Label>
                                             </FormGroup>
                                             <FormGroup check>
-                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Unbekannt" checked={projectData.solutionScopeProcess == "Unbekannt" ? true : false} modifiable={!modifiable} />
+                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Unbekannt" checked={projectData.solutionScopeProcess == "Unbekannt" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Unbekannt
                                                 </Label>
@@ -512,13 +436,13 @@ function ProjectDetails(props) {
                                         <Col sm={9}>
                                             <FormGroup check>
 
-                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Klein" checked={projectData.solutionScopeFunctional == "Klein" ? true : false} modifiable={!modifiable} />
+                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Klein" checked={projectData.solutionScopeFunctional == "Klein" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Klein
                                                 </Label>
                                             </FormGroup>
                                             <FormGroup check>
-                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Groß" checked={projectData.solutionScopeFunctional == "Groß" ? true : false} modifiable={!modifiable} />
+                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Groß" checked={projectData.solutionScopeFunctional == "Groß" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Groß
                                                 </Label>
@@ -595,12 +519,11 @@ function ProjectDetails(props) {
                         </Col>
                     </Row>
                     {modifiable && (<>
-
-                        <Button color="primary" form='modifyProject' type='submit' onClick={handleModify}>
-                            Überarbeitetes Projekt beantragen
-                        </Button>
-
-
+                        <div className='d-flex justify-content-start'>
+                            <Button color="primary" form='modifyProject' type='submit' onClick={handleModify}>
+                                Überarbeitetes Projekt beantragen
+                            </Button>
+                        </div>
                     </>)}
 
                 </form>

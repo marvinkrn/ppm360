@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Col, Input, FormText, Row, Card, CardTitle, CardText } from 'reactstrap';
+import React from 'react';
+import { Button, Form, FormGroup, Label, Col, Input, Row, Card, CardTitle, CardText } from 'reactstrap';
 import axios from 'axios';
 import Moment from 'moment';
 import { CreateProjectsEntry } from './misc/CreateProjectEntry';
@@ -58,7 +57,7 @@ function ProjectsCreate(props) {
             capitalValue: data.get('capitalValue'),
             projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
             costReduction: data.get('capitalValue'),
-            comments: {},
+            comments: [],
 
         }, { headers }
         )

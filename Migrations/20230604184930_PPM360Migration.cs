@@ -13,9 +13,6 @@ namespace ppm360.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("Npgsql:PostgresExtension:hstore", ",,");
-
             migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
@@ -64,7 +61,7 @@ namespace ppm360.Migrations
                     CapitalValue = table.Column<double>(type: "double precision", nullable: false),
                     ProjectCost = table.Column<double>(type: "double precision", nullable: false),
                     CostReduction = table.Column<double>(type: "double precision", nullable: false),
-                    Comments = table.Column<Dictionary<string, string>>(type: "hstore", nullable: false)
+                    Comments = table.Column<List<Dictionary<string, string>>>(type: "hstore[]", nullable: false)
                 },
                 constraints: table =>
                 {

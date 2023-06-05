@@ -8,6 +8,8 @@ import { Doughnut } from "react-chartjs-2";
 import FigureCard from './misc/FigureCard';
 import { Button, Row } from 'reactstrap';
 import { ProjectsOverview } from './ProjectsOverview';
+import jwt_decode from 'jwt-decode';
+import Unauthorized from './misc/Unauthorized';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -37,11 +39,15 @@ export const statusDoughnutOptions = {
 export class Dashboard extends Component {
   static displayName = Dashboard.name;
 
+
+
   constructor(props) {
     super(props);
     this.state = { projects: [], loading: true };
     this.refreshData = this.refreshData.bind(this);
   }
+
+
 
   componentDidMount() {
     this.populateProjects();
@@ -83,6 +89,8 @@ export class Dashboard extends Component {
   }
 
   render() {
+
+
     let projectsCount;
     let totalCosts;
     let averageCosts;
@@ -98,6 +106,10 @@ export class Dashboard extends Component {
     }
 
 
+
+    const decoded = jwt_decode(localStorage.getItem('token'));
+    let userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    if (userRole !== "Management") return (<Unauthorized />);
 
     return (
       <div>
@@ -130,7 +142,7 @@ export class Dashboard extends Component {
           </div>} />
         </Row>
 
-        <ProjectsOverview/>
+        <ProjectsOverview />
 
       </div>
     );

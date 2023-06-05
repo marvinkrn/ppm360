@@ -6,7 +6,6 @@ import ProjectDetails from "./components/ProjectDetails";
 import ApproveProjects from "./components/ApproveProjects";
 import MyProjects from "./components/MyProjects";
 
-
 const AppRoutes = [
   {
     index: true,

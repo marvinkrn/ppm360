@@ -13,7 +13,7 @@ using ppm360.Data;
 namespace ppm360.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230604113616_PPM360Migration")]
+    [Migration("20230604184930_PPM360Migration")]
     partial class PPM360Migration
     {
         /// <inheritdoc />
@@ -24,7 +24,6 @@ namespace ppm360.Migrations
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "hstore");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ppm360.Models.Project", b =>
@@ -52,26 +51,26 @@ namespace ppm360.Migrations
                     b.Property<double>("CapitalValue")
                         .HasColumnType("double precision");
 
-                    b.Property<Dictionary<string, string>>("Comments")
+                    b.Property<List<Dictionary<string, string>>>("Comments")
                         .IsRequired()
-                        .HasColumnType("hstore");
+                        .HasColumnType("hstore[]");
 
                     b.Property<double>("CostReduction")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("CostSavings1")
+                    b.Property<double>("CostSavingsY1")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("CostSavings2")
+                    b.Property<double>("CostSavingsY2")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("CostSavings3")
+                    b.Property<double>("CostSavingsY3")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("CostSavings4")
+                    b.Property<double>("CostSavingsY4")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("CostSavings5")
+                    b.Property<double>("CostSavingsY5")
                         .HasColumnType("double precision");
 
                     b.Property<DateOnly>("CreatedAt")
@@ -120,7 +119,7 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("PmWorkload")
+                    b.Property<int>("ProductManagerWorkload")
                         .HasColumnType("integer");
 
                     b.Property<double>("ProjectCost")
@@ -149,35 +148,37 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("SolutionScopeExtend")
-                        .HasColumnType("integer");
+                    b.Property<string>("SolutionScopeFunctional")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("SolutionScopeProcess")
-                        .HasColumnType("integer");
+                    b.Property<string>("SolutionScopeProcess")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("SupportExpense")
+                    b.Property<int>("SupportEffort")
                         .HasColumnType("integer");
 
                     b.Property<string>("TeamSize")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("TurnoverIncrease1")
+                    b.Property<double>("TurnoverIncreaseY1")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("TurnoverIncrease2")
+                    b.Property<double>("TurnoverIncreaseY2")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("TurnoverIncrease3")
+                    b.Property<double>("TurnoverIncreaseY3")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("TurnoverIncrease4")
+                    b.Property<double>("TurnoverIncreaseY4")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("TurnoverIncrease5")
+                    b.Property<double>("TurnoverIncreaseY5")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");

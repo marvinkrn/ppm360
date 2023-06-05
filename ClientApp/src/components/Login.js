@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Form, FormFeedback, FormGroup, FormText, Input, Label } from 'reactstrap'
+import { Button, Form, FormFeedback, FormGroup, Input, Label } from 'reactstrap'
 import './Login.css';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleExclamation, faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 export class Login extends Component {
     static displayName = Login.name;

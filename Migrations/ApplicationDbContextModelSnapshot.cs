@@ -21,7 +21,6 @@ namespace ppm360.Migrations
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "hstore");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ppm360.Models.Project", b =>
@@ -49,9 +48,9 @@ namespace ppm360.Migrations
                     b.Property<double>("CapitalValue")
                         .HasColumnType("double precision");
 
-                    b.Property<Dictionary<string, string>>("Comments")
+                    b.Property<List<Dictionary<string, string>>>("Comments")
                         .IsRequired()
-                        .HasColumnType("hstore");
+                        .HasColumnType("hstore[]");
 
                     b.Property<double>("CostReduction")
                         .HasColumnType("double precision");
@@ -69,7 +68,6 @@ namespace ppm360.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<double>("CostSavingsY5")
-
                         .HasColumnType("double precision");
 
                     b.Property<DateOnly>("CreatedAt")
@@ -118,9 +116,7 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-
                     b.Property<int>("ProductManagerWorkload")
-
                         .HasColumnType("integer");
 
                     b.Property<double>("ProjectCost")
@@ -149,7 +145,6 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-
                     b.Property<string>("SolutionScopeFunctional")
                         .IsRequired()
                         .HasColumnType("text");
@@ -158,19 +153,15 @@ namespace ppm360.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-
                     b.Property<int>("SupportEffort")
-
                         .HasColumnType("integer");
 
                     b.Property<string>("TeamSize")
                         .IsRequired()
                         .HasColumnType("text");
-
 
                     b.Property<double>("TurnoverIncreaseY1")
                         .HasColumnType("double precision");
@@ -185,7 +176,6 @@ namespace ppm360.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<double>("TurnoverIncreaseY5")
-
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
