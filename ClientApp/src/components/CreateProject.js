@@ -3,15 +3,49 @@ import { Button, Form, FormGroup, Label, Col, Input, Row, Card, CardTitle, CardT
 import axios from 'axios';
 import Moment from 'moment';
 import { CreateProjectsEntry } from './misc/CreateProjectEntry';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProjectsCreate(props) {
+
+    const validate = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        if (elementData === '' || elementData == null) {
+          inputElement.style.borderColor = 'red';
+        } else {
+          inputElement.style.borderColor = '';
+        }
+      };
+
+      const validateR = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        if (elementData === '' || elementData == null) {
+          inputElement.style.color = 'red';
+          inputElement.style.textDecoration = 'underline';
+        } else {
+          inputElement.style.color = 'black';
+          inputElement.style.textDecoration = 'none';
+        }
+      };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
-        console.log(data.get('solutionScopeExtend'));
+
+        const fields = ['projectName', 'projectType', 'projectManager', 'productManagerWorkload', 'budget', 'internalCost', 'externalCost', 'investments', 'teamSize',
+        'involvedBusinessUnits', 'executiveUnit', 'startDate', 'endDate', 'projectDescription', 'affectedLocation', 'responsibleLocation', 'digitalisation',
+        'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'supportEffort',
+        'turnoverIncreaseY1', 'turnoverIncreaseY2', 'turnoverIncreaseY3', 'turnoverIncreaseY4', 'turnoverIncreaseY5', 'costSavingsY1', 'costSavingsY2', 'costSavingsY3', 
+        'costSavingsY4', 'costSavingsY5', 'capitalValue', 'costReduction'];
+
+        fields.forEach(field => {
+            validate(field, data.get(field));
+        });
+
+        validateR('solScopeProc', data.get('solutionScopeProcess'));
+        validateR('solScopeFunc', data.get('solutionScopeFunctional'));
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
@@ -56,7 +90,7 @@ function ProjectsCreate(props) {
             costSavingsY5: data.get('costSavingsY5'),
             capitalValue: data.get('capitalValue'),
             projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
-            costReduction: data.get('capitalValue'),
+            costReduction: data.get('costReduction'),
             comments: [],
 
         }, { headers }
@@ -64,6 +98,7 @@ function ProjectsCreate(props) {
             .then(response => {
                 const data = response.json();
                 console.log(data);
+                toast.success('Submit erfolgreich!');
                 // Reponse verarbeiten, UI updaten, Toast
             })
             .catch(error => {
@@ -136,7 +171,7 @@ function ProjectsCreate(props) {
 
                                 <FormGroup row>
                                     <h6>Lösungsumfang</h6>
-                                    <Label for="solutionScopeProcess" sm={3}>
+                                    <Label id = 'solScopeProc' for="solutionScopeProcess" sm={3}>
                                         Prozess
                                     </Label>
                                     <Col sm={9}>
@@ -157,9 +192,8 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
 
-                                    <Label for="solutionScopeFunctional" sm={3}>
+                                    <Label id = 'solScopeFunc' for="solutionScopeFunctional" sm={3}>
                                         Funktionsumfang
-
                                     </Label>
                                     <Col sm={9}>
                                         <FormGroup check>
@@ -252,13 +286,13 @@ function ProjectsCreate(props) {
                 </Row>
             </Form>
 
-            <Button color="secondary">
+            <Button color="secondary" onClick={() => { window.location.href = "/projects" }}>
                 Abbrechen
             </Button>
             <Button color="primary" form='createProject' type='submit'>
                 Speichern
             </Button>{' '}
-
+            <ToastContainer />
         </div>
     );
 }
