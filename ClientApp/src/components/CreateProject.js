@@ -6,25 +6,6 @@ import Moment from 'moment';
 
 function ProjectsCreate(props) {
 
-    const validate = (elementID, elementData) => {
-        const inputElement = document.getElementById(elementID);
-        if (elementData === '') {
-          inputElement.style.borderColor = 'red';
-        } else {
-          inputElement.style.borderColor = '';
-        }
-      };
-
-      const validateR = (elementID, elementData) => {
-        const inputElement = document.getElementById(elementID);
-        if (elementData === '') {
-          inputElement.style.color = 'red';
-          console.log(elementID + "is Empty")
-        } else {
-          inputElement.style.color = '';
-        }
-      };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
@@ -35,11 +16,6 @@ function ProjectsCreate(props) {
         'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'solutionScopeExtend', 'supportExpense',
         'turnoverIncrease1', 'turnoverIncrease2', 'turnoverIncrease3', 'turnoverIncrease4', 'turnoverIncrease5', 'costSavings1', 'costSavings2', 'costSavings3', 
         'costSavings4', 'costSavings5', 'capitalValue', 'costReduction'];
-
-        fields.forEach(field => {
-            validate(field, data.get(field));
-        });
-        validateR('solutionScope', data.get('solutionScopeExtend'))
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
