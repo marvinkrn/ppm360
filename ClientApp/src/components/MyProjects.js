@@ -7,6 +7,8 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Button, Table } from 'reactstrap';
 import Moment from 'moment';
 import { getProjectIdWithPrefix, getProjectStatus } from './misc/helper';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -23,6 +25,12 @@ export default class MyProjects extends Component {
     componentDidMount() {
         this.populateProjects();
         document.title = "PPM360 | Supernova AG";
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const success = urlParams.get('success')
+        if (success == "true"){
+            toast.success("Juhu!");
+        }
     }
 
     refreshData() {
@@ -132,6 +140,8 @@ export default class MyProjects extends Component {
                 </div>
 
                 {contents}
+
+                <ToastContainer position="bottom-left" />
 
             </div>
 
