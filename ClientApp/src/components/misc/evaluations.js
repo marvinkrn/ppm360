@@ -50,15 +50,19 @@ function evaluatePercentCosts(percentage) {
     }
 }
 
-export function evaluateProjectToString(points) {
-    if (points >= 72 && points <= 216) {
-        return "Sehr gut";
-    } else if (points >= 217 && points <= 360) {
-        return "Gut";
-    } else if (points >= 361 && points <= 504) {
-        return "Zufriedenstellend";
-    } else if (points >= 505 && points <= 720) {
-        return "Schlecht";
+export function evaluateKeyFigureToString(points) {
+    if (typeof points === 'number') {
+        points = points.toFixed(1);
+    }
+
+    if (points >= 9 && points <= 10) {
+        return <span style={{ color: "#00B050" }}>Sehr gut ({points})</span>; // Dunkelgrün
+    } else if (points >= 7 && points < 9) {
+        return <span style={{ color: "#FFC000" }}>Gut ({points})</span>; // Helleres Grün
+    } else if (points >= 5 && points < 7) {
+        return <span style={{ color: "#FF6C00" }}>Zufriedenstellend ({points})</span>; // Orange
+    } else if (points >= 1 && points < 5) {
+        return <span style={{ color: "#FF0000" }}>Schlecht ({points})</span>; // Helleres Rot
     }
 }
 
@@ -75,7 +79,7 @@ export function evaluateProject(project) {
 
     var projectRating = projectScopeRating + costsRating + strategyRating + projectRiskRating + complexityRating + projectPerformanceRating + financialFiguresRating;
 
-    return projectRating;
+    return (projectRating / 7);
 }
 
 
@@ -157,7 +161,7 @@ export function evaluateProjectScope(project) {
 
     var projectScopeRating = 5 * projectDurationRating + 5 * projectBudgetRating + 3 * teamSizeRating + 3 * productManagerWorkloadRating;
 
-    return projectScopeRating;
+    return (projectScopeRating / 4) / 5;
 }
 
 /* KOSTEN */
@@ -229,7 +233,7 @@ export function evaluateStrategy(project) {
 
     var strategyRating = 5 * digitalisationRating + 5 * customerSatisfactionRating + 5 * everydayBenefitRating;
 
-    return strategyRating;
+    return (strategyRating / 3) / 5;
 }
 
 /* PROJEKTRISIKO */
@@ -341,7 +345,7 @@ export function evaluateComplexity(project) {
 
     var complexityRating = 2 * involvedBusinessUnitsRating + 2 * externalStakeholdersRating + 1 * bufferDaysRating + 3 * experienceRating + 4 * solutionScopeRating + 2 * supportEffortRating;
 
-    return complexityRating;
+    return (complexityRating / 6) / 5;
 }
 
 /* PROJEKTLEISTUNG */
@@ -381,7 +385,7 @@ export function evaluateProjectPerformance(project) {
 
     var projectPerformance = 5 * turnOverIncreaseRating + 5 * costSavingsRating;
 
-    return projectPerformance;
+    return (projectPerformance / 2) / 5;
 }
 
 /* FINANZKENNZAHLEN */
@@ -424,5 +428,5 @@ export function evaluateFinancialFigures(project) {
 
     var financialFigures = 5 * capitalValueRating + 5 * costReductionRating;
 
-    return financialFigures;
+    return (financialFigures / 2) / 5;
 }

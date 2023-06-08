@@ -10,6 +10,7 @@ import { Button, Row } from 'reactstrap';
 import { ProjectsOverview } from './ProjectsOverview';
 import jwt_decode from 'jwt-decode';
 import Unauthorized from './misc/Unauthorized';
+import { evaluateComplexity, evaluateCosts, evaluateFinancialFigures, evaluateKeyFigureToString, evaluateProject, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateStrategy } from './misc/evaluations';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -76,33 +77,89 @@ export class Dashboard extends Component {
   }
 
   static getTotalCosts(projects) {
-    const totalCost = projects.reduce((sum, project) => sum + project.budget, 0);
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const totalCost = filteredProjects.reduce((sum, project) => sum + project.budget, 0);
     const formattedCost = Number(totalCost).toLocaleString("de-DE");
     return (formattedCost + " EUR");
   }
 
-  static getAverageCosts(projects) {
-    const totalCost = projects.reduce((sum, project) => sum + project.budget, 0);
-    const averageCost = (totalCost / projects.length).toFixed(2);
-    const formattedCost = Number(averageCost).toLocaleString("de-DE");
-    return (formattedCost + " EUR");
+  static getAverageProjectScope(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateProjectScope(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
   }
 
+  static getAverageCosts(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateCosts(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
+  }
+
+  static getAverageStrategy(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateStrategy(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
+  }
+
+  static getAverageProjectRisk(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateProjectRisk(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
+  }
+
+  static getAverageComplexity(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateComplexity(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
+  }
+
+  static getAverageProjectPerformance(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateProjectPerformance(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
+  }
+
+  static getAverageFinancialFigures(projects) {
+    const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
+    const total = filteredProjects.reduce((sum, project) => sum + evaluateFinancialFigures(project), 0);
+    const average = total / filteredProjects.length;
+    return average.toFixed(2);
+  }
+
+
   render() {
-
-
     let projectsCount;
     let totalCosts;
+    let averageProjectScope;
     let averageCosts;
+    let averageStrategy;
+    let averageRisk;
+    let averageComplexity;
+    let averageProjectPerformance;
+    let averageFinancialFigures;
+
 
     if (this.state.loading) {
       projectsCount = <Skeleton />;
       totalCosts = <Skeleton />;
       averageCosts = <Skeleton />;
+      averageComplexity = <Skeleton />;
     } else {
       projectsCount = Dashboard.getProjectsCount(this.state.projects);
       totalCosts = Dashboard.getTotalCosts(this.state.projects);
-      averageCosts = Dashboard.getAverageCosts(this.state.projects);
+      averageProjectScope = evaluateKeyFigureToString(Dashboard.getAverageProjectScope(this.state.projects));
+      averageCosts = evaluateKeyFigureToString(Dashboard.getAverageCosts(this.state.projects));
+      averageStrategy = evaluateKeyFigureToString(Dashboard.getAverageStrategy(this.state.projects));
+      averageRisk = evaluateKeyFigureToString(Dashboard.getAverageProjectRisk(this.state.projects));
+      averageComplexity = evaluateKeyFigureToString(Dashboard.getAverageComplexity(this.state.projects));
+      averageProjectPerformance = evaluateKeyFigureToString(Dashboard.getAverageProjectPerformance(this.state.projects));
+      averageFinancialFigures = evaluateKeyFigureToString(Dashboard.getAverageFinancialFigures(this.state.projects));
     }
 
 
@@ -121,9 +178,6 @@ export class Dashboard extends Component {
             <button className="btn btn-secondary mx-2" onClick={this.refreshData}>
               <FontAwesomeIcon icon={faRotateRight} /> Daten aktualisieren
             </button>
-            <Button color="primary" onClick={() => { window.location.href = "/projects/create" }}>
-              <FontAwesomeIcon icon={faFileCirclePlus} /> Projekt beantragen
-            </Button>
           </div>
 
         </div>
@@ -131,15 +185,17 @@ export class Dashboard extends Component {
         <Row>
           <FigureCard heading={"Eingereichte Projektanträge"} content={projectsCount} />
           <FigureCard heading={"Kosten (summiert)"} content={totalCosts} />
-          <FigureCard heading={"Durchschnittliche Kosten"} content={averageCosts} />
-          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
-          <FigureCard heading={<Skeleton />} content={<Skeleton width={"50%"} />} />
+          <FigureCard heading={"Ø Projektumfang"} content={averageProjectScope} />
+          <FigureCard heading={"Ø Kosten"} content={averageCosts} />
+          <FigureCard heading={"Ø Strategie"} content={averageStrategy} />
+          <FigureCard heading={"Ø Projektrisiko"} content={averageRisk} />
+          <FigureCard heading={"Ø Komplexität"} content={averageComplexity} />
+          <FigureCard heading={"Ø Projektleistung"} content={averageProjectPerformance} />
+          <FigureCard heading={"Ø Finanzkennzahlen"} content={averageFinancialFigures} />
           <FigureCard heading={"Anzahl Projekte nach Status"} content={<div style={{ width: "75%", margin: "0 auto" }}>
             <Doughnut data={statusDoughnutData} options={statusDoughnutOptions} />
           </div>} />
+
         </Row>
 
         <ProjectsOverview />
