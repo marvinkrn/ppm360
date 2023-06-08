@@ -57,8 +57,8 @@ export default class ApproveProjects extends Component {
                 <tbody>
                     {filteredProjects.length > 0 ? (
                         filteredProjects.map(project => (
-                            <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType) }}>
-                                <td>{getProjectIdWithPrefix(project.id, project.projectType)}</td>
+                            <tr key={project.id} onClick={() => { window.location.href = "/projects/" + getProjectIdWithPrefix(project.id, project.projectType, project.responsibleLocation) }}>
+                                <td>{getProjectIdWithPrefix(project.id, project.projectType, project.responsibleLocation)}</td>
                                 <td>{project.name}</td>
                                 <td style={{ verticalAlign: "middle" }}>{getProjectStatus(project.projectStatus)}</td>
                                 <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>

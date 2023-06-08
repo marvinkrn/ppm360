@@ -13,7 +13,7 @@ import { ProjectDetailsEntry } from './misc/ProjectDetailsEntry';
 import { useNavigate } from 'react-router-dom';
 import { getProjectIdWithPrefix } from './misc/helper';
 import { getInitials } from './misc/InitialsAvatar';
-import { evaluateBufferDays, evaluateComplexity, evaluateCosts, evaluateCustomerSatisfaction, evaluateDigitalisation, evaluateEverydayBenefit, evaluateFinancialFigures, evaluateProject, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateProjectToString, evaluateStrategy } from './misc/evaluations';
+import { evaluateKeyFigureToString, evaluateComplexity, evaluateCosts, evaluateCustomerSatisfaction, evaluateDigitalisation, evaluateEverydayBenefit, evaluateFinancialFigures, evaluateProject, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateProjectToString, evaluateStrategy } from './misc/evaluations';
 
 function ProjectDetails(props) {
     const navigate = useNavigate();
@@ -342,14 +342,14 @@ function ProjectDetails(props) {
                 </Card>
 
                 {approverView && (<Row>
-                    <FigureCard heading="Gesamtbewertung" content={evaluateProjectToString(evaluateProject(projectData))} />
-                    <FigureCard heading="Projektumfang" content={evaluateProjectScope(projectData)} />
-                    <FigureCard heading="Kosten" content={evaluateCosts(projectData)} />
-                    <FigureCard heading="Strategie" content={evaluateStrategy(projectData)} />
-                    <FigureCard heading="Projektrisiko" content={evaluateProjectRisk(projectData)} />
-                    <FigureCard heading="Komplexität" content={evaluateComplexity(projectData)} />
-                    <FigureCard heading="Projektleistungen" content={evaluateProjectPerformance(projectData)} />
-                    <FigureCard heading="Finanzkennzahlen" content={evaluateFinancialFigures(projectData)} />
+                    <FigureCard heading="Gesamtbewertung" content={evaluateKeyFigureToString(evaluateProject(projectData))} />
+                    <FigureCard heading="Projektumfang" content={evaluateKeyFigureToString(evaluateProjectScope(projectData))} />
+                    <FigureCard heading="Kosten" content={evaluateKeyFigureToString(evaluateCosts(projectData))} />
+                    <FigureCard heading="Strategie" content={evaluateKeyFigureToString(evaluateStrategy(projectData))} />
+                    <FigureCard heading="Projektrisiko" content={evaluateKeyFigureToString(evaluateProjectRisk(projectData))} />
+                    <FigureCard heading="Komplexität" content={evaluateKeyFigureToString(evaluateComplexity(projectData))} />
+                    <FigureCard heading="Projektleistungen" content={evaluateKeyFigureToString(evaluateProjectPerformance(projectData))} />
+                    <FigureCard heading="Finanzkennzahlen" content={evaluateKeyFigureToString(evaluateFinancialFigures(projectData))} />
                 </Row>)}
 
                 <form ref={formRef} id="modifyProject" onSubmit={handleSubmit}>
