@@ -396,10 +396,10 @@ function ProjectDetails(props) {
                             <Card body>
                                 <CardTitle tag="h5">Kosten</CardTitle>
                                 <CardText>
-                                    <ProjectDetailsEntry id="budget" name="Budget" type="text" formText={"Bitte geben Sie den Betrag des Projektbudgets in EUR an."} defaultValue={projectData.budget} modifiable={!modifiable} />
-                                    <ProjectDetailsEntry id="internalCost" name="Interne Kosten" type="text" defaultValue={projectData.internalCost} modifiable={!modifiable} />
-                                    <ProjectDetailsEntry id="externalCost" name="Externe Kosten" type="text" defaultValue={projectData.externalCost} modifiable={!modifiable} />
-                                    <ProjectDetailsEntry id="investments" name="Investitionen" type="text" defaultValue={projectData.investments} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="budget" name="Budget" type="text" formText={"Bitte geben Sie den Betrag des Projektbudgets in EUR an."} defaultValue={projectData.budget.toString().replace(/\./g, ',')} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="internalCost" name="Interne Kosten" type="text" defaultValue={projectData.internalCost.toString().replace(/\./g, ',')} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="externalCost" name="Externe Kosten" type="text" defaultValue={projectData.externalCost.toString().replace(/\./g, ',')} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="investments" name="Investitionen" type="text" defaultValue={projectData.investments.toString().replace(/\./g, ',')} modifiable={!modifiable} />
                                 </CardText>
                             </Card>
 
@@ -476,23 +476,23 @@ function ProjectDetails(props) {
                                     <Row>
                                         <h6>Erwartete Umsatzsteigerung</h6>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY1" name='turnoverIncreaseY1' defaultValue={projectData.turnoverIncreaseY1} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY1" name='turnoverIncreaseY1' defaultValue={projectData.turnoverIncreaseY1.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 1
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY2" name='turnoverIncreaseY2' defaultValue={projectData.turnoverIncreaseY2} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY2' defaultValue={projectData.turnoverIncreaseY2.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 2
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY3" name='turnoverIncreaseY3' defaultValue={projectData.turnoverIncreaseY3} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY3" name='turnoverIncreaseY3' defaultValue={projectData.turnoverIncreaseY3.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 3
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY4" name='turnoverIncreaseY4' defaultValue={projectData.turnoverIncreaseY4} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY4" name='turnoverIncreaseY4' defaultValue={projectData.turnoverIncreaseY4.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 4
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY5" name='turnoverIncreaseY5' defaultValue={projectData.turnoverIncreaseY5} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY5" name='turnoverIncreaseY5' defaultValue={projectData.turnoverIncreaseY5.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 5
                                         </Col>
                                     </Row>
@@ -500,23 +500,23 @@ function ProjectDetails(props) {
                                     <Row>
                                         <h6>Erwartete Kostensenkung</h6>
                                         <Col>
-                                            <Input type="number" id="costSavingsY1" name='costSavingsY1' defaultValue={projectData.costSavingsY1} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY1' defaultValue={projectData.costSavingsY1.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 1
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY2" name='costSavingsY2' defaultValue={projectData.costSavingsY2} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY2" name='costSavingsY2' defaultValue={projectData.costSavingsY2.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 2
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY3" name='costSavingsY3' defaultValue={projectData.costSavingsY3} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY3" name='costSavingsY3' defaultValue={projectData.costSavingsY3.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 3
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY4" name='costSavingsY4' defaultValue={projectData.costSavingsY4} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY4" name='costSavingsY4' defaultValue={projectData.costSavingsY4.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 4
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY5" name='costSavingsY5' defaultValue={projectData.costSavingsY5} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY5" name='costSavingsY5' defaultValue={projectData.costSavingsY5.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 5
                                         </Col>
                                     </Row>
@@ -526,13 +526,16 @@ function ProjectDetails(props) {
                             <Card body>
                                 <CardTitle tag="h5">Finanzkennzahlen</CardTitle>
                                 <CardText>
-                                    <ProjectDetailsEntry id="capitalValue" name="Kapitalwert (NVP)" type="number" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} defaultValue={projectData.capitalValue} modifiable={!modifiable} />
-                                    <ProjectDetailsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" defaultValue={projectData.costReduction} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="capitalValue" name="Kapitalwert (NVP)" type="number" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} defaultValue={projectData.capitalValue.toString().replace(/\./g, ',')} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" defaultValue={projectData.costReduction.toString().replace(/\./g, ',')} modifiable={!modifiable} />
                                 </CardText>
                             </Card>
 
                         </Col>
                     </Row>
+                    <Button color="secondary" onClick={() => { window.location.href = "/projects" }}>
+                    Zurück
+                    </Button>
                     {modifiable && (<>
                         <div className='d-flex justify-content-start'>
                             <Button color="primary" form='modifyProject' type='submit' onClick={handleModify}>
