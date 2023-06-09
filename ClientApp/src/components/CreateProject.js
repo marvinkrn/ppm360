@@ -28,20 +28,37 @@ function ProjectsCreate(props) {
         }
       };
 
+      const validateD = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        const isValid = /^\d+$/.test(elementData);
+        if (elementData === '' || elementData == null || !isValid) {
+          inputElement.style.borderColor = 'red';
+        }
+        else {
+          inputElement.style.borderColor = '';
+        }
+      };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
 
-        const fields = ['projectName', 'projectType', 'projectManager', 'productManagerWorkload', 'budget', 'internalCost', 'externalCost', 'investments', 'teamSize',
+        const fields = ['projectName', 'projectType', 'projectManager', 'productManagerWorkload', 'teamSize',
         'involvedBusinessUnits', 'executiveUnit', 'startDate', 'endDate', 'projectDescription', 'affectedLocation', 'responsibleLocation', 'digitalisation',
-        'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'supportEffort',
-        'turnoverIncreaseY1', 'turnoverIncreaseY2', 'turnoverIncreaseY3', 'turnoverIncreaseY4', 'turnoverIncreaseY5', 'costSavingsY1', 'costSavingsY2', 'costSavingsY3', 
-        'costSavingsY4', 'costSavingsY5', 'capitalValue', 'costReduction'];
+        'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'supportEffort'];
+
+        const fieldsD = ['budget', 'internalCost', 'externalCost', 'investments', 'turnoverIncreaseY1', 'turnoverIncreaseY2', 'turnoverIncreaseY3', 
+        'turnoverIncreaseY4', 'turnoverIncreaseY5', 'costSavingsY1', 'costSavingsY2', 'costSavingsY3', 'costSavingsY4', 'costSavingsY5', 'capitalValue',
+        'costReduction'];
 
         fields.forEach(field => {
             validate(field, data.get(field));
+        });
+
+        fieldsD.forEach(fieldD => {
+            validateD(fieldD, data.get(fieldD).replace(".", "").replace(",", ""));
         });
 
         validateR('solScopeProc', data.get('solutionScopeProcess'));
@@ -55,7 +72,7 @@ function ProjectsCreate(props) {
             projectStatus: "Beantragt",
             budget: data.get('budget').replace(".", "").replace(",", "."),
             internalCost: data.get('internalCost').replace(".", "").replace(",", "."),
-            externalCost: data.get('externalCost'.replace(".", "").replace(",", ".")),
+            externalCost: data.get('externalCost').replace(".", "").replace(",", "."),
             investments: data.get('investments').replace(".", "").replace(",", "."),
             teamSize: data.get('teamSize'),
             involvedBusinessUnits: data.get('involvedBusinessUnits'),
@@ -89,7 +106,7 @@ function ProjectsCreate(props) {
             costSavingsY4: data.get('costSavingsY4').replace(".", "").replace(",", "."),
             costSavingsY5: data.get('costSavingsY5').replace(".", "").replace(",", "."),
             capitalValue: data.get('capitalValue').replace(".", "").replace(",", "."),
-            projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
+            projectCost: parseFloat(data.get('internalCost').replace(".", "").replace(",", ".")) + parseFloat(data.get('externalCost').replace(".", "").replace(",", ".")) + parseFloat(data.get('investments').replace(".", "").replace(",", ".")),
             costReduction: data.get('costReduction').replace(".", "").replace(",", "."),
             comments: [],
 
@@ -105,7 +122,7 @@ function ProjectsCreate(props) {
             .catch(error => {
                 const data = JSON.stringify(error);
                 console.log("Fehler:" + data);
-                toast.error('Submit nicht erfolgreich! Überprüfen Sie Ihre Eingaben');
+                toast.error('Submit nicht erfolgreich! Überprüfen Sie Ihre Eingaben.');
                 // Fehler anzeigen?
             });
 

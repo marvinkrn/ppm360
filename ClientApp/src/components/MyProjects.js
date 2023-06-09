@@ -29,7 +29,7 @@ export default class MyProjects extends Component {
         const urlParams = new URLSearchParams(queryString);
         const success = urlParams.get('success')
         if (success == "true"){
-            toast.success("Juhu!");
+            toast.success("Projektantrag erfolgreich gespeichert.");
         }
     }
 

@@ -461,23 +461,23 @@ function ProjectDetails(props) {
                                     <Row>
                                         <h6>Erwartete Umsatzsteigerung</h6>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY1" name='turnoverIncreaseY1' defaultValue={projectData.turnoverIncreaseY1.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY1" name='turnoverIncreaseY1' defaultValue={projectData.turnoverIncreaseY1.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 1
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY2" name='turnoverIncreaseY2' defaultValue={projectData.turnoverIncreaseY2.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY2' defaultValue={projectData.turnoverIncreaseY2.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 2
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY3" name='turnoverIncreaseY3' defaultValue={projectData.turnoverIncreaseY3.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY3" name='turnoverIncreaseY3' defaultValue={projectData.turnoverIncreaseY3.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 3
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY4" name='turnoverIncreaseY4' defaultValue={projectData.turnoverIncreaseY4.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY4" name='turnoverIncreaseY4' defaultValue={projectData.turnoverIncreaseY4.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 4
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="turnoverIncreaseY5" name='turnoverIncreaseY5' defaultValue={projectData.turnoverIncreaseY5.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="turnoverIncreaseY5" name='turnoverIncreaseY5' defaultValue={projectData.turnoverIncreaseY5.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 5
                                         </Col>
                                     </Row>
@@ -485,23 +485,23 @@ function ProjectDetails(props) {
                                     <Row>
                                         <h6>Erwartete Kostensenkung</h6>
                                         <Col>
-                                            <Input type="number" id="costSavingsY1" name='costSavingsY1' defaultValue={projectData.costSavingsY1.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY1' defaultValue={projectData.costSavingsY1.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 1
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY2" name='costSavingsY2' defaultValue={projectData.costSavingsY2.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY2" name='costSavingsY2' defaultValue={projectData.costSavingsY2.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 2
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY3" name='costSavingsY3' defaultValue={projectData.costSavingsY3.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY3" name='costSavingsY3' defaultValue={projectData.costSavingsY3.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 3
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY4" name='costSavingsY4' defaultValue={projectData.costSavingsY4.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY4" name='costSavingsY4' defaultValue={projectData.costSavingsY4.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 4
                                         </Col>
                                         <Col>
-                                            <Input type="number" id="costSavingsY5" name='costSavingsY5' defaultValue={projectData.costSavingsY5.toString().replace(/\./g, ',')} readOnly={!modifiable} />
+                                            <Input type="text" id="costSavingsY5" name='costSavingsY5' defaultValue={projectData.costSavingsY5.toString().replace(/\./g, ',')} readOnly={!modifiable} />
                                             Jahr 5
                                         </Col>
                                     </Row>
@@ -518,6 +518,9 @@ function ProjectDetails(props) {
 
                         </Col>
                     </Row>
+                    <Button color="secondary" onClick={() => { window.location.href = "/projects" }}>
+                    Zurück
+                    </Button>
                     {modifiable && (<>
                         <div className='d-flex justify-content-start'>
                             <Button color="primary" form='modifyProject' type='submit' onClick={handleModify}>
