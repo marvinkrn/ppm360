@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Col, Input, Row, Card, CardTitle, CardText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Col, Input, Row, Card, CardTitle, CardText, InputGroup, InputGroupText } from 'reactstrap';
 import axios from 'axios';
 import Moment from 'moment';
 import { CreateProjectsEntry } from './misc/CreateProjectEntry';
@@ -160,10 +160,10 @@ function ProjectsCreate(props) {
                         <Card body>
                             <CardTitle tag="h5">Kosten</CardTitle>
                             <CardText>
-                                <CreateProjectsEntry id="budget" name="Budget" type="text" formText={"Bitte geben Sie den Betrag des Projektbudgets in EUR an."} />
-                                <CreateProjectsEntry id="internalCost" name="Interne Kosten" type="text" />
-                                <CreateProjectsEntry id="externalCost" name="Externe Kosten" type="text" />
-                                <CreateProjectsEntry id="investments" name="Investitionen" type="text" />
+                                <CreateProjectsEntry id="budget" name="Budget" type="text" formText={"Bitte geben Sie den Betrag des Projektbudgets in EUR an."} inputGroupText={"€"} />
+                                <CreateProjectsEntry id="internalCost" name="Interne Kosten" type="text" inputGroupText={"€"} />
+                                <CreateProjectsEntry id="externalCost" name="Externe Kosten" type="text" inputGroupText={"€"} />
+                                <CreateProjectsEntry id="investments" name="Investitionen" type="text" inputGroupText={"€"} />
                             </CardText>
                         </Card>
 
@@ -230,7 +230,7 @@ function ProjectsCreate(props) {
                                     </Col>
                                 </FormGroup>
 
-                                <CreateProjectsEntry id="supportEffort" name="Supportaufwand" type="number" min="0" formText={"Bitte geben Sie den Supportaufwand in Stunden pro Jahr an."} />
+                                <CreateProjectsEntry id="supportEffort" name="Supportaufwand" type="number" min="0" formText={"Bitte geben Sie den Supportaufwand in Stunden pro Jahr an."} inputGroupText={"Stunden"} />
 
 
                             </CardText>
@@ -243,26 +243,59 @@ function ProjectsCreate(props) {
                                 <Row>
                                     <h6>Erwartete Umsatzsteigerung</h6>
                                     <Col>
-                                        <Input type="text" id="turnoverIncreaseY1" name='turnoverIncreaseY1' />
+
+                                        <InputGroup>
+                                            <Input type="text" id="turnoverIncreaseY1" name='turnoverIncreaseY1' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+
                                         Jahr 1
 
                                     </Col>
                                     <Col>
-                                        <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY2' />
+
+                                        <InputGroup>
+                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY2' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
                                         Jahr 2
                                     </Col>
                                     <Col>
-                                        <Input type="text" id="turnoverIncreaseY3" name='turnoverIncreaseY3' />
+                                        <InputGroup>
+                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY3' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+
                                         Jahr 3
                                     </Col>
 
                                     <Col>
-                                        <Input type="text" id="turnoverIncreaseY4" name='turnoverIncreaseY4' />
+
+                                        <InputGroup>
+                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY4' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+
                                         Jahr 4
 
                                     </Col>
                                     <Col>
-                                        <Input type="text" id="turnoverIncreaseY5" name='turnoverIncreaseY5' />
+
+                                        <InputGroup>
+                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY5' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+
                                         Jahr 5
                                     </Col>
                                 </Row>
@@ -270,6 +303,50 @@ function ProjectsCreate(props) {
                                 <Row>
                                     <h6>Erwartete Kostensenkung</h6>
                                     <Col>
+
+                                        <InputGroup>
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY1' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+                                        Jahr 1
+                                    </Col>
+                                    <Col>
+                                        <InputGroup>
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY2' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+                                        Jahr 2
+                                    </Col>
+                                    <Col>
+                                        <InputGroup>
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY3' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+                                        Jahr 3
+                                    </Col>
+                                    <Col>
+                                        <InputGroup>
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY4' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+                                        Jahr 4
+                                    </Col>
+                                    <Col>
+                                        <InputGroup>
+                                            <Input type="text" id="costSavingsY1" name='costSavingsY5' />
+                                            <InputGroupText>
+                                                €
+                                            </InputGroupText>
+                                        </InputGroup>
+
                                         <Input type="text" id="costSavingsY1" name='costSavingsY1' />
                                         Jahr 1
                                     </Col>
@@ -287,6 +364,7 @@ function ProjectsCreate(props) {
                                     </Col>
                                     <Col>
                                         <Input type="text" id="costSavingsY5" name='costSavingsY5' />
+
                                         Jahr 5
                                     </Col>
                                 </Row>
@@ -296,8 +374,10 @@ function ProjectsCreate(props) {
                         <Card body>
                             <CardTitle tag="h5">Finanzkennzahlen</CardTitle>
                             <CardText>
+
                                 <CreateProjectsEntry id="capitalValue" name="Kapitalwert (NVP)" type="text" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} />
-                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="text" />
+                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" inputGroupText={"€"} />
+
                             </CardText>
                         </Card>
 

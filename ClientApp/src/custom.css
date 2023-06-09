@@ -61,8 +61,9 @@ a {
 }
 
 tr {
-  line-height: 40px;
+  height: 58px;
   cursor: pointer;
+  vertical-align: middle;
 }
 
 .table {
@@ -123,7 +124,8 @@ code {
   color: #000;
 }
 
-.btn-primary:hover .btn-primary:focus {
+.btn-primary:hover,
+.btn-primary:focus {
   background-color: var(--primary-700) !important;
   color: var(--neutral-500) !important;
 }
@@ -212,4 +214,16 @@ h6 {
 .comments-avatar-wrapper {
   position: relative;
   display: inline-block;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

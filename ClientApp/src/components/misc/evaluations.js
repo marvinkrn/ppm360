@@ -2,6 +2,8 @@ const totalBudget = 100000000000;
 const locations = 5;
 const employees = 2500;
 
+
+
 function mainEvaluatePercent(percentage) {
     if (percentage < 11) {
         return 1;
@@ -68,8 +70,8 @@ export function evaluateKeyFigureToString(points) {
 
 
 /* GESAMTBEWERTUNG */
-export function evaluateProject(project) {
-    var projectScopeRating = evaluateProjectScope(project);
+export async function evaluateProject(project) {
+    var projectScopeRating = await evaluateProjectScope(project);
     var costsRating = evaluateCosts(project);
     var strategyRating = evaluateStrategy(project);
     var projectRiskRating = evaluateProjectRisk(project);
@@ -118,7 +120,22 @@ export function evaluateProjectDuration(project) {
         return 10;
     }
 }
-export function evaluateProjectBudget(project) {
+
+async function getAnnualBudgetByYear(year) {
+    try {
+        const response = await fetch(`api/annualbudgets/${year}`);
+        const annualBudget = await response.json();
+        return annualBudget ? annualBudget.budget : 0;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+        return 0;
+    }
+}
+
+export async function evaluateProjectBudget(project) {
+    const startYear = new Date(project.startDate).getFullYear();
+    const totalBudget = await getAnnualBudgetByYear(startYear);
     const budgetPercentage = (project.budget / totalBudget) * 100;
     return mainEvaluatePercent(budgetPercentage);
 }
@@ -153,16 +170,17 @@ export function evaluateProductManagerWorkload(project) {
     return mainEvaluatePercent(productManagerWorkload);
 }
 
-export function evaluateProjectScope(project) {
-    var projectDurationRating = evaluateProjectDuration(project);
-    var projectBudgetRating = evaluateProjectBudget(project);
-    var teamSizeRating = evaluateTeamSize(project);
-    var productManagerWorkloadRating = evaluateProductManagerWorkload(project);
+export async function evaluateProjectScope(project) {
+    var projectDurationRating = await evaluateProjectDuration(project);
+    var projectBudgetRating = await evaluateProjectBudget(project);
+    var teamSizeRating = await evaluateTeamSize(project);
+    var productManagerWorkloadRating = await evaluateProductManagerWorkload(project);
 
     var projectScopeRating = 5 * projectDurationRating + 5 * projectBudgetRating + 3 * teamSizeRating + 3 * productManagerWorkloadRating;
 
     return (projectScopeRating / 4) / 5;
 }
+
 
 /* KOSTEN */
 export function evaluateInternalCosts(project) {

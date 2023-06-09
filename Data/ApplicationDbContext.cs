@@ -11,6 +11,8 @@ namespace ppm360.Data
 
         public DbSet<Project> Projects { get; set; }
 
-        public DbSet<ppm360.Models.User> User { get; set; } = default!;
+        public DbSet<User> User { get; set; } = default!;
+
+        public DbSet<ppm360.Models.AnnualBudget> AnnualBudget { get; set; } = default!;
     }
 }

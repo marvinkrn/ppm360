@@ -21,7 +21,7 @@ public class Project
     public DateOnly EndDate { get; set; }
     public DateOnly CreatedAt { get; set; }
     public string ApplicantUser { get; set; }
-    public int ProductManagerWorkload { get; set; }
+    public int ProjectManagerWorkload { get; set; }
     public String Digitalisation { get; set; }
     public String ProjectDescription { get; set; }
     public String AffectedLocation { get; set; }

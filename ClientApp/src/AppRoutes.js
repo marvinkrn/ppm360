@@ -1,10 +1,10 @@
 import { Login } from "./components/Login";
-import { Dashboard } from "./components/Dashboard";
 import Home from "./components/Home";
 import CreateProject from "./components/CreateProject";
 import ProjectDetails from "./components/ProjectDetails";
 import ApproveProjects from "./components/ApproveProjects";
 import MyProjects from "./components/MyProjects";
+import Dashboard from "./components/Dashboard";
 
 const AppRoutes = [
   {
