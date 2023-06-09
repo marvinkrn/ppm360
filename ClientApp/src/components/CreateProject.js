@@ -3,15 +3,66 @@ import { Button, Form, FormGroup, Label, Col, Input, Row, Card, CardTitle, CardT
 import axios from 'axios';
 import Moment from 'moment';
 import { CreateProjectsEntry } from './misc/CreateProjectEntry';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProjectsCreate(props) {
+
+    const validate = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        if (elementData === '' || elementData == null) {
+          inputElement.style.borderColor = 'red';
+        } else {
+          inputElement.style.borderColor = '';
+        }
+      };
+
+      const validateR = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        if (elementData === '' || elementData == null) {
+          inputElement.style.color = 'red';
+          inputElement.style.textDecoration = 'underline';
+        } else {
+          inputElement.style.color = 'black';
+          inputElement.style.textDecoration = 'none';
+        }
+      };
+
+      const validateD = (elementID, elementData) => {
+        const inputElement = document.getElementById(elementID);
+        const isValid = /^\d+$/.test(elementData);
+        if (elementData === '' || elementData == null || !isValid) {
+          inputElement.style.borderColor = 'red';
+        }
+        else {
+          inputElement.style.borderColor = '';
+        }
+      };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
-        console.log(data.get('solutionScopeExtend'));
+
+        const fields = ['projectName', 'projectType', 'projectManager', 'productManagerWorkload', 'teamSize',
+        'involvedBusinessUnits', 'executiveUnit', 'startDate', 'endDate', 'projectDescription', 'affectedLocation', 'responsibleLocation', 'digitalisation',
+        'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'supportEffort'];
+
+        const fieldsD = ['budget', 'internalCost', 'externalCost', 'investments', 'turnoverIncreaseY1', 'turnoverIncreaseY2', 'turnoverIncreaseY3', 
+        'turnoverIncreaseY4', 'turnoverIncreaseY5', 'costSavingsY1', 'costSavingsY2', 'costSavingsY3', 'costSavingsY4', 'costSavingsY5', 'capitalValue',
+        'costReduction'];
+
+        fields.forEach(field => {
+            validate(field, data.get(field));
+        });
+
+        fieldsD.forEach(fieldD => {
+            validateD(fieldD, data.get(fieldD).replace(".", "").replace(",", ""));
+        });
+
+        validateR('solScopeProc', data.get('solutionScopeProcess'));
+        validateR('solScopeFunc', data.get('solutionScopeFunctional'));
 
         axios.post('/api/projects', {
             name: data.get('projectName'),
@@ -19,10 +70,10 @@ function ProjectsCreate(props) {
             projectManager: data.get('projectManager'),
             productManagerWorkload: data.get('productManagerWorkload'),
             projectStatus: "Beantragt",
-            budget: data.get('budget'),
-            internalCost: data.get('internalCost'),
-            externalCost: data.get('externalCost'),
-            investments: data.get('investments'),
+            budget: data.get('budget').replace(".", "").replace(",", "."),
+            internalCost: data.get('internalCost').replace(".", "").replace(",", "."),
+            externalCost: data.get('externalCost').replace(".", "").replace(",", "."),
+            investments: data.get('investments').replace(".", "").replace(",", "."),
             teamSize: data.get('teamSize'),
             involvedBusinessUnits: data.get('involvedBusinessUnits'),
             executiveUnit: data.get('executiveUnit'),
@@ -44,31 +95,34 @@ function ProjectsCreate(props) {
             solutionScopeProcess: data.get('solutionScopeProcess'),
             solutionScopeFunctional: data.get('solutionScopeFunctional'),
             supportEffort: data.get('supportEffort'),
-            turnoverIncreaseY1: data.get('turnoverIncreaseY1'),
-            turnoverIncreaseY2: data.get('turnoverIncreaseY2'),
-            turnoverIncreaseY3: data.get('turnoverIncreaseY3'),
-            turnoverIncreaseY4: data.get('turnoverIncreaseY4'),
-            turnoverIncreaseY5: data.get('turnoverIncreaseY5'),
-            costSavingsY1: data.get('costSavingsY1'),
-            costSavingsY2: data.get('costSavingsY2'),
-            costSavingsY3: data.get('costSavingsY3'),
-            costSavingsY4: data.get('costSavingsY4'),
-            costSavingsY5: data.get('costSavingsY5'),
-            capitalValue: data.get('capitalValue'),
-            projectCost: parseInt(data.get('internalCost')) + parseInt(data.get('externalCost')) + parseInt(data.get('investments')),
-            costReduction: data.get('capitalValue'),
+            turnoverIncreaseY1: data.get('turnoverIncreaseY1').replace(".", "").replace(",", "."),
+            turnoverIncreaseY2: data.get('turnoverIncreaseY2').replace(".", "").replace(",", "."),
+            turnoverIncreaseY3: data.get('turnoverIncreaseY3').replace(".", "").replace(",", "."),
+            turnoverIncreaseY4: data.get('turnoverIncreaseY4').replace(".", "").replace(",", "."),
+            turnoverIncreaseY5: data.get('turnoverIncreaseY5').replace(".", "").replace(",", "."),
+            costSavingsY1: data.get('costSavingsY1').replace(".", "").replace(",", "."),
+            costSavingsY2: data.get('costSavingsY2').replace(".", "").replace(",", "."),
+            costSavingsY3: data.get('costSavingsY3').replace(".", "").replace(",", "."),
+            costSavingsY4: data.get('costSavingsY4').replace(".", "").replace(",", "."),
+            costSavingsY5: data.get('costSavingsY5').replace(".", "").replace(",", "."),
+            capitalValue: data.get('capitalValue').replace(".", "").replace(",", "."),
+            projectCost: parseFloat(data.get('internalCost').replace(".", "").replace(",", ".")) + parseFloat(data.get('externalCost').replace(".", "").replace(",", ".")) + parseFloat(data.get('investments').replace(".", "").replace(",", ".")),
+            costReduction: data.get('costReduction').replace(".", "").replace(",", "."),
             comments: [],
 
         }, { headers }
         )
             .then(response => {
-                const data = response.json();
-                console.log(data);
+                const data = JSON.stringify(response);
+                console.log("Success");
+                window.location.href = "/projects/?success=true";
+
                 // Reponse verarbeiten, UI updaten, Toast
             })
             .catch(error => {
                 const data = JSON.stringify(error);
-                console.log(data);
+                console.log("Fehler:" + data);
+                toast.error('Submit nicht erfolgreich! Überprüfen Sie Ihre Eingaben.');
                 // Fehler anzeigen?
             });
 
@@ -136,7 +190,7 @@ function ProjectsCreate(props) {
 
                                 <FormGroup row>
                                     <h6>Lösungsumfang</h6>
-                                    <Label for="solutionScopeProcess" sm={3}>
+                                    <Label id = 'solScopeProc' for="solutionScopeProcess" sm={3}>
                                         Prozess
                                     </Label>
                                     <Col sm={9}>
@@ -157,9 +211,8 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
 
-                                    <Label for="solutionScopeFunctional" sm={3}>
+                                    <Label id = 'solScopeFunc' for="solutionScopeFunctional" sm={3}>
                                         Funktionsumfang
-
                                     </Label>
                                     <Col sm={9}>
                                         <FormGroup check>
@@ -190,26 +243,26 @@ function ProjectsCreate(props) {
                                 <Row>
                                     <h6>Erwartete Umsatzsteigerung</h6>
                                     <Col>
-                                        <Input type="number" id="turnoverIncreaseY1" name='turnoverIncreaseY1' />
+                                        <Input type="text" id="turnoverIncreaseY1" name='turnoverIncreaseY1' />
                                         Jahr 1
 
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="turnoverIncreaseY2" name='turnoverIncreaseY2' />
+                                        <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY2' />
                                         Jahr 2
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="turnoverIncreaseY3" name='turnoverIncreaseY3' />
+                                        <Input type="text" id="turnoverIncreaseY3" name='turnoverIncreaseY3' />
                                         Jahr 3
                                     </Col>
 
                                     <Col>
-                                        <Input type="number" id="turnoverIncreaseY4" name='turnoverIncreaseY4' />
+                                        <Input type="text" id="turnoverIncreaseY4" name='turnoverIncreaseY4' />
                                         Jahr 4
 
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="turnoverIncreaseY5" name='turnoverIncreaseY5' />
+                                        <Input type="text" id="turnoverIncreaseY5" name='turnoverIncreaseY5' />
                                         Jahr 5
                                     </Col>
                                 </Row>
@@ -217,23 +270,23 @@ function ProjectsCreate(props) {
                                 <Row>
                                     <h6>Erwartete Kostensenkung</h6>
                                     <Col>
-                                        <Input type="number" id="costSavingsY1" name='costSavingsY1' />
+                                        <Input type="text" id="costSavingsY1" name='costSavingsY1' />
                                         Jahr 1
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="costSavingsY2" name='costSavingsY2' />
+                                        <Input type="text" id="costSavingsY2" name='costSavingsY2' />
                                         Jahr 2
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="costSavingsY3" name='costSavingsY3' />
+                                        <Input type="text" id="costSavingsY3" name='costSavingsY3' />
                                         Jahr 3
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="costSavingsY4" name='costSavingsY4' />
+                                        <Input type="text" id="costSavingsY4" name='costSavingsY4' />
                                         Jahr 4
                                     </Col>
                                     <Col>
-                                        <Input type="number" id="costSavingsY5" name='costSavingsY5' />
+                                        <Input type="text" id="costSavingsY5" name='costSavingsY5' />
                                         Jahr 5
                                     </Col>
                                 </Row>
@@ -243,8 +296,8 @@ function ProjectsCreate(props) {
                         <Card body>
                             <CardTitle tag="h5">Finanzkennzahlen</CardTitle>
                             <CardText>
-                                <CreateProjectsEntry id="capitalValue" name="Kapitalwert (NVP)" type="number" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} />
-                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" />
+                                <CreateProjectsEntry id="capitalValue" name="Kapitalwert (NVP)" type="text" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} />
+                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="text" />
                             </CardText>
                         </Card>
 
@@ -252,13 +305,13 @@ function ProjectsCreate(props) {
                 </Row>
             </Form>
 
-            <Button color="secondary">
+            <Button color="secondary" onClick={() => { window.location.href = "/projects" }}>
                 Abbrechen
             </Button>
             <Button color="primary" form='createProject' type='submit'>
                 Speichern
             </Button>{' '}
-
+        <ToastContainer position="bottom-left" />
         </div>
     );
 }
