@@ -66,8 +66,6 @@ export class ProjectsOverview extends Component {
             <th>Start</th>
             <th>Ende</th>
             <th>Budget</th>
-            <th>Teamgröße</th>
-            <th>Erstellt am</th>
           </tr>
         </thead>
         <tbody>
@@ -81,9 +79,6 @@ export class ProjectsOverview extends Component {
               <td>{Moment(project.startDate).format('DD.MM.YYYY')}</td>
               <td>{Moment(project.endDate).format('DD.MM.YYYY')}</td>
               <td>{project.budget} EUR</td>
-              <td>{project.teamSize}</td>
-              <td>{Moment(project.createdAt).format('DD.MM.YYYY')}</td>
-
             </tr>
           )}
         </tbody>

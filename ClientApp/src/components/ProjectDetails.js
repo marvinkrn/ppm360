@@ -32,6 +32,10 @@ function ProjectDetails(props) {
 
     const [denyMessage, setDenyMessage] = useState('');
 
+    // PROJEKT KENNZAHLEN
+    const [projectScope, setProjectScope] = useState(null);
+    const [totalProject, setTotalProject] = useState(null);
+
     const formRef = useRef(null);
 
     const ProjectStatus = ({ status }) => {
@@ -79,6 +83,13 @@ function ProjectDetails(props) {
         );
     };
 
+    async function fetchData(data) {
+        const projectScope = await evaluateProjectScope(data);
+        setProjectScope(projectScope);
+        const totalProject = await evaluateProject(data);
+        setTotalProject(totalProject);
+    }
+
     useEffect(() => {
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
         const projectId = id.split('-').pop();
@@ -95,6 +106,7 @@ function ProjectDetails(props) {
                 if (userRole === "Approver" && data.projectStatus === "Beantragt") {
                     setApproverView(true);
                     setProjectData(data);
+                    fetchData(data);
                 } else if (data.applicantUser === localStorage.getItem("username")) {
                     setProjectData(data);
                     if (data.projectStatus === "Abgelehnt") {
@@ -108,6 +120,9 @@ function ProjectDetails(props) {
             .catch(error => {
                 setError(error.message);
             });
+
+
+
     }, [id]);
 
     const handleApprove = (event) => {
@@ -287,7 +302,7 @@ function ProjectDetails(props) {
                 )}
 
                 <div className="d-sm-flex align-items-center justify-content-between mt-5 mb-4">
-                    <h1>Projektdetails: {id.toUpperCase()}</h1>
+                    <h1>Projektdetails: {getProjectIdWithPrefix(projectData.id, projectData.projectType, projectData.responsibleLocation)}</h1>
                 </div>
 
                 <Card body className='mb-4'>
@@ -342,8 +357,9 @@ function ProjectDetails(props) {
                 </Card>
 
                 {approverView && (<Row>
-                    <FigureCard heading="Gesamtbewertung" content={evaluateKeyFigureToString(evaluateProject(projectData))} />
-                    <FigureCard heading="Projektumfang" content={evaluateKeyFigureToString(evaluateProjectScope(projectData))} />
+                    <FigureCard heading="Gesamtbewertung" content={evaluateKeyFigureToString(totalProject)} />
+                    <FigureCard heading="Projektumfang" content={evaluateKeyFigureToString(projectScope)} />
+
                     <FigureCard heading="Kosten" content={evaluateKeyFigureToString(evaluateCosts(projectData))} />
                     <FigureCard heading="Strategie" content={evaluateKeyFigureToString(evaluateStrategy(projectData))} />
                     <FigureCard heading="Projektrisiko" content={evaluateKeyFigureToString(evaluateProjectRisk(projectData))} />
@@ -360,13 +376,13 @@ function ProjectDetails(props) {
                                 <CardTitle tag="h5">Stammdaten</CardTitle>
                                 <CardText>
                                     <input type="hidden" name="submitType" value={submitType} />
-
                                     <ProjectDetailsEntry id="projectId" name="Projekt-ID" defaultValue={getProjectIdWithPrefix(projectData.id, projectData.projectType, projectData.responsibleLocation)} modifiable />
                                     <ProjectDetailsEntry id="projectName" name="Projektname" type="text" defaultValue={projectData.name} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="projectType" name="Projektart" type="select" options={["Investitionsprojekt", "Organisationsprojekt", "F&E-Projekt", "IT-Projekt"]} defaultValue={projectData.projectType} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="teamSize" name="Teamgröße" type="number" min="1" defaultValue={projectData.teamSize} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="involvedBusinessUnits" name="Beteiligte Geschäftsbereiche" type="number" min="1" defaultValue={projectData.involvedBusinessUnits} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="projectManager" name="Projektmanager" type="text" defaultValue={projectData.projectManager} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="applicantUser" name="Beantragt von" type="text" defaultValue={projectData.applicantUser} modifiable />
                                     <ProjectDetailsEntry id="productManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} defaultValue={projectData.productManagerWorkload} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="executiveUnit" name="Ausführende Abteilung" type="text" defaultValue={projectData.executiveUnit} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="affectedLocation" name="Betroffener Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} defaultValue={projectData.affectedLocation} modifiable={!modifiable} />
@@ -415,19 +431,18 @@ function ProjectDetails(props) {
                                         <Col sm={9}>
                                             <FormGroup check>
 
-                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Bekannt" checked={projectData.solutionScopeProcess == "Bekannt" ? true : false} readOnly={!modifiable} />
+                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Bekannt" defaultChecked={projectData.solutionScopeProcess == "Bekannt"} readOnly={!modifiable} />
                                                 <Label check>
                                                     Bekannt
                                                 </Label>
                                             </FormGroup>
                                             <FormGroup check>
-                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Unbekannt" checked={projectData.solutionScopeProcess == "Unbekannt" ? true : false} readOnly={!modifiable} />
+                                                <Input type="radio" id="solutionScopeProcess" name="solutionScopeProcess" value="Unbekannt" defaultChecked={projectData.solutionScopeProcess == "Unbekannt" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Unbekannt
                                                 </Label>
                                             </FormGroup>
                                         </Col>
-
                                     </FormGroup>
                                     <FormGroup row>
                                         <Label for="solutionScopeFunctional" sm={3}>
@@ -436,13 +451,13 @@ function ProjectDetails(props) {
                                         <Col sm={9}>
                                             <FormGroup check>
 
-                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Klein" checked={projectData.solutionScopeFunctional == "Klein" ? true : false} readOnly={!modifiable} />
+                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Klein" defaultChecked={projectData.solutionScopeFunctional == "Klein" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Klein
                                                 </Label>
                                             </FormGroup>
                                             <FormGroup check>
-                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Groß" checked={projectData.solutionScopeFunctional == "Groß" ? true : false} readOnly={!modifiable} />
+                                                <Input type="radio" id="solutionScopeFunctional" name="solutionScopeFunctional" value="Groß" defaultChecked={projectData.solutionScopeFunctional == "Groß" ? true : false} readOnly={!modifiable} />
                                                 <Label check>
                                                     Groß
                                                 </Label>

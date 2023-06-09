@@ -1,7 +1,7 @@
 import React from 'react'
-import { Col, FormGroup, FormText, Input, Label } from 'reactstrap'
+import { Col, FormGroup, FormText, Input, InputGroup, InputGroupText, Label } from 'reactstrap'
 
-export const CreateProjectsEntry = ({ id, name, type, formText, options, min }) => {
+export const CreateProjectsEntry = ({ id, name, type, formText, options, min, inputGroupText }) => {
 
     return (
         <FormGroup row>
@@ -9,20 +9,27 @@ export const CreateProjectsEntry = ({ id, name, type, formText, options, min }) 
                 {name}
             </Label>
             <Col sm={9}>
-                <Input type={type} id={id} name={id} min={min}>
-                    {options && (
-                        <>
-                            <option hidden value="">
-                                Bitte auswählen
-                            </option>
-                            {options.map((option, index) => (
-                                <option key={index} value={option}>
-                                    {option}
+                <InputGroup>
+                    <Input type={type} id={id} name={id} min={min}>
+                        {options && (
+                            <>
+                                <option hidden value="">
+                                    Bitte auswählen
                                 </option>
-                            ))}
-                        </>
+                                {options.map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </>
+                        )}
+                    </Input>
+                    {inputGroupText && (
+                        <InputGroupText>
+                            {inputGroupText}
+                        </InputGroupText>
                     )}
-                </Input>
+                </InputGroup>
                 <FormText>
                     {formText}
                 </FormText>
