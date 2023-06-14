@@ -26,6 +26,7 @@ const Dashboard = () => {
     const [annualBudgetYear, setAnnualBudgetYear] = useState(null);
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+    const [priorities, setPriorities] = useState([]);
 
     const [sortColumn, setSortColumn] = useState(''); // State to track the currently sorted column
     const [sortDirection, setSortDirection] = useState('asc'); // State to track the sorting direction, default: asc
@@ -77,6 +78,18 @@ const Dashboard = () => {
         return projects;
     };
 
+    const prioritise = async (projects) => {
+      const projectvalues = {};
+      projects.forEach(project => {
+        const proPrio = evaluateProject(project);
+        console.log(proPrio);
+          projectvalues[project.id] = proPrio;
+      });
+      return projectvalues;
+    }
+
+
+
     // Get the count of projects with the same status
     const getStatusCount = (status) => {
         const count = projects.filter(project => project.projectStatus === status).length;
@@ -117,6 +130,11 @@ const Dashboard = () => {
         populateProjects();
     };
 
+    async function fetchData() {
+      const totalProject = await prioritise(projects);
+      setPriorities(totalProject);
+  }
+
     // Get the projects data from the api
     const populateProjects = async () => {
         try {
@@ -131,6 +149,7 @@ const Dashboard = () => {
                 return startDateYear === annualBudgetYear;
             });
             setProjects(filteredProjects);
+            fetchData();
             setLoading(false);
         } catch (error) {
             toast.error('Die Projekte konnten nicht geladen werden.');
@@ -453,6 +472,7 @@ const Dashboard = () => {
                                     <TableHeaderCell columnName="customerSatisfaction" columnLabel="Kundenzufriedenheit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                     <TableHeaderCell columnName="everydayBenefit" columnLabel="Everyday Benefit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                     <TableHeaderCell columnName="budget" columnLabel="Budget" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="priority" columnLabel="Prio" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                 </tr>
                             </thead>
                             <tbody>
@@ -467,7 +487,7 @@ const Dashboard = () => {
                                         <td>{project.customerSatisfaction}</td>
                                         <td>{project.everydayBenefit}</td>
                                         <td>{project.budget} EUR</td>
-                                        <td>{evaluateProject(project)}</td>
+                                        {/*<td>{priorities.find(priority => priority.projectId === project.id)}</td>*/}
                                     </tr>
                                 )}
                             </tbody>
