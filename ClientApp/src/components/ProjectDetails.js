@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { getProjectIdWithPrefix } from './misc/helper';
 import { getInitials } from './misc/InitialsAvatar';
 import { evaluateKeyFigureToString, evaluateComplexity, evaluateCosts, evaluateCustomerSatisfaction, evaluateDigitalisation, evaluateEverydayBenefit, evaluateFinancialFigures, evaluateProject, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateProjectToString, evaluateStrategy } from './misc/evaluations';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProjectDetails(props) {
     const navigate = useNavigate();
@@ -190,7 +192,7 @@ function ProjectDetails(props) {
             name: data.get('projectName'),
             projectType: data.get('projectType'),
             projectManager: data.get('projectManager'),
-            productManagerWorkload: data.get('productManagerWorkload'),
+            projectManagerWorkload: data.get('projectManagerWorkload'),
             projectStatus: projectStatus,
             budget: data.get('budget'),
             internalCost: data.get('internalCost'),
@@ -234,7 +236,7 @@ function ProjectDetails(props) {
             .then(response => {
                 // Handle the success response
                 console.log('Project updated successfully');
-                navigate("/projects");
+                window.location.href = "/projects/?success=true";
                 // You can display a success message or perform any other necessary actions
             })
             .catch(error => {
@@ -280,11 +282,11 @@ function ProjectDetails(props) {
 
             <div>
                 {modal && (
-                    <Modal isOpen={modal} toggle={toggle}>
+                    <Modal isOpen={modal} toggle={toggle} size='lg' centered>
                         <ModalHeader toggle={toggle}>Projektantrag ablehnen</ModalHeader>
                         <ModalBody>
                             Bitte geben Sie eine Begründung für die Ablehnung an.
-                            <form id="denyProject" onSubmit={handleDeny}>
+                            <form id="denyProject" onSubmit={handleDeny} className='mt-4'>
                                 <Input type="textarea" id="comment" name="comment" />
                             </form>
                         </ModalBody>
@@ -356,18 +358,28 @@ function ProjectDetails(props) {
                     </CardText>
                 </Card>
 
-                {approverView && (<Row>
-                    <FigureCard heading="Gesamtbewertung" content={evaluateKeyFigureToString(totalProject)} />
-                    <FigureCard heading="Projektumfang" content={evaluateKeyFigureToString(projectScope)} />
+                {approverView && (
+                    <>
+                        <div className="mt-5 mb-4">
+                            <h3>Projektbewertungen</h3>
+                        </div>
+                        <Row>
+                            <FigureCard heading="Gesamtbewertung" content={evaluateKeyFigureToString(totalProject)} />
+                            <FigureCard heading="Projektumfang" content={evaluateKeyFigureToString(projectScope)} />
 
-                    <FigureCard heading="Kosten" content={evaluateKeyFigureToString(evaluateCosts(projectData))} />
-                    <FigureCard heading="Strategie" content={evaluateKeyFigureToString(evaluateStrategy(projectData))} />
-                    <FigureCard heading="Projektrisiko" content={evaluateKeyFigureToString(evaluateProjectRisk(projectData))} />
-                    <FigureCard heading="Komplexität" content={evaluateKeyFigureToString(evaluateComplexity(projectData))} />
-                    <FigureCard heading="Projektleistungen" content={evaluateKeyFigureToString(evaluateProjectPerformance(projectData))} />
-                    <FigureCard heading="Finanzkennzahlen" content={evaluateKeyFigureToString(evaluateFinancialFigures(projectData))} />
-                </Row>)}
+                            <FigureCard heading="Kosten" content={evaluateKeyFigureToString(evaluateCosts(projectData))} />
+                            <FigureCard heading="Strategie" content={evaluateKeyFigureToString(evaluateStrategy(projectData))} />
+                            <FigureCard heading="Projektrisiko" content={evaluateKeyFigureToString(evaluateProjectRisk(projectData))} />
+                            <FigureCard heading="Komplexität" content={evaluateKeyFigureToString(evaluateComplexity(projectData))} />
+                            <FigureCard heading="Projektleistungen" content={evaluateKeyFigureToString(evaluateProjectPerformance(projectData))} />
+                            <FigureCard heading="Finanzkennzahlen" content={evaluateKeyFigureToString(evaluateFinancialFigures(projectData))} />
+                        </Row>
+                    </>
 
+                )}
+                <div className="mt-5 mb-4">
+                    <h3>Projektdaten</h3>
+                </div>
                 <form ref={formRef} id="modifyProject" onSubmit={handleSubmit}>
                     <Row>
                         <Col sm="6">
@@ -383,7 +395,7 @@ function ProjectDetails(props) {
                                     <ProjectDetailsEntry id="involvedBusinessUnits" name="Beteiligte Geschäftsbereiche" type="number" min="1" defaultValue={projectData.involvedBusinessUnits} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="projectManager" name="Projektmanager" type="text" defaultValue={projectData.projectManager} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="applicantUser" name="Beantragt von" type="text" defaultValue={projectData.applicantUser} modifiable />
-                                    <ProjectDetailsEntry id="productManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} defaultValue={projectData.productManagerWorkload} modifiable={!modifiable} />
+                                    <ProjectDetailsEntry id="projectManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} defaultValue={projectData.projectManagerWorkload} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="executiveUnit" name="Ausführende Abteilung" type="text" defaultValue={projectData.executiveUnit} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="affectedLocation" name="Betroffener Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} defaultValue={projectData.affectedLocation} modifiable={!modifiable} />
                                     <ProjectDetailsEntry id="responsibleLocation" name="Verantwortlicher Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} defaultValue={projectData.responsibleLocation} modifiable={!modifiable} />
@@ -534,7 +546,7 @@ function ProjectDetails(props) {
                         </Col>
                     </Row>
                     <Button color="secondary" onClick={() => { window.location.href = "/projects" }}>
-                    Zurück
+                        Zurück
                     </Button>
                     {modifiable && (<>
                         <div className='d-flex justify-content-start'>
@@ -545,8 +557,9 @@ function ProjectDetails(props) {
                     </>)}
 
                 </form>
-
+                <ToastContainer position="bottom-right" />
             </div>
+
         );
 
 

@@ -11,33 +11,34 @@ function ProjectsCreate(props) {
     const validate = (elementID, elementData) => {
         const inputElement = document.getElementById(elementID);
         if (elementData === '' || elementData == null) {
-          inputElement.style.borderColor = 'red';
+            inputElement.style.borderColor = '#dc3545';
+            //inputElement.classList.add('is-invalid');
         } else {
-          inputElement.style.borderColor = '';
+            inputElement.style.borderColor = '';
         }
-      };
+    };
 
-      const validateR = (elementID, elementData) => {
+    const validateR = (elementID, elementData) => {
         const inputElement = document.getElementById(elementID);
         if (elementData === '' || elementData == null) {
-          inputElement.style.color = 'red';
-          inputElement.style.textDecoration = 'underline';
+            inputElement.style.color = '#dc3545';
+            inputElement.style.textDecoration = 'underline';
         } else {
-          inputElement.style.color = 'black';
-          inputElement.style.textDecoration = 'none';
+            inputElement.style.color = 'black';
+            inputElement.style.textDecoration = 'none';
         }
-      };
+    };
 
-      const validateD = (elementID, elementData) => {
+    const validateD = (elementID, elementData) => {
         const inputElement = document.getElementById(elementID);
         const isValid = /^\d+$/.test(elementData);
         if (elementData === '' || elementData == null || !isValid) {
-          inputElement.style.borderColor = 'red';
+            inputElement.style.borderColor = 'red';
         }
         else {
-          inputElement.style.borderColor = '';
+            inputElement.style.borderColor = '';
         }
-      };
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -45,13 +46,13 @@ function ProjectsCreate(props) {
         const data = new FormData(form);
         const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
 
-        const fields = ['projectName', 'projectType', 'projectManager', 'productManagerWorkload', 'teamSize',
-        'involvedBusinessUnits', 'executiveUnit', 'startDate', 'endDate', 'projectDescription', 'affectedLocation', 'responsibleLocation', 'digitalisation',
-        'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'supportEffort'];
+        const fields = ['projectName', 'projectType', 'projectManager', 'projectManagerWorkload', 'teamSize',
+            'involvedBusinessUnits', 'executiveUnit', 'startDate', 'endDate', 'projectDescription', 'affectedLocation', 'responsibleLocation', 'digitalisation',
+            'customerSatisfaction', 'everydayBenefit', 'projectRisk', 'externalStakeholders', 'bufferDays', 'experience', 'supportEffort'];
 
-        const fieldsD = ['budget', 'internalCost', 'externalCost', 'investments', 'turnoverIncreaseY1', 'turnoverIncreaseY2', 'turnoverIncreaseY3', 
-        'turnoverIncreaseY4', 'turnoverIncreaseY5', 'costSavingsY1', 'costSavingsY2', 'costSavingsY3', 'costSavingsY4', 'costSavingsY5', 'capitalValue',
-        'costReduction'];
+        const fieldsD = ['budget', 'internalCost', 'externalCost', 'investments', 'turnoverIncreaseY1', 'turnoverIncreaseY2', 'turnoverIncreaseY3',
+            'turnoverIncreaseY4', 'turnoverIncreaseY5', 'costSavingsY1', 'costSavingsY2', 'costSavingsY3', 'costSavingsY4', 'costSavingsY5', 'capitalValue',
+            'costReduction'];
 
         fields.forEach(field => {
             validate(field, data.get(field));
@@ -68,7 +69,7 @@ function ProjectsCreate(props) {
             name: data.get('projectName'),
             projectType: data.get('projectType'),
             projectManager: data.get('projectManager'),
-            productManagerWorkload: data.get('productManagerWorkload'),
+            projectManagerWorkload: data.get('projectManagerWorkload'),
             projectStatus: "Beantragt",
             budget: data.get('budget').replace(".", "").replace(",", "."),
             internalCost: data.get('internalCost').replace(".", "").replace(",", "."),
@@ -134,6 +135,9 @@ function ProjectsCreate(props) {
             <div className="d-sm-flex align-items-center justify-content-between mt-5 mb-5">
                 <h1>Neues Projekt beantragen</h1>
             </div>
+
+
+
             <Form id="createProject" onSubmit={handleSubmit}>
                 <Row>
                     <Col sm="6">
@@ -146,7 +150,7 @@ function ProjectsCreate(props) {
                                 <CreateProjectsEntry id="teamSize" name="Teamgröße" type="number" min="1" />
                                 <CreateProjectsEntry id="involvedBusinessUnits" name="Beteiligte Geschäftsbereiche" type="number" min="1" />
                                 <CreateProjectsEntry id="projectManager" name="Projektmanager" type="text" />
-                                <CreateProjectsEntry id="productManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} />
+                                <CreateProjectsEntry id="projectManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} />
                                 <CreateProjectsEntry id="executiveUnit" name="Ausführende Abteilung" type="text" />
                                 <CreateProjectsEntry id="affectedLocation" name="Betroffener Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} />
                                 <CreateProjectsEntry id="responsibleLocation" name="Verantwortlicher Standort" type="select" options={["Freiburg", "Lörrach", "Berlin", "Mallorca", "München"]} />
@@ -190,7 +194,7 @@ function ProjectsCreate(props) {
 
                                 <FormGroup row>
                                     <h6>Lösungsumfang</h6>
-                                    <Label id = 'solScopeProc' for="solutionScopeProcess" sm={3}>
+                                    <Label id='solScopeProc' for="solutionScopeProcess" sm={3}>
                                         Prozess
                                     </Label>
                                     <Col sm={9}>
@@ -211,7 +215,7 @@ function ProjectsCreate(props) {
                                 </FormGroup>
                                 <FormGroup row>
 
-                                    <Label id = 'solScopeFunc' for="solutionScopeFunctional" sm={3}>
+                                    <Label id='solScopeFunc' for="solutionScopeFunctional" sm={3}>
                                         Funktionsumfang
                                     </Label>
                                     <Col sm={9}>
@@ -266,7 +270,7 @@ function ProjectsCreate(props) {
                                     </Col>
                                     <Col>
                                         <InputGroup>
-                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY3' />
+                                            <Input type="text" id="turnoverIncreaseY3" name='turnoverIncreaseY3' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
@@ -278,7 +282,7 @@ function ProjectsCreate(props) {
                                     <Col>
 
                                         <InputGroup>
-                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY4' />
+                                            <Input type="text" id="turnoverIncreaseY4" name='turnoverIncreaseY4' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
@@ -290,7 +294,7 @@ function ProjectsCreate(props) {
                                     <Col>
 
                                         <InputGroup>
-                                            <Input type="text" id="turnoverIncreaseY2" name='turnoverIncreaseY5' />
+                                            <Input type="text" id="turnoverIncreaseY5" name='turnoverIncreaseY5' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
@@ -314,7 +318,7 @@ function ProjectsCreate(props) {
                                     </Col>
                                     <Col>
                                         <InputGroup>
-                                            <Input type="text" id="costSavingsY1" name='costSavingsY2' />
+                                            <Input type="text" id="costSavingsY2" name='costSavingsY2' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
@@ -323,7 +327,7 @@ function ProjectsCreate(props) {
                                     </Col>
                                     <Col>
                                         <InputGroup>
-                                            <Input type="text" id="costSavingsY1" name='costSavingsY3' />
+                                            <Input type="text" id="costSavingsY3" name='costSavingsY3' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
@@ -332,7 +336,7 @@ function ProjectsCreate(props) {
                                     </Col>
                                     <Col>
                                         <InputGroup>
-                                            <Input type="text" id="costSavingsY1" name='costSavingsY4' />
+                                            <Input type="text" id="costSavingsY4" name='costSavingsY4' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
@@ -341,32 +345,14 @@ function ProjectsCreate(props) {
                                     </Col>
                                     <Col>
                                         <InputGroup>
-                                            <Input type="text" id="costSavingsY1" name='costSavingsY5' />
+                                            <Input type="text" id="costSavingsY5" name='costSavingsY5' />
                                             <InputGroupText>
                                                 €
                                             </InputGroupText>
                                         </InputGroup>
-
-                                        <Input type="text" id="costSavingsY1" name='costSavingsY1' />
-                                        Jahr 1
-                                    </Col>
-                                    <Col>
-                                        <Input type="text" id="costSavingsY2" name='costSavingsY2' />
-                                        Jahr 2
-                                    </Col>
-                                    <Col>
-                                        <Input type="text" id="costSavingsY3" name='costSavingsY3' />
-                                        Jahr 3
-                                    </Col>
-                                    <Col>
-                                        <Input type="text" id="costSavingsY4" name='costSavingsY4' />
-                                        Jahr 4
-                                    </Col>
-                                    <Col>
-                                        <Input type="text" id="costSavingsY5" name='costSavingsY5' />
-
                                         Jahr 5
                                     </Col>
+
                                 </Row>
                             </CardText>
                         </Card>
@@ -391,7 +377,7 @@ function ProjectsCreate(props) {
             <Button color="primary" form='createProject' type='submit'>
                 Speichern
             </Button>{' '}
-        <ToastContainer position="bottom-left" />
+            <ToastContainer position="bottom-right" />
         </div>
     );
 }

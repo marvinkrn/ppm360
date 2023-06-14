@@ -1,8 +1,4 @@
-const totalBudget = 100000000000;
-const locations = 5;
-const employees = 2500;
-
-
+// KPI KENNZAHLENMODELL JS
 
 function mainEvaluatePercent(percentage) {
     if (percentage < 11) {
@@ -57,14 +53,14 @@ export function evaluateKeyFigureToString(points) {
         points = points.toFixed(1);
     }
 
-    if (points >= 9 && points <= 10) {
-        return <span style={{ color: "#00B050" }}>Sehr gut ({points})</span>; // Dunkelgrün
-    } else if (points >= 7 && points < 9) {
-        return <span style={{ color: "#FFC000" }}>Gut ({points})</span>; // Helleres Grün
-    } else if (points >= 5 && points < 7) {
-        return <span style={{ color: "#FF6C00" }}>Zufriedenstellend ({points})</span>; // Orange
-    } else if (points >= 1 && points < 5) {
+    if (points > 7 && points <= 10) {
         return <span style={{ color: "#FF0000" }}>Schlecht ({points})</span>; // Helleres Rot
+    } else if (points > 5 && points <= 7) {
+        return <span style={{ color: "#FF6C00" }}>Zufriedenstellend ({points})</span>; // Orange
+    } else if (points > 3 && points <= 5) {
+        return <span style={{ color: "#FFC000" }}>Gut ({points})</span>; // Gelb
+    } else if (points >= 1 && points <= 3) {
+        return <span style={{ color: "#00B050" }}>Sehr gut ({points})</span>; // Dunkelgrün
     }
 }
 

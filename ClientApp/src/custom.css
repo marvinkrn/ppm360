@@ -227,3 +227,15 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.Toastify__toast-theme--light {
+  background: #fff;
+  color: var(--neutral-500);
+}
+
+.Toastify__toast {
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: var(--box-shadow-kpi-card);
+  font-family: "Open Sans";
+}

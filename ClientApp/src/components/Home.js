@@ -5,17 +5,13 @@ import MyProjects from './MyProjects';
 const Home = () => {
   const navigate = useNavigate();
 
-
-
+  // If there is not username in localStorage, redirect to login page
   useEffect(() => {
     let username = localStorage.getItem("username");
-
-    if (username === "" || username === null) {
-      navigate("/login")
-    }
-
+    if (username === "" || username === null) navigate("/login")
   })
 
+  // Return start page (MyProjects)
   return (
     <MyProjects />
   )

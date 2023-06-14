@@ -7,7 +7,7 @@ const Card = ({ heading, content }) => {
             <div className="card p-2">
                 <div className="card-body">
                     <div className="kpi-card-heading">{heading}</div>
-                    <div className="h5 mb-0 fw-bold">{content}</div>
+                    <div className="h6 mb-0 fw-bold">{content}</div>
                 </div>
             </div>
         </div>

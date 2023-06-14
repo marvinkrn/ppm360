@@ -14,19 +14,17 @@ const InitialsAvatar = ({ name }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
-    // Get the initials out of the given name
-
-
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    // On logout, clear the localStorage (username & token) and return back to /login
     const handleLogout = () => {
         localStorage.clear();
         window.location.href = '/login';
     };
 
-    // CloseOpenMenus is used when clicking outside of the menu to close it
+    // CloseOpenMenu is used when clicking outside of the menu to close it
     const closeOpenMenu = useCallback((e) => {
         if (menuRef.current && isMenuOpen && !menuRef.current.contains(e.target)) {
             setIsMenuOpen(false);

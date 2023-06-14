@@ -28,7 +28,7 @@ export default class MyProjects extends Component {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const success = urlParams.get('success')
-        if (success == "true"){
+        if (success == "true") {
             toast.success("Projektantrag erfolgreich gespeichert.");
         }
     }
@@ -116,7 +116,6 @@ export default class MyProjects extends Component {
             </Table>
         );
     }
-
 
     render() {
         let contents = this.state.loading

@@ -8,12 +8,13 @@ import FigureCard from './misc/FigureCard';
 import { Button, Col, Input, InputGroup, InputGroupText, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from 'reactstrap';
 import jwt_decode from 'jwt-decode';
 import Unauthorized from './misc/Unauthorized';
-import { evaluateComplexity, evaluateCosts, evaluateFinancialFigures, evaluateKeyFigureToString, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateStrategy } from './misc/evaluations';
+import { evaluateComplexity, evaluateCosts, evaluateFinancialFigures, evaluateKeyFigureToString, evaluateProject, evaluateProjectPerformance, evaluateProjectRisk, evaluateProjectScope, evaluateStrategy } from './misc/evaluations';
 import { getProjectIdWithPrefix, getProjectStatus } from './misc/helper';
 import axios from 'axios';
-
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Bar, Doughnut } from "react-chartjs-2";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Chart from 'chart.js/auto';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -27,8 +28,15 @@ const Dashboard = () => {
     const toggle = () => setModal(!modal);
 
     const [sortColumn, setSortColumn] = useState(''); // State to track the currently sorted column
-    const [sortDirection, setSortDirection] = useState('asc'); // State to track the sorting direction
+    const [sortDirection, setSortDirection] = useState('asc'); // State to track the sorting direction, default: asc
 
+    useEffect(() => {
+        populateProjects();
+        document.title = "PPM360 | Supernova AG";
+        fetchAnnualBudgets();
+    }, []);
+
+    // Sorting the specified column
     const handleSort = (column) => {
         if (sortColumn === column) {
             // If the same column is clicked again, toggle the sorting direction
@@ -40,6 +48,7 @@ const Dashboard = () => {
         }
     };
 
+    // Helper function to compare the values of 2 entries
     const compareValues = (a, b) => {
         if (typeof a === 'string' && typeof b === 'string') {
             return a.localeCompare(b);
@@ -51,6 +60,7 @@ const Dashboard = () => {
         }
     };
 
+    // Returns the sorted projects 
     const getSortedProjects = () => {
         if (sortColumn) {
             const sortedProjects = projects.slice().sort((a, b) => {
@@ -67,19 +77,29 @@ const Dashboard = () => {
         return projects;
     };
 
+    // Get the count of projects with the same status
     const getStatusCount = (status) => {
         const count = projects.filter(project => project.projectStatus === status).length;
         return count;
     };
 
-    const getCurrentBudget = (year) => {
+    // Get the spent budget of a year of the projects with the "Genehmigt" status
+    const getSpentBudget = (year) => {
         const sumBudget = projects
-            .filter(project => new Date(project.startDate).getFullYear() == year)
+            .filter(project => project.projectStatus === "Genehmigt" && new Date(project.startDate).getFullYear() == year)
             .reduce((accumulator, project) => accumulator + project.budget, 0);
         return sumBudget;
     };
 
+      // Get the planned budget of a year of the projects with the "Genehmigt" status
+      const getPlannedBudget = (year) => {
+        const sumBudget = projects
+            .filter(project => (project.projectStatus === "Genehmigt" || project.projectStatus === "Beantragt") && new Date(project.startDate).getFullYear() == year)
+            .reduce((accumulator, project) => accumulator + project.budget, 0);
+        return sumBudget;
+    };
 
+    // Helper to make the Table Header Cells with sorting arrows
     const TableHeaderCell = ({ columnName, columnLabel, handleSort, sortColumn, sortDirection }) => {
         const isSorted = sortColumn === columnName;
         const arrow = isSorted ? (sortDirection === 'asc' ? <FontAwesomeIcon icon={faSortUp} /> : <FontAwesomeIcon icon={faSortDown} />) : <FontAwesomeIcon icon={faSort} />;
@@ -91,17 +111,13 @@ const Dashboard = () => {
         );
     };
 
-    useEffect(() => {
-        populateProjects();
-        document.title = "PPM360 | Supernova AG";
-        fetchAnnualBudgets();
-    }, []);
-
+    // Refresh the project data on the page
     const refreshData = () => {
         setLoading(true);
         populateProjects();
     };
 
+    // Get the projects data from the api
     const populateProjects = async () => {
         try {
             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
@@ -114,15 +130,14 @@ const Dashboard = () => {
                 const startDateYear = new Date(project.startDate).getFullYear();
                 return startDateYear === annualBudgetYear;
             });
-
             setProjects(filteredProjects);
             setLoading(false);
         } catch (error) {
-            // Error handling
+            toast.error('Die Projekte konnten nicht geladen werden.');
         }
     };
 
-
+    // Get the annual budgets from the api
     const fetchAnnualBudgets = async () => {
         try {
             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") };
@@ -130,21 +145,9 @@ const Dashboard = () => {
             const data = await response.json();
             setAnnualBudgets(data);
         } catch (error) {
-            // Error handling
+            toast.error('Die Geschäftsjahre konnten nicht geladen werden.');
         }
     };
-
-    const getProjectsCount = (projects) => {
-        var count = Object.keys(projects).length;
-        return (count);
-    }
-
-    const getTotalCosts = (projects) => {
-        const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
-        const totalCost = filteredProjects.reduce((sum, project) => sum + project.budget, 0);
-        const formattedCost = Number(totalCost).toLocaleString("de-DE");
-        return (formattedCost + " EUR");
-    }
 
     const getAverageProjectScope = (projects) => {
         const filteredProjects = projects.filter(project => project.projectStatus === "Genehmigt");
@@ -195,30 +198,7 @@ const Dashboard = () => {
         return average.toFixed(2);
     }
 
-    const statusDoughnutData = {
-        labels: ['Beantragt', 'Genehmigt', 'Abgelehnt', 'Abgeschlossen'],
-        datasets: [
-            {
-                label: 'Anzahl',
-                data: [
-                    getStatusCount('Beantragt'),
-                    getStatusCount('Genehmigt'),
-                    getStatusCount('Abgelehnt'),
-                    getStatusCount('Abgeschlossen')
-                ],
-                backgroundColor: [
-                    '#f39c12',
-                    '#27ae60',
-                    '#e74c3c',
-                    '#737e93'
-                ]
-            }
-        ]
-    };
 
-
-    let projectsCount;
-    let totalCosts;
     let averageProjectScope;
     let averageCosts;
     let averageStrategy;
@@ -228,11 +208,14 @@ const Dashboard = () => {
     let averageFinancialFigures;
 
     if (loading) {
-
+        averageProjectScope = <Skeleton />;
         averageCosts = <Skeleton />;
+        averageStrategy = <Skeleton />;
+        averageRisk = <Skeleton />;
         averageComplexity = <Skeleton />;
+        averageProjectPerformance = <Skeleton />;
+        averageFinancialFigures = <Skeleton />;
     } else {
-
         averageProjectScope = evaluateKeyFigureToString(getAverageProjectScope(projects));
         averageCosts = evaluateKeyFigureToString(getAverageCosts(projects));
         averageStrategy = evaluateKeyFigureToString(getAverageStrategy(projects));
@@ -242,10 +225,12 @@ const Dashboard = () => {
         averageFinancialFigures = evaluateKeyFigureToString(getAverageFinancialFigures(projects));
     }
 
+    // Get the userRole out of the token
     const decoded = jwt_decode(localStorage.getItem('token'));
     let userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
     if (userRole !== "Management") return (<Unauthorized />);
 
+    // Handle submit to update the annual budget of a year
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
@@ -259,29 +244,29 @@ const Dashboard = () => {
             budget: data.get('annualBudget'),
         }, { headers })
             .then(response => {
-                // Handle the success response
                 console.log('Annual budget updated successfully');
                 fetchAnnualBudgets();
                 refreshData();
                 toggle();
-
+                toast.success('Das Budget für das Geschäftsjahr ' + year + " wurde erfolgreich aktualisiert.");
             })
             .catch(error => {
                 // Handle the error response
                 console.error('Failed to update:', error);
-
+                toast.error('Das Budget für das Geschäftsjahr ' + year + " konnte nicht aktualisert werden.");
             });
 
     };
 
     return (
         <div>
+            {/* Modal to update the annual budget */}
             {modal && (
-                <Modal isOpen={modal} toggle={toggle} >
+                <Modal isOpen={modal} toggle={toggle} size='lg' centered>
                     <ModalHeader toggle={toggle}>Gesamtbudget für ein Geschäftsjahr ändern</ModalHeader>
                     <ModalBody>
                         Hier können Sie das Gesamtbudget für das Geschäftsjahr {parseInt(document.getElementById("annualBudgetYear").value)} ändern.
-                        <form id="changeAnnualBudget" onSubmit={handleSubmit} >
+                        <form id="changeAnnualBudget" onSubmit={handleSubmit} className='mt-4'>
                             <Input type="text" id="annualBudget" name="annualBudget" defaultValue={annualBudgets.find(annualBudget => annualBudget.year === parseInt(document.getElementById("annualBudgetYear").value))?.budget} />
                         </form>
                     </ModalBody>
@@ -311,8 +296,8 @@ const Dashboard = () => {
 
             <div className='mb-5'>
                 <form>
-                    <Row>
-                        <Col >
+                    <Row className='d-sm-flex align-items-center'>
+                        <Col>
                             <Label for="annualBudgetYear">Geschäftsjahr</Label>
                             <Input type="select" id="annualBudgetYear" name="annualBudgetYear" onChange={refreshData}>
                                 <option hidden value="null">
@@ -325,36 +310,84 @@ const Dashboard = () => {
                         </Col>
                         <Col>
                             <Label>Gesamtbudget für das Geschäftsjahr</Label>
-                            <InputGroup>
-
-                                <Input
-                                    type="text"
-                                    readOnly
-                                    defaultValue={annualBudgets.find(annualBudget => annualBudget.year === parseInt(document.getElementById("annualBudgetYear").value))?.budget.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                /><InputGroupText>
-                                    €
-                                </InputGroupText>
-                            </InputGroup>
-                            {document.getElementById("annualBudgetYear") && (document.getElementById("annualBudgetYear").value != "null") && (<a onClick={toggle}>Budget ändern</a>)}
+                            <Row className='d-sm-flex align-items-center'>
+                                <Col sm="9" >
+                                    <InputGroup>
+                                        <Input
+                                            type="text"
+                                            readOnly
+                                            defaultValue={annualBudgets.find(annualBudget => annualBudget.year === parseInt(document.getElementById("annualBudgetYear").value))?.budget.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        /><InputGroupText>
+                                            €
+                                        </InputGroupText>
+                                    </InputGroup>
+                                </Col>
+                                <Col sm="3">
+                                    {document.getElementById("annualBudgetYear") && (document.getElementById("annualBudgetYear").value != "null") && (
+                                        <Button color="secondary" className='btn-sm' onClick={toggle}>
+                                            Budget ändern
+                                        </Button>
+                                    )}
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                 </form>
             </div>
 
+
+
             {document.getElementById("annualBudgetYear") && (document.getElementById("annualBudgetYear").value != "null") && (
 
-                <div>
-                    <Row>
 
+
+                <div>
+                    <div className='mb-5'>
+                        <form>
+                            <Row className='d-sm-flex align-items-center'>
+                                <Col>
+                                    <Label for="location">Standort</Label>
+                                    <Input type="select" id="location" name="location" onChange={refreshData}>
+                                        <option hidden value="null">
+                                            Standort filtern
+                                        </option>
+
+                                        <option key="freiburg">Freiburg</option>
+                                        <option key="loerrach">Lörrach</option>
+                                        <option key="mallorca">Mallorca</option>
+                                        <option key="berlin">Berlin</option>
+                                        <option key="muenchen">München</option>
+                                    </Input>
+                                </Col>
+
+                            </Row>
+                        </form>
+                    </div>
+
+                    <Row>
                         {/**<FigureCard heading={"Ø Projektumfang"} content={averageProjectScope} />*/}
-                        <FigureCard heading={"Ø Kosten"} content={averageCosts} />
-                        <FigureCard heading={"Ø Strategie"} content={averageStrategy} />
-                        <FigureCard heading={"Ø Projektrisiko"} content={averageRisk} />
-                        <FigureCard heading={"Ø Komplexität"} content={averageComplexity} />
-                        <FigureCard heading={"Ø Projektleistung"} content={averageProjectPerformance} />
-                        <FigureCard heading={"Ø Finanzkennzahlen"} content={averageFinancialFigures} />
+
                         <FigureCard heading={"Anzahl Projekte nach Status"} content={<div style={{ width: "75%", margin: "0 auto" }}>
-                            <Doughnut data={statusDoughnutData} options={{
+                            <Doughnut data={{
+                                labels: ['Beantragt', 'Genehmigt', 'Abgelehnt', 'Abgeschlossen'],
+                                datasets: [
+                                    {
+                                        label: 'Anzahl',
+                                        data: [
+                                            getStatusCount('Beantragt'),
+                                            getStatusCount('Genehmigt'),
+                                            getStatusCount('Abgelehnt'),
+                                            getStatusCount('Abgeschlossen')
+                                        ],
+                                        backgroundColor: [
+                                            '#f9b957',
+                                            '#5cd782',
+                                            '#f0695a',
+                                            '#737e93'
+                                        ]
+                                    }
+                                ]
+                            }} options={{
                                 plugins: {
                                     legend: {
                                         display: false
@@ -363,19 +396,21 @@ const Dashboard = () => {
                             }} />
                         </div>} />
 
-                        <FigureCard heading={"Verbrauchtes / Verfügbares Budget für " + document.getElementById("annualBudgetYear").value} content={<div style={{ height: "75%", margin: "0 auto" }}>
+                        <FigureCard heading={"Verbrauchtes / Maximales Budget für " + document.getElementById("annualBudgetYear").value} content={<div style={{ height: "75%", margin: "0 auto" }}>
                             <Bar data={{
-                                labels: ['Verbraucht', "Maximal"],
+                                labels: ['Verbraucht', "Geplant", "Maximal"],
                                 datasets: [
                                     {
-                                        label: 'Verbrauchtes Budget',
+                                        label: 'Budget',
                                         data: [
-                                            getCurrentBudget(document.getElementById("annualBudgetYear").value),
+                                            getSpentBudget(document.getElementById("annualBudgetYear").value),
+                                            getPlannedBudget(document.getElementById("annualBudgetYear").value),
                                             annualBudgets.find(annualBudget => annualBudget.year === parseInt(document.getElementById("annualBudgetYear").value))?.budget
                                         ],
                                         backgroundColor: [
-                                            '#FF0000',
-                                            '#00FF00'
+                                            '#f0695a',
+                                            '#f9b957',
+                                            '#737e93'
                                         ]
                                     },
 
@@ -391,79 +426,33 @@ const Dashboard = () => {
                             }} />
                         </div>} />
 
-
+                        <div className="mt-5 mb-4">
+                            <h3>Durchschnittliche Projektwerte</h3>
+                        </div>
+                        <FigureCard heading={"Ø Kosten"} content={averageCosts} />
+                        <FigureCard heading={"Ø Strategie"} content={averageStrategy} />
+                        <FigureCard heading={"Ø Projektrisiko"} content={averageRisk} />
+                        <FigureCard heading={"Ø Komplexität"} content={averageComplexity} />
+                        <FigureCard heading={"Ø Projektleistung"} content={averageProjectPerformance} />
+                        <FigureCard heading={"Ø Finanzkennzahlen"} content={averageFinancialFigures} />
                     </Row>
 
-
+                    <div className="mt-5 mb-5">
+                        <h3>Projektübersicht</h3>
+                    </div>
                     <div>
                         <Table hover responsive >
                             <thead>
                                 <tr>
-                                    <TableHeaderCell
-                                        columnName="projectId"
-                                        columnLabel="Projekt-ID"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="name"
-                                        columnLabel="Projektname"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="projectType"
-                                        columnLabel="Projektart"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="projectStatus"
-                                        columnLabel="Status"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="projectManager"
-                                        columnLabel="Projektmanager"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="startDate"
-                                        columnLabel="Start"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="endDate"
-                                        columnLabel="Ende"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-                                    <TableHeaderCell
-                                        columnName="digitalisation"
-                                        columnLabel="Digitalisierung"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-
-                                    <TableHeaderCell
-                                        columnName="budget"
-                                        columnLabel="Budget"
-                                        handleSort={handleSort}
-                                        sortColumn={sortColumn}
-                                        sortDirection={sortDirection}
-                                    />
-
+                                    <TableHeaderCell columnName="id" columnLabel="Projekt-ID" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="name" columnLabel="Projektname" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="projectType" columnLabel="Projektart" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="projectStatus" columnLabel="Status" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="location" columnLabel="Standort" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="digitalisation" columnLabel="Digitalisierung" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="customerSatisfaction" columnLabel="Kundenzufriedenheit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="everydayBenefit" columnLabel="Everyday Benefit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="budget" columnLabel="Budget" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                 </tr>
                             </thead>
                             <tbody>
@@ -473,11 +462,12 @@ const Dashboard = () => {
                                         <td>{project.name}</td>
                                         <td>{project.projectType}</td>
                                         <td>{getProjectStatus(project.projectStatus)}</td>
-                                        <td>{project.projectManager}</td>
-                                        <td>{Moment(project.startDate).format('DD.MM.YYYY')}</td>
-                                        <td>{Moment(project.endDate).format('DD.MM.YYYY')}</td>
+                                        <td>{project.responsibleLocation}</td>
                                         <td>{project.digitalisation}</td>
+                                        <td>{project.customerSatisfaction}</td>
+                                        <td>{project.everydayBenefit}</td>
                                         <td>{project.budget} EUR</td>
+                                        <td>{evaluateProject(project)}</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -486,7 +476,7 @@ const Dashboard = () => {
                 </div>
             )}
 
-
+            <ToastContainer position="bottom-right" />
 
         </div>
     );

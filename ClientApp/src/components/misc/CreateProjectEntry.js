@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, FormGroup, FormText, Input, InputGroup, InputGroupText, Label } from 'reactstrap'
 
-export const CreateProjectsEntry = ({ id, name, type, formText, options, min, inputGroupText }) => {
+export const CreateProjectsEntry = ({ id, name, type, formText, options, min, inputGroupText, invalid }) => {
 
     return (
         <FormGroup row>
@@ -10,7 +10,7 @@ export const CreateProjectsEntry = ({ id, name, type, formText, options, min, in
             </Label>
             <Col sm={9}>
                 <InputGroup>
-                    <Input type={type} id={id} name={id} min={min}>
+                    <Input type={type} id={id} name={id} min={min} invalid={invalid}>
                         {options && (
                             <>
                                 <option hidden value="">
