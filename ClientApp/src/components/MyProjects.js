@@ -140,7 +140,7 @@ export default class MyProjects extends Component {
 
                 {contents}
 
-                <ToastContainer position="bottom-left" />
+                <ToastContainer position="bottom-right" />
 
             </div>
 

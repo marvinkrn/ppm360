@@ -24,6 +24,30 @@ function mainEvaluatePercent(percentage) {
     }
 }
 
+function evaluateCostsInt(percentage) {
+    if (percentage < 11) {
+        return 1;
+    } else if (percentage >= 11 && percentage <= 40) {
+        return 4;
+    } else if (percentage >= 41 && percentage <= 80) {
+        return 7;
+    } else {
+        return 10;
+    }
+}
+
+function evaluateCostsExt(percentage) {
+    if (percentage > 90) {
+        return 1;
+    } else if (percentage >= 80 && percentage <= 47) {
+        return 4;
+    } else if (percentage >= 11 && percentage <= 40) {
+        return 7;
+    } else {
+        return 10;
+    }
+}
+
 function evaluatePercentCosts(percentage) {
     if (percentage > 90) {
         return 1;
@@ -180,23 +204,34 @@ export async function evaluateProjectScope(project) {
 
 /* KOSTEN */
 export function evaluateInternalCosts(project) {
-    const productManagerWorkload = project.productManagerWorkload;
-    return mainEvaluatePercent(productManagerWorkload);
+    const budget = project.budget;
+    const internalCost = project.internalCost;
+    const percent = (internalCost / budget) * 100;
+    return evaluateCostsInt(percent.toFixed(0));
 }
 
 export function evaluateExternalCosts(project) {
-    const productManagerWorkload = project.productManagerWorkload;
-    return mainEvaluatePercent(productManagerWorkload);
+    const budget = project.budget;
+    const externalCost = project.externalCost;
+    const percent = (externalCost / budget) * 100;
+    return evaluateCostsExt(percent.toFixed(0));
 }
 
 export function evaluateInvestments(project) {
-    const productManagerWorkload = project.productManagerWorkload;
-    return mainEvaluatePercent(productManagerWorkload);
+    const budget = project.budget;
+    const investments = project.investments;
+    const percent = (investments / budget) * 100;
+    return evaluateCostsInt(percent.toFixed(0));
 }
 
 export function evaluateCosts(project) {
-    const productManagerWorkload = project.productManagerWorkload;
-    return mainEvaluatePercent(productManagerWorkload);
+    var internalCost = evaluateInternalCosts(project);
+    var externalCost = evaluateExternalCosts(project);
+    var investments = evaluateInvestments(project);
+
+    var costs = 5 * internalCost + 5 * externalCost + 5 * investments;
+
+    return (costs / 3) / 5;
 }
 
 /* STRATEGIE */

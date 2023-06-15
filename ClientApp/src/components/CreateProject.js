@@ -148,7 +148,7 @@ function ProjectsCreate(props) {
                                 <CreateProjectsEntry id="projectName" name="Projektname" type="text" />
                                 <CreateProjectsEntry id="projectType" name="Projektart" type="select" options={["Investitionsprojekt", "Organisationsprojekt", "F&E-Projekt", "IT-Projekt"]} />
                                 <CreateProjectsEntry id="teamSize" name="Teamgröße" type="number" min="1" />
-                                <CreateProjectsEntry id="involvedBusinessUnits" name="Beteiligte Geschäftsbereiche" type="number" min="1" />
+                                <CreateProjectsEntry id="involvedBusinessUnits" name="Anzahl beteiligter Geschäftsbereiche" type="number" min="1" />
                                 <CreateProjectsEntry id="projectManager" name="Projektmanager" type="text" />
                                 <CreateProjectsEntry id="projectManagerWorkload" name="Auslastung des Projektmanagers" type="number" min="1" formText={"Bitte geben Sie die Auslastung des Projektmanagers in Prozent an."} />
                                 <CreateProjectsEntry id="executiveUnit" name="Ausführende Abteilung" type="text" />
@@ -187,10 +187,9 @@ function ProjectsCreate(props) {
                             <CardTitle tag="h5">Komplexität</CardTitle>
                             <CardText>
                                 <CreateProjectsEntry id="projectRisk" name="Projektrisiko-Kennzahl" type="number" min="0" formText={"Bitte geben Sie die Risikokennzahl nach Supernova-Standard an."} />
-                                <CreateProjectsEntry id="externalStakeholders" name="Externe Stakeholder" type="number" min="0" />
+                                <CreateProjectsEntry id="externalStakeholders" name="Anzahl externer Stakeholder" type="number" min="0" />
                                 <CreateProjectsEntry id="bufferDays" name="Puffertage" type="number" min="0" />
                                 <CreateProjectsEntry id="experience" name="Erfahrungen" type="select" options={["Sehr gut", "Gut", "Zufriedenstellend", "Schlecht"]} />
-
 
                                 <FormGroup row>
                                     <h6>Lösungsumfang</h6>
@@ -362,7 +361,7 @@ function ProjectsCreate(props) {
                             <CardText>
 
                                 <CreateProjectsEntry id="capitalValue" name="Kapitalwert (NVP)" type="text" formText={"Bitte geben Sie den Kapitalwert (NVP) des Projekts bei 5% Mindestverzinsung an."} />
-                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" inputGroupText={"€"} />
+                                <CreateProjectsEntry id="costReduction" name="Kostenreduktion in Euro" type="number" inputGroupText={"€"} formText={"Kostenreduktion der nächsten 5 Jahre."} />
 
                             </CardText>
                         </Card>

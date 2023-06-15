@@ -20,6 +20,7 @@ import Chart from 'chart.js/auto';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
+    const [allProjects, setAllProjects] = useState([]);
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [annualBudgets, setAnnualBudgets] = useState([]);
@@ -29,22 +30,32 @@ const Dashboard = () => {
 
     const [sortColumn, setSortColumn] = useState(''); // State to track the currently sorted column
     const [sortDirection, setSortDirection] = useState('asc'); // State to track the sorting direction, default: asc
+    const [prioritySortDirection, setPrioritySortDirection] = useState('asc');
+
+    const [priorities, setPriorities] = useState([]);
 
     useEffect(() => {
-        populateProjects();
         document.title = "PPM360 | Supernova AG";
         fetchAnnualBudgets();
+        populateProjects();
+        getPrioritizations(projects);
     }, []);
 
     // Sorting the specified column
     const handleSort = (column) => {
-        if (sortColumn === column) {
+        if (column === 'priority') {
             // If the same column is clicked again, toggle the sorting direction
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+            setPrioritySortDirection(prevDirection => (prevDirection === 'asc' ? 'desc' : 'asc'));
         } else {
-            // If a different column is clicked, set it as the new sort column and default to ascending direction
-            setSortColumn(column);
-            setSortDirection('asc');
+
+            if (sortColumn === column) {
+                // If the same column is clicked again, toggle the sorting direction
+                setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+            } else {
+                // If a different column is clicked, set it as the new sort column and default to ascending direction
+                setSortColumn(column);
+                setSortDirection('asc');
+            }
         }
     };
 
@@ -62,7 +73,19 @@ const Dashboard = () => {
 
     // Returns the sorted projects 
     const getSortedProjects = () => {
-        if (sortColumn) {
+        if (sortColumn === 'priority') {
+            console.log("TEST")
+            const sortedProjects = projects.slice().sort((a, b) => {
+                const aValue = a.priority;
+                const bValue = b.priority;
+                if (prioritySortDirection === 'asc') {
+                    return compareValues(aValue, bValue);
+                } else {
+                    return compareValues(bValue, aValue);
+                }
+            });
+            return sortedProjects;
+        } else if (sortColumn) {
             const sortedProjects = projects.slice().sort((a, b) => {
                 const aValue = a[sortColumn];
                 const bValue = b[sortColumn];
@@ -76,6 +99,7 @@ const Dashboard = () => {
         }
         return projects;
     };
+
 
     // Get the count of projects with the same status
     const getStatusCount = (status) => {
@@ -91,8 +115,8 @@ const Dashboard = () => {
         return sumBudget;
     };
 
-      // Get the planned budget of a year of the projects with the "Genehmigt" status
-      const getPlannedBudget = (year) => {
+    // Get the planned budget of a year of the projects with the "Genehmigt" status
+    const getPlannedBudget = (year) => {
         const sumBudget = projects
             .filter(project => (project.projectStatus === "Genehmigt" || project.projectStatus === "Beantragt") && new Date(project.startDate).getFullYear() == year)
             .reduce((accumulator, project) => accumulator + project.budget, 0);
@@ -111,11 +135,30 @@ const Dashboard = () => {
         );
     };
 
+    const getPrioritizations = async (projects) => {
+        const projectValues = [];
+
+        for (const project of projects) {
+            const priority = await evaluateProject(project);
+            project.priority = priority; // Add priority property to project
+            projectValues.push({ projectId: project.id, priority: priority });
+        }
+
+        setPriorities(projectValues);
+    };
+
+
     // Refresh the project data on the page
     const refreshData = () => {
         setLoading(true);
         populateProjects();
+        setTimeout(() => {
+            getPrioritizations(allProjects);
+        }, 1000); // 1 second timeout
     };
+
+
+
 
     // Get the projects data from the api
     const populateProjects = async () => {
@@ -126,13 +169,32 @@ const Dashboard = () => {
 
             // Filter the projects based on the year of the start date
             const annualBudgetYear = parseInt(document.getElementById("annualBudgetYear").value);
+
+            let location = null;
+
+            const locationFilterElement = document.getElementById("locationFilter");
+            if (locationFilterElement) {
+                location = locationFilterElement.value;
+            }
+
+            // Filter the projects based on the year of the start date and location
             const filteredProjects = data.filter(project => {
                 const startDateYear = new Date(project.startDate).getFullYear();
-                return startDateYear === annualBudgetYear;
+                const projectLocation = project.responsibleLocation;
+
+                if ((location == null) | (location === "Alle Standorte")) {
+                    return startDateYear === annualBudgetYear;
+                } else {
+                    return startDateYear === annualBudgetYear && projectLocation === location;
+                }
             });
+
             setProjects(filteredProjects);
+            setAllProjects(data);
+
             setLoading(false);
         } catch (error) {
+            console.log(error);
             toast.error('Die Projekte konnten nicht geladen werden.');
         }
     };
@@ -347,11 +409,8 @@ const Dashboard = () => {
                             <Row className='d-sm-flex align-items-center'>
                                 <Col>
                                     <Label for="location">Standort</Label>
-                                    <Input type="select" id="location" name="location" onChange={refreshData}>
-                                        <option hidden value="null">
-                                            Standort filtern
-                                        </option>
-
+                                    <Input type="select" id="locationFilter" name="location" onChange={refreshData}>
+                                        <option key="allLocations">Alle Standorte</option>
                                         <option key="freiburg">Freiburg</option>
                                         <option key="loerrach">Lörrach</option>
                                         <option key="mallorca">Mallorca</option>
@@ -428,6 +487,7 @@ const Dashboard = () => {
 
                         <div className="mt-5 mb-4">
                             <h3>Durchschnittliche Projektwerte</h3>
+                            <p>(Genehmigter Projekte)</p>
                         </div>
                         <FigureCard heading={"Ø Kosten"} content={averageCosts} />
                         <FigureCard heading={"Ø Strategie"} content={averageStrategy} />
@@ -441,7 +501,7 @@ const Dashboard = () => {
                         <h3>Projektübersicht</h3>
                     </div>
                     <div>
-                        <Table hover responsive >
+                        <Table hover responsive id="project-table">
                             <thead>
                                 <tr>
                                     <TableHeaderCell columnName="id" columnLabel="Projekt-ID" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
@@ -453,6 +513,7 @@ const Dashboard = () => {
                                     <TableHeaderCell columnName="customerSatisfaction" columnLabel="Kundenzufriedenheit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                     <TableHeaderCell columnName="everydayBenefit" columnLabel="Everyday Benefit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                     <TableHeaderCell columnName="budget" columnLabel="Budget" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+                                    <TableHeaderCell columnName="priority" columnLabel="Priorität" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                 </tr>
                             </thead>
                             <tbody>
@@ -467,7 +528,13 @@ const Dashboard = () => {
                                         <td>{project.customerSatisfaction}</td>
                                         <td>{project.everydayBenefit}</td>
                                         <td>{project.budget} EUR</td>
-                                        <td>{evaluateProject(project)}</td>
+                                        <td>
+                                            {priorities &&
+                                                priorities.find((priority) => priority.projectId === project.id)?.priority !== undefined && (
+                                                    priorities.find((priority) => priority.projectId === project.id)?.priority.toFixed(1)
+                                                )}
+
+                                        </td>
                                     </tr>
                                 )}
                             </tbody>
