@@ -27,8 +27,6 @@ const Dashboard = () => {
     const [annualBudgetYear, setAnnualBudgetYear] = useState(null);
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-    const [priorities, setPriorities] = useState([]);
-
     const [sortColumn, setSortColumn] = useState(''); // State to track the currently sorted column
     const [sortDirection, setSortDirection] = useState('asc'); // State to track the sorting direction, default: asc
     const [prioritySortDirection, setPrioritySortDirection] = useState('asc');
