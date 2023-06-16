@@ -27,6 +27,7 @@ const Dashboard = () => {
     const [annualBudgetYear, setAnnualBudgetYear] = useState(null);
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+    const [priorities, setPriorities] = useState([]);
 
     const [sortColumn, setSortColumn] = useState(''); // State to track the currently sorted column
     const [sortDirection, setSortDirection] = useState('asc'); // State to track the sorting direction, default: asc
@@ -100,7 +101,6 @@ const Dashboard = () => {
         return projects;
     };
 
-
     // Get the count of projects with the same status
     const getStatusCount = (status) => {
         const count = projects.filter(project => project.projectStatus === status).length;
@@ -159,7 +159,6 @@ const Dashboard = () => {
 
 
 
-
     // Get the projects data from the api
     const populateProjects = async () => {
         try {
@@ -191,7 +190,6 @@ const Dashboard = () => {
 
             setProjects(filteredProjects);
             setAllProjects(data);
-
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -513,7 +511,9 @@ const Dashboard = () => {
                                     <TableHeaderCell columnName="customerSatisfaction" columnLabel="Kundenzufriedenheit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                     <TableHeaderCell columnName="everydayBenefit" columnLabel="Everyday Benefit" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
                                     <TableHeaderCell columnName="budget" columnLabel="Budget" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+
                                     <TableHeaderCell columnName="priority" columnLabel="Priorität" handleSort={handleSort} sortColumn={sortColumn} sortDirection={sortDirection} />
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -535,6 +535,7 @@ const Dashboard = () => {
                                                 )}
 
                                         </td>
+
                                     </tr>
                                 )}
                             </tbody>
